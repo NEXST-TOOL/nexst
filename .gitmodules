@@ -1,0 +1,8 @@
+[submodule "nm37-xiangshan/software/qdma"]
+	path = nm37-xiangshan/software/qdma
+	url = ssh://git@gitlab.agileserve.org.cn:8082/serve_hw_sw_dev/dma_ip_drivers.git
+	branch = 2020.2
+[submodule "work_farm"]
+	path = work_farm
+	url = ssh://git@gitlab.agileserve.org.cn:8082/serve_hw_sw_dev/serve_hw_sw_dev.git
+	branch = nm37
