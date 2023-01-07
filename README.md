@@ -20,7 +20,10 @@ side where the NM37 card is attached
 2. PF version kernel module cross-compilation for ARMv8     
 `make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf MODULE=mod_pf TARGET_HOST=aarch64 qdma_drv`
 
-    - **NOTE: FPGA_BD would be set to *nm37* in near future**
+    Before module compilation, Linux kernel deployed on ARMv8 would be cross-compiled first using    
+    `make FPGA_PRJ=shell FPGA_BD=nf phy_os.os`
 
 3. kernel module clean    
 `make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf qdma_drv_clean`
+    
+- **NOTE: FPGA_BD would be set to *nm37* in near future**
