@@ -1,6 +1,13 @@
-# Software Compilation
+# Introduction
 
-## Prerequisite
+This repo contains basic components for prototyping 
+and emulation of the reduced version (code name: Nanhu-G) 
+of XiangShan RISC-V processor core. 
+The target FPGA chip is Xilinx Ultrascale+ VU37P series. 
+FPGA boards currently supported are Xilinx VCU128 and 
+an ICT custom acceleration card named NM37. 
+
+# Prerequisite
 
 1. Launch the following commands    
 `mkdir -p work_farm/target/`    
@@ -8,9 +15,32 @@
 `ln -s ../../nm37-xiangshan nm37-xiangshan` 
 
 2. Install Linux kernel header on the x86 server 
-side where the NM37 card is attached
+side where the FPGA board/card is attached
 
 3. All compilation operations are launched in the directory of `work_farm`
+
+# Hardware Generation (including Nanhu-G core and its wrapper)
+
+## Nanhu-G compilation (to be added) 
+
+## Wrapper on Xilinx VCU128 board
+
+1. Squencially launch the following commands to generate a bitstream file    
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj`   
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj`   
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj`   
+
+    The bitstream file is located in   
+    `work_farm/hw_plat/shell_xiangshan_vcu128/`    
+
+    Log files, timing/utilization reports and 
+    design checkpoint files (.dcp) generated during Xilinx Vivado design flow 
+    are located in   
+    `work_farm/fpga/vivado_out/shell_xiangshan_vcu128/shell_xiangshan` 
+
+## Wrapper on ICT's NM37 card (to be added) 
+
+# Software Compilation
 
 ## QDMA driver compilation
 
