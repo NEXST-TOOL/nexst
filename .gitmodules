@@ -6,3 +6,6 @@
 	path = work_farm
 	url = ssh://git@gitlab.agileserve.org.cn:8082/serve_hw_sw_dev/serve_hw_sw_dev.git
 	branch = nm37
+[submodule "nm37-xiangshan/hardware/xs-gen"]
+	path = nm37-xiangshan/hardware/xs-gen
+	url = ssh://git@gitlab.agileserve.org.cn:8082/serve_hw_sw_dev/xiangshan.git

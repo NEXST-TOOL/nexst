@@ -21,7 +21,9 @@ side where the FPGA board/card is attached
 
 # Hardware Generation (including Nanhu-G core and its wrapper)
 
-## Nanhu-G compilation (to be added) 
+## Nanhu-G compilation
+
+`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf xs_gen`
 
 ## Wrapper on Xilinx VCU128 board
 
