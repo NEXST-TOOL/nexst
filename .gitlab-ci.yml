@@ -1,0 +1,70 @@
+stages:
+  - xs_gen
+  - run_syn
+  - bit_gen
+
+variables:
+    GIT_DEPTH: "1"
+    GIT_STRATEGY: clone
+    GIT_SUBMODULE_STRATEGY: recursive
+    XS_CONFIG: NanHuGFPGAConfig
+
+default:
+  image: gitlab.agileserve.org.cn:15050/zelin/vivado-ci-tools/ucas-cod-2022:v0.9
+  tags:
+    - node42-vivado
+  before_script:
+    - mkdir -p work_farm/target/
+    - cd work_farm/target 
+    - ln -s ../../nm37-xiangshan nm37-xiangshan
+    - cd ../../ && ls work_farm/target
+    - cd work_farm && pwd
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+      - unknown_failure
+
+xs_gen:
+  stage: xs_gen
+  needs: []
+  script:
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf xs_gen
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - nm37-xiangshan/hardware/sources/generated/
+
+role_run_syn:
+  stage: run_syn
+  needs: [xs_gen]
+  script:
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - work_farm/fpga/vivado_out/
+
+shell_run_syn:
+  stage: run_syn
+  needs: []
+  script:
+    - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj
+    - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - work_farm/fpga/vivado_out/
+
+shell_bit_gen:
+  stage: bit_gen
+  needs: [role_run_syn, shell_run_syn]
+  script:
+    - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - work_farm/fpga/vivado_out/
+      - work_farm/hw_plat/
