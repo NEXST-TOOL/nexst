@@ -13,4 +13,4 @@ xs_gen:
 .PHONY: xs_clean
 xs_clean:
 	rm -rf $(GEN_SRC)
-	make -C $(XS_SRC) clean
+	rm -rf $(XS_SRC)/build

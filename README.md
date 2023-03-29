@@ -27,10 +27,25 @@ side where the FPGA board/card is attached
 
 ## Wrapper on Xilinx VCU128 board
 
+The following commands should be executed instead because DFX flow has not been implemented yet:
+
+1. Synthesize the shell:
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj`
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj`
+
+2. Synthesize the role (for XiangShan FPGA prototyping):
+`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj`
+`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj`
+
+3. Generate a full bitstream:
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj`
+
+<!-- 
 1. Squencially launch the following commands to generate a bitstream file    
-`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj`   
-`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj`   
-`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj`   
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj`
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj`
+`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj`
+ -->
 
     The bitstream file is located in   
     `work_farm/hw_plat/shell_xiangshan_vcu128/`    
