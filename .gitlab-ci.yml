@@ -22,6 +22,7 @@ default:
       - runner_system_failure
       - stuck_or_timeout_failure
       - unknown_failure
+  timeout: 12 hours
 
 shell_run_syn:
   stage: run_syn
