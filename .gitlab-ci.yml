@@ -6,7 +6,7 @@ stages:
 variables:
     GIT_DEPTH: "1"
     GIT_STRATEGY: clone
-    GIT_SUBMODULE_STRATEGY: none
+    GIT_SUBMODULE_STRATEGY: normal
     XS_CONFIG: NanHuGFPGAConfig
 
 default:
@@ -28,7 +28,6 @@ xs_gen:
   needs: []
   script:
     - git submodule update --init --recursive nm37-xiangshan/hardware/xs-gen
-    - git submodule update --init work_farm
     - cd work_farm
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf xs_gen
   artifacts:
@@ -40,7 +39,6 @@ role_run_syn:
   stage: run_syn
   needs: [xs_gen]
   script:
-    - git submodule update --init work_farm
     - cd work_farm
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj
@@ -53,7 +51,6 @@ shell_run_syn:
   stage: run_syn
   needs: []
   script:
-    - git submodule update --init work_farm
     - cd work_farm
     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj
     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj
@@ -66,7 +63,6 @@ shell_bit_gen:
   stage: bit_gen
   needs: [role_run_syn, shell_run_syn]
   script:
-    - git submodule update --init work_farm
     - cd work_farm
     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj
   artifacts:
