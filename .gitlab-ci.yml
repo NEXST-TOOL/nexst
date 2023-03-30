@@ -38,7 +38,7 @@ shell_run_syn:
 .xs_run_syn:
   stage: run_syn
   script:
-    - git clone https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/xiangshan-precompiled-src.git nm37-xiangshan/hardware/sources/generated
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/xiangshan-precompiled-src.git nm37-xiangshan/hardware/sources/generated
     - cd work_farm
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj
