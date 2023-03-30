@@ -31,7 +31,7 @@ default:
     - cd work_farm
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf CONFIG=$CONFIG xs_gen
   cache:
-    name: "$CI_JOB_NAME"
+    key: "$CI_JOB_NAME"
     paths:
       - nm37-xiangshan/hardware/sources/generated/
   artifacts:
