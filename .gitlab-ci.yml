@@ -15,7 +15,7 @@ default:
     - node42-vivado
   before_script:
     - mkdir -p work_farm/target/
-    - ln -s nm37-xiangshan work_farm/target/nm37-xiangshan
+    - ln -s ../../nm37-xiangshan work_farm/target/nm37-xiangshan
   retry:
     max: 2
     when:
