@@ -9,7 +9,8 @@ an ICT custom acceleration card named NM37.
 
 # Prerequisite
 
-1. Launch the following commands    
+1. Launch the following commands
+
 `mkdir -p work_farm/target/`    
 `cd work_farm/target`    
 `ln -s ../../nm37-xiangshan nm37-xiangshan` 
@@ -30,14 +31,17 @@ side where the FPGA board/card is attached
 The following commands should be executed instead because DFX flow has not been implemented yet:
 
 1. Synthesize the shell:
+
 `make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj`
 `make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj`
 
 2. Synthesize the role (for XiangShan FPGA prototyping):
+
 `make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj`
 `make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj`
 
 3. Generate a full bitstream:
+
 `make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj`
 
 <!-- 
@@ -61,16 +65,19 @@ The following commands should be executed instead because DFX flow has not been 
 
 ## QDMA driver compilation
 
-1. PF version kernel module compilation for x86    
+1. PF version kernel module compilation for x86
+
 `make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf MODULE=mod_pf qdma_drv`
 
-2. PF version kernel module cross-compilation for ARMv8     
+2. PF version kernel module cross-compilation for ARMv8
+
 `make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf MODULE=mod_pf TARGET_HOST=aarch64 qdma_drv`
 
     Before module compilation, Linux kernel deployed on ARMv8 would be cross-compiled first using    
     `make FPGA_PRJ=shell FPGA_BD=nf phy_os.os`
 
-3. kernel module clean    
+3. kernel module clean
+
 `make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf qdma_drv_clean`
     
 - **NOTE: FPGA_BD would be set to *nm37* in near future**

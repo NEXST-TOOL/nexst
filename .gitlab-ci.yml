@@ -23,29 +23,33 @@ default:
       - stuck_or_timeout_failure
       - unknown_failure
 
-xs_gen:
+.xs_gen:
   stage: xs_gen
-  needs: []
+  image: gitlab.agileserve.org.cn:15050/riscv-devel/chisel-mill-image:latest
   script:
     - git submodule update --init --recursive nm37-xiangshan/hardware/xs-gen
     - cd work_farm
-    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf xs_gen
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf CONFIG=$CONFIG xs_gen
+  cache:
+    name: "$CI_JOB_NAME"
+    paths:
+      - nm37-xiangshan/hardware/sources/generated/
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
     paths:
       - nm37-xiangshan/hardware/sources/generated/
 
-role_run_syn:
-  stage: run_syn
-  needs: [xs_gen]
-  script:
-    - cd work_farm
-    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj
-    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj
-  artifacts:
-    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
-    paths:
-      - work_farm/fpga/vivado_out/**/synth.dcp
+xs_minimal_gen:
+  extends: .xs_gen
+  needs: []
+  varialbes:
+    CONFIG: MinimalFPGAConfig
+
+xs_nanhu_gen:
+  extends: .xs_gen
+  needs: []
+  varialbes:
+    CONFIG: NanHuGServeConfig
 
 shell_run_syn:
   stage: run_syn
@@ -59,9 +63,27 @@ shell_run_syn:
     paths:
       - work_farm/fpga/vivado_out/**/synth.dcp
 
-shell_bit_gen:
+.xs_run_syn:
+  stage: run_syn
+  script:
+    - cd work_farm
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - work_farm/fpga/vivado_out/**/synth.dcp
+
+minimal_run_syn:
+  extends: .xs_run_syn
+  needs: [xs_minimal_gen]
+
+nanhu_run_syn:
+  extends: .xs_run_syn
+  needs: [xs_nanhu_gen]
+
+.xs_bit_gen:
   stage: bit_gen
-  needs: [role_run_syn, shell_run_syn]
   script:
     - cd work_farm
     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj
@@ -70,3 +92,11 @@ shell_bit_gen:
     paths:
       - work_farm/fpga/vivado_out/**/route.dcp
       - work_farm/hw_plat/
+
+minimal_bit_gen:
+  extends: .xs_bit_gen
+  needs: [minimal_run_syn, shell_run_syn]
+
+nanhu_bit_gen:
+  extends: .xs_bit_gen
+  needs: [nanhu_run_syn, shell_run_syn]

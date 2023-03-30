@@ -4,11 +4,13 @@ GEN_SRC := $(NM37_HW_LOC)/sources/generated
 
 CONFIG ?= NanHuGFPGAConfig
 
-.PHONY: xs_gen
-xs_gen:
+$(GEN_SRC):
 	make -C $(XS_SRC) CONFIG=$(CONFIG) verilog
 	mkdir -p $(GEN_SRC)
 	cp $(XS_SRC)/build/*.v $(GEN_SRC)
+
+.PHONY: xs_gen
+xs_gen: $(GEN_SRC)
 
 .PHONY: xs_clean
 xs_clean:
