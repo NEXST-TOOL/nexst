@@ -168,7 +168,6 @@ proc create_design { design_name } {
 
 # add source HDL files
 add_files -norecurse -fileset sources_1 ${design_dir}/../hardware/sources/generated/
-add_files -norecurse -fileset sources_1 ${design_dir}/../hardware/sources/hdl/
 add_files -norecurse -fileset sources_1 ${design_dir}/../fpga/sources/hdl/role_top.v
 
 # clear IP catalog
