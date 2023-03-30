@@ -42,13 +42,13 @@ default:
 xs_minimal_gen:
   extends: .xs_gen
   needs: []
-  varialbes:
+  variables:
     CONFIG: MinimalFPGAConfig
 
 xs_nanhu_gen:
   extends: .xs_gen
   needs: []
-  varialbes:
+  variables:
     CONFIG: NanHuGServeConfig
 
 shell_run_syn:
