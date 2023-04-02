@@ -56,7 +56,7 @@ xs_bit_gen:
     - cd work_farm
     - mkdir -p fpga/shell/vcu128/dcp/
     - cp fpga/vivado_out/shell_xiangshan_vcu128/shell_xiangshan/dcp/synth.dcp fpga/shell/vcu128/dcp/shell_region.dcp
-    - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=proto vivado_prj
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
     paths:
