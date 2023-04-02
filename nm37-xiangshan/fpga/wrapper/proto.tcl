@@ -23,7 +23,7 @@ proc create_design { design_name } {
     set m_axi_mem [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:aximm_rtl:1.0 m_axi_mem]
     set_property -dict [ list CONFIG.PROTOCOL {AXI4} \
         CONFIG.ADDR_WIDTH {36} \
-        CONFIG.DATA_WIDTH {512} ] $m_axi_mem
+        CONFIG.DATA_WIDTH {256} ] $m_axi_mem
 
     set m_axi_io [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:aximm_rtl:1.0 m_axi_io]
     set_property -dict [ list CONFIG.PROTOCOL {AXI4} \
@@ -61,9 +61,16 @@ proc create_design { design_name } {
     ] $gpio_reset
 
     # Create AXI data width converters
-    set mem_axi_adapter [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dwidth_converter:2.1 mem_axi_adapter]
     set io_axi_adapter [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dwidth_converter:2.1 io_axi_adapter]
     set dma_axi_adapter [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dwidth_converter:2.1 dma_axi_adapter]
+
+    # Create AXI ID removers
+    set mem_axi_id_remover [create_bd_cell -type module -reference axi_id_killer mem_axi_id_remover]
+    set_property -dict [list \
+        CONFIG.ADDR_WIDTH {36} \
+        CONFIG.DATA_WIDTH {256} \
+        CONFIG.ID_WIDTH {14} \
+    ] $mem_axi_id_remover
 
     #=============================================
     # System clock connection
@@ -72,7 +79,7 @@ proc create_design { design_name } {
     connect_bd_net [get_bd_ports aclk] \
         [get_bd_pins xs_top/io_clock] \
         [get_bd_pins gpio_reset/s_axi_aclk] \
-        [get_bd_pins mem_axi_adapter/s_axi_aclk] \
+        [get_bd_pins mem_axi_id_remover/aclk] \
         [get_bd_pins io_axi_adapter/s_axi_aclk] \
         [get_bd_pins dma_axi_adapter/s_axi_aclk]
 
@@ -82,7 +89,7 @@ proc create_design { design_name } {
 
     connect_bd_net [get_bd_ports aresetn] \
         [get_bd_pins gpio_reset/s_axi_aresetn] \
-        [get_bd_pins mem_axi_adapter/s_axi_aresetn] \
+        [get_bd_pins mem_axi_id_remover/aresetn] \
         [get_bd_pins io_axi_adapter/s_axi_aresetn] \
         [get_bd_pins dma_axi_adapter/s_axi_aresetn]
 
@@ -103,8 +110,8 @@ proc create_design { design_name } {
     set_property -dict [list CONFIG.CONST_WIDTH {2} CONFIG.CONST_VAL {0x0} ] $const_2b0
 
     set pair_list [list \
-        {xs_top memory_0_araddr mem_axi_adapter s_axi_araddr} \
-        {xs_top memory_0_awaddr mem_axi_adapter s_axi_awaddr} \
+        {xs_top memory_0_araddr mem_axi_id_remover s_axi_araddr} \
+        {xs_top memory_0_awaddr mem_axi_id_remover s_axi_awaddr} \
     ]
 
     foreach pair ${pair_list} {
@@ -128,9 +135,9 @@ proc create_design { design_name } {
     # MEM AXI connection
 
     connect_bd_intf_net [get_bd_intf_pins xs_top/memory_0] \
-        [get_bd_intf_pins mem_axi_adapter/S_AXI]
+        [get_bd_intf_pins mem_axi_id_remover/s_axi]
 
-    connect_bd_intf_net [get_bd_intf_pins mem_axi_adapter/M_AXI] \
+    connect_bd_intf_net [get_bd_intf_pins mem_axi_id_remover/m_axi] \
         [get_bd_intf_ports m_axi_mem]
 
     # MMIO AXI connection
@@ -155,8 +162,10 @@ proc create_design { design_name } {
 
     assign_bd_address -offset 0x0 -range 0x00010000 -target_address_space [get_bd_addr_spaces s_axi_ctrl] [get_bd_addr_segs gpio_reset/S_AXI/Reg] -force
     assign_bd_address -offset 0x0 -range 0x1000000000 -target_address_space [get_bd_addr_spaces s_axi_dma] [get_bd_addr_segs xs_top/dma_0/reg0] -force
-    assign_bd_address -offset 0x0 -range 0x1000000000 -target_address_space [get_bd_addr_spaces xs_top/memory_0] [get_bd_addr_segs m_axi_mem/Reg] -force
     assign_bd_address -offset 0x0 -range 0x100000000 -target_address_space [get_bd_addr_spaces xs_top/peripheral_0] [get_bd_addr_segs m_axi_io/Reg] -force
+
+    assign_bd_address -offset 0x0 -range 0x1000000000 -target_address_space [get_bd_addr_spaces xs_top/memory_0] [get_bd_addr_segs mem_axi_id_remover/s_axi/reg0] -force
+    assign_bd_address -offset 0x0 -range 0x1000000000 -target_address_space [get_bd_addr_spaces mem_axi_id_remover/m_axi] [get_bd_addr_segs m_axi_mem/Reg] -force
 
     #=============================================
     # Finish BD creation 
@@ -168,7 +177,7 @@ proc create_design { design_name } {
 
 # add source HDL files
 add_files -norecurse -fileset sources_1 ${design_dir}/../hardware/sources/generated/
-add_files -norecurse -fileset sources_1 ${design_dir}/../fpga/sources/hdl/role_top.v
+add_files -norecurse -fileset sources_1 ${design_dir}/../fpga/sources/hdl/
 
 # clear IP catalog
 # update_ip_catalog -clear_ip_cache
