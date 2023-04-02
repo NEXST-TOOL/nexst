@@ -36,8 +36,9 @@ shell_run_syn:
     paths:
       - work_farm/fpga/vivado_out/**/synth.dcp
 
-.xs_run_syn:
+xs_run_syn:
   stage: run_syn
+  needs: []
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/xiangshan-precompiled-src.git nm37-xiangshan/hardware/sources/generated
     - cd work_farm
@@ -48,29 +49,16 @@ shell_run_syn:
     paths:
       - work_farm/fpga/vivado_out/**/synth.dcp
 
-minimal_run_syn:
-  extends: .xs_run_syn
-  needs: []
-
-# nanhu_run_syn:
-#   extends: .xs_run_syn
-#   needs: []
-
-.xs_bit_gen:
+xs_bit_gen:
   stage: bit_gen
+  needs: [xs_run_syn, shell_run_syn]
   script:
     - cd work_farm
+    - mkdir -p fpga/shell/vcu128/dcp/
+    - cp fpga/vivado_out/shell_xiangshan_vcu128/shell_xiangshan/dcp/synth.dcp fpga/shell/vcu128/dcp/shell_region.dcp
     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
     paths:
       - work_farm/fpga/vivado_out/**/route.dcp
       - work_farm/hw_plat/
-
-minimal_bit_gen:
-  extends: .xs_bit_gen
-  needs: [minimal_run_syn, shell_run_syn]
-
-# nanhu_bit_gen:
-#   extends: .xs_bit_gen
-#   needs: [nanhu_run_syn, shell_run_syn]
