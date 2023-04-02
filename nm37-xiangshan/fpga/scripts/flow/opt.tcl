@@ -1,5 +1,9 @@
-# open synthesis checkpoint
-open_checkpoint ${dcp_dir}/synth.dcp
+# open shell checkpoint
+open_checkpoint ${script_dir}/../shell/${board}/dcp/shell_region.dcp
+
+# open role checkpoint
+read_checkpoint -cell [get_cells xiangshan_i/u_role/inst] \
+    ${dcp_dir}/synth.dcp
 
 # Design optimization
 opt_design
