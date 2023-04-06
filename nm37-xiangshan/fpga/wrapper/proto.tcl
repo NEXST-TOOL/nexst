@@ -157,23 +157,6 @@ proc create_design { design_name } {
         [get_bd_intf_pins xs_top/dma_0]
 
     #=============================================
-    # ILA
-    #=============================================
-
-    # Create instance: system_ila, and set properties
-    set system_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila ]
-    set_property -dict [ list \
-      CONFIG.C_NUM_MONITOR_SLOTS {3} \
-    ] $system_ila
-
-    connect_bd_net [get_bd_ports aclk] [get_bd_pins system_ila/clk]
-    connect_bd_net [get_bd_ports aresetn] [get_bd_pins system_ila/resetn]
-
-    connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_0_AXI] [get_bd_intf_pins xs_top/peripheral_0]
-    connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_1_AXI] [get_bd_intf_pins xs_top/memory_0]
-    connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_2_AXI] [get_bd_intf_ports m_axi_mem]
-
-    #=============================================
     # Create address segments
     #=============================================
 
