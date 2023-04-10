@@ -69,7 +69,7 @@ role_bit_gen:
   needs: [role_run_syn]
   script:
     - cd work_farm
-    - curl -s --output shell.zip --header "PRIVATE-TOKEN:${CI_JOB_TOKEN}" "https://gitlab.agileserve.org.cn:8001/api/v4/projects/serve_hw_sw_dev%2Fserve_hw_sw_dev/jobs/artifacts/vu37p/download?job=bit_gen"
+    - curl --output shell.zip --header "JOB-TOKEN:${CI_JOB_TOKEN}" "https://gitlab.agileserve.org.cn:8001/api/v4/projects/serve_hw_sw_dev%2Fserve_hw_sw_dev/jobs/artifacts/vu37p/download?job=bit_gen"
     - unzip shell.zip
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=proto vivado_prj
   artifacts:
