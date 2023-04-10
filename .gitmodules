@@ -9,3 +9,6 @@
 [submodule "nm37-xiangshan/hardware/xs-gen"]
 	path = nm37-xiangshan/hardware/xs-gen
 	url = ../xiangshan.git
+[submodule "nm37-xiangshan/software/opensbi"]
+	path = nm37-xiangshan/software/opensbi
+	url = ../ICT-SERVE-FARM/opensbi.git
