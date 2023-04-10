@@ -7,7 +7,7 @@ proc create_design { design_name } {
     # Clock ports
     #=============================================
 
-    create_bd_port -dir I -type clk -freq_hz 50000000 aclk
+    create_bd_port -dir I -type clk -freq_hz 250000000 aclk
 
     #=============================================
     # Reset ports
@@ -46,6 +46,16 @@ proc create_design { design_name } {
     # Create IP blocks
     #=============================================
 
+    # Create instance: emu_clk_gen
+    set emu_clk_gen [create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 emu_clk_gen]
+    set_property -dict [list \
+        CONFIG.RESET_TYPE {ACTIVE_LOW} \
+        CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {50} \
+    ] $emu_clk_gen
+
+    # Create instance: emu_rst_gen
+    set emu_rst_gen [create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 emu_rst_gen]
+
     # Create instance: xs_top
     set xs_top [create_bd_cell -type module -reference XSTop xs_top]
     set_property -dict [list \
@@ -60,9 +70,18 @@ proc create_design { design_name } {
         CONFIG.C_ALL_OUTPUTS {1} \
     ] $gpio_reset
 
-    # Create AXI data width converters
-    set io_axi_adapter [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dwidth_converter:2.1 io_axi_adapter]
-    set dma_axi_adapter [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dwidth_converter:2.1 dma_axi_adapter]
+    # Create AXI Interconnects
+    set axi_ctrl_ic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ctrl_ic ]
+    set_property -dict [list CONFIG.NUM_MI {1} CONFIG.NUM_SI {1}] $axi_ctrl_ic
+
+    set axi_dma_ic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_dma_ic ]
+    set_property -dict [list CONFIG.NUM_MI {1} CONFIG.NUM_SI {1}] $axi_dma_ic
+
+    set axi_io_ic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_io_ic ]
+    set_property -dict [list CONFIG.NUM_MI {1} CONFIG.NUM_SI {1}] $axi_io_ic
+
+    set axi_mem_ic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_mem_ic ]
+    set_property -dict [list CONFIG.NUM_MI {1} CONFIG.NUM_SI {1}] $axi_mem_ic
 
     # Create AXI ID removers
     set mem_axi_id_remover [create_bd_cell -type module -reference axi_id_killer mem_axi_id_remover]
@@ -77,21 +96,52 @@ proc create_design { design_name } {
     #=============================================
 
     connect_bd_net [get_bd_ports aclk] \
+        [get_bd_pins emu_clk_gen/clk_in1] \
+        [get_bd_pins axi_ctrl_ic/ACLK] \
+        [get_bd_pins axi_ctrl_ic/S00_ACLK] \
+        [get_bd_pins axi_dma_ic/ACLK] \
+        [get_bd_pins axi_dma_ic/S00_ACLK] \
+        [get_bd_pins axi_io_ic/ACLK] \
+        [get_bd_pins axi_io_ic/M00_ACLK] \
+        [get_bd_pins axi_mem_ic/ACLK] \
+        [get_bd_pins axi_mem_ic/M00_ACLK]
+
+    connect_bd_net [get_bd_pins emu_clk_gen/clk_out1] \
+        [get_bd_pins emu_rst_gen/slowest_sync_clk] \
+        [get_bd_pins axi_ctrl_ic/M00_ACLK] \
+        [get_bd_pins axi_dma_ic/M00_ACLK] \
+        [get_bd_pins axi_io_ic/S00_ACLK] \
+        [get_bd_pins axi_mem_ic/S00_ACLK] \
         [get_bd_pins xs_top/io_clock] \
         [get_bd_pins gpio_reset/s_axi_aclk] \
-        [get_bd_pins mem_axi_id_remover/aclk] \
-        [get_bd_pins io_axi_adapter/s_axi_aclk] \
-        [get_bd_pins dma_axi_adapter/s_axi_aclk]
+        [get_bd_pins mem_axi_id_remover/aclk]
 
     #=============================================
     # System reset connection
     #=============================================
 
     connect_bd_net [get_bd_ports aresetn] \
+        [get_bd_pins emu_clk_gen/resetn] \
+        [get_bd_pins emu_rst_gen/ext_reset_in] \
+        [get_bd_pins axi_ctrl_ic/ARESETN] \
+        [get_bd_pins axi_ctrl_ic/S00_ARESETN] \
+        [get_bd_pins axi_dma_ic/ARESETN] \
+        [get_bd_pins axi_dma_ic/S00_ARESETN] \
+        [get_bd_pins axi_io_ic/ARESETN] \
+        [get_bd_pins axi_io_ic/M00_ARESETN] \
+        [get_bd_pins axi_mem_ic/ARESETN] \
+        [get_bd_pins axi_mem_ic/M00_ARESETN]
+
+    connect_bd_net [get_bd_pins emu_clk_gen/locked] \
+        [get_bd_pins emu_rst_gen/dcm_locked]
+
+    connect_bd_net [get_bd_pins emu_rst_gen/peripheral_aresetn] \
+        [get_bd_pins axi_ctrl_ic/M00_ARESETN] \
+        [get_bd_pins axi_dma_ic/M00_ARESETN] \
+        [get_bd_pins axi_io_ic/S00_ARESETN] \
+        [get_bd_pins axi_mem_ic/S00_ARESETN] \
         [get_bd_pins gpio_reset/s_axi_aresetn] \
-        [get_bd_pins mem_axi_id_remover/aresetn] \
-        [get_bd_pins io_axi_adapter/s_axi_aresetn] \
-        [get_bd_pins dma_axi_adapter/s_axi_aresetn]
+        [get_bd_pins mem_axi_id_remover/aresetn]
 
     connect_bd_net [get_bd_pins gpio_reset/gpio_io_o] \
         [get_bd_pins xs_top/io_reset]
@@ -101,6 +151,9 @@ proc create_design { design_name } {
     #=============================================
 
     connect_bd_intf_net [get_bd_intf_ports s_axi_ctrl] \
+        [get_bd_intf_pins axi_ctrl_ic/S00_AXI]
+
+    connect_bd_intf_net [get_bd_intf_pins axi_ctrl_ic/M00_AXI] \
         [get_bd_intf_pins gpio_reset/S_AXI]
 
     # Address mapper for MEM AXI
@@ -138,22 +191,25 @@ proc create_design { design_name } {
         [get_bd_intf_pins mem_axi_id_remover/s_axi]
 
     connect_bd_intf_net [get_bd_intf_pins mem_axi_id_remover/m_axi] \
+        [get_bd_intf_pins axi_mem_ic/S00_AXI]
+
+    connect_bd_intf_net [get_bd_intf_pins axi_mem_ic/M00_AXI] \
         [get_bd_intf_ports m_axi_mem]
 
     # MMIO AXI connection
 
     connect_bd_intf_net [get_bd_intf_pins xs_top/peripheral_0] \
-        [get_bd_intf_pins io_axi_adapter/S_AXI]
+        [get_bd_intf_pins axi_io_ic/S00_AXI]
 
-    connect_bd_intf_net [get_bd_intf_pins io_axi_adapter/M_AXI] \
+    connect_bd_intf_net [get_bd_intf_pins axi_io_ic/M00_AXI] \
         [get_bd_intf_ports m_axi_io]
 
     # DMA AXI connection
 
     connect_bd_intf_net [get_bd_intf_ports s_axi_dma] \
-        [get_bd_intf_pins dma_axi_adapter/S_AXI]
+        [get_bd_intf_pins axi_dma_ic/S00_AXI]
 
-    connect_bd_intf_net [get_bd_intf_pins dma_axi_adapter/M_AXI] \
+    connect_bd_intf_net [get_bd_intf_pins axi_dma_ic/M00_AXI] \
         [get_bd_intf_pins xs_top/dma_0]
 
     #=============================================

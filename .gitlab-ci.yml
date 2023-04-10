@@ -24,17 +24,17 @@ default:
       - unknown_failure
   timeout: 12 hours
 
-shell_run_syn:
-  stage: run_syn
-  needs: []
-  script:
-    - cd work_farm
-    - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj
-    - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj
-  artifacts:
-    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
-    paths:
-      - work_farm/fpga/vivado_out/**/synth.dcp
+# shell_run_syn:
+#   stage: run_syn
+#   needs: []
+#   script:
+#     - cd work_farm
+#     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj
+#     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj
+#   artifacts:
+#     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+#     paths:
+#       - work_farm/fpga/vivado_out/**/synth.dcp
 
 role_run_syn:
   stage: run_syn
@@ -49,17 +49,31 @@ role_run_syn:
     paths:
       - work_farm/fpga/vivado_out/**/synth.dcp
 
-shell_bit_gen:
+# shell_bit_gen:
+#   stage: bit_gen
+#   needs: [role_run_syn, shell_run_syn]
+#   script:
+#     - cd work_farm
+#     - mkdir -p fpga/shell/vcu128/dcp/
+#     - cp fpga/vivado_out/nm37-xiangshan_proto_vcu128/nm37-xiangshan_proto/dcp/synth.dcp fpga/vivado_out/shell_xiangshan_vcu128/shell_xiangshan/dcp/placeholder_role.dcp
+#     - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj
+#   artifacts:
+#     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+#     paths:
+#       - work_farm/fpga/**/route.dcp
+#       - work_farm/fpga/**/shell_region.dcp
+#       - work_farm/hw_plat/
+
+role_bit_gen:
   stage: bit_gen
-  needs: [role_run_syn, shell_run_syn]
+  needs: [role_run_syn]
   script:
     - cd work_farm
-    - mkdir -p fpga/shell/vcu128/dcp/
-    - cp fpga/vivado_out/nm37-xiangshan_proto_vcu128/nm37-xiangshan_proto/dcp/synth.dcp fpga/vivado_out/shell_xiangshan_vcu128/shell_xiangshan/dcp/placeholder_role.dcp
-    - make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj
+    - curl -s --output shell.zip --header "PRIVATE-TOKEN:${CI_JOB_TOKEN}" "https://gitlab.agileserve.org.cn:8001/api/v4/projects/serve_hw_sw_dev%2Fserve_hw_sw_dev/jobs/artifacts/vu37p/download?job=bit_gen"
+    - unzip shell.zip
+    - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=proto vivado_prj
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
     paths:
-      - work_farm/fpga/**/route.dcp
-      - work_farm/fpga/**/shell_region.dcp
+      - work_farm/fpga/vivado_out/**/route.dcp
       - work_farm/hw_plat/
