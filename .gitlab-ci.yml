@@ -36,11 +36,12 @@ default:
 #     paths:
 #       - work_farm/fpga/vivado_out/**/synth.dcp
 
-role_run_syn:
+.role_run_syn:
   stage: run_syn
-  needs: []
+  variables:
+    BRANCH: master
   script:
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/xiangshan-precompiled-src.git nm37-xiangshan/hardware/sources/generated
+    - git clone -b $BRANCH https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/xiangshan-precompiled-src.git nm37-xiangshan/hardware/sources/generated
     - cd work_farm
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj
     - make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj
@@ -48,6 +49,18 @@ role_run_syn:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
     paths:
       - work_farm/fpga/vivado_out/**/synth.dcp
+
+minimal_run_syn:
+  extends: .role_run_syn
+  needs: []
+  variables:
+    BRANCH: minimal
+
+nanhu_g_run_syn:
+  extends: .role_run_syn
+  needs: []
+  variables:
+    BRANCH: nanhu-G
 
 # shell_bit_gen:
 #   stage: bit_gen
@@ -64,9 +77,8 @@ role_run_syn:
 #       - work_farm/fpga/**/shell_region.dcp
 #       - work_farm/hw_plat/
 
-role_bit_gen:
+.role_bit_gen:
   stage: bit_gen
-  needs: [role_run_syn]
   script:
     - cd work_farm
     - curl --output shell.zip --header "JOB-TOKEN:${CI_JOB_TOKEN}" "https://gitlab.agileserve.org.cn:8001/api/v4/projects/serve_hw_sw_dev%2Fserve_hw_sw_dev/jobs/artifacts/vu37p/download?job=bit_gen"
@@ -77,3 +89,11 @@ role_bit_gen:
     paths:
       - work_farm/fpga/vivado_out/**/route.dcp
       - work_farm/hw_plat/
+
+minimal_bit_gen:
+  extends: .role_bit_gen
+  needs: [minimal_run_syn]
+
+nanhu_g_bit_gen:
+  extends: .role_bit_gen
+  needs: [nanhu_g_run_syn]
