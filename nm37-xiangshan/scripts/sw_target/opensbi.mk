@@ -5,7 +5,11 @@
 OPENSBI_SRC := $(NM37_SW_LOC)/opensbi
 OPENSBI_LOC := $(abspath $(NM37_SW_LOC)/riscv-opensbi)
 
-OPENSBI_PAYLOAD := $(OPENSBI_LOC)/../../../work_farm/software/riscv-linux/phy_os/vmlinux
+RV_BOOT_BIN_LOC := $(OPENSBI_LOC)/platform/ict/firmware
+OPENSBI_PAYLOAD := $(RV_BOOT_BIN_LOC)/vmlinux
+
+RV_VMLINUX := $(OPENSBI_LOC)/../../../work_farm/software/riscv-linux/phy_os/vmlinux
+
 OPENSBI_DTB := $(OPENSBI_LOC)/../dt/XSTop.dtb
 
 # sub platform-specific OpenSBI compilation flags 
@@ -22,23 +26,25 @@ OPENSBI_COMPILE_FLAGS := O=$(OPENSBI_LOC) \
 	FW_FDT_PATH=$(OPENSBI_DTB)\
 	$(USER_FLAGS)
 
-RV_BOOT_BIN_LOC := $(OPENSBI_LOC)/platform/$(PLATFORM)/firmware
 RV_OPENSBI := $(RV_BOOT_BIN_LOC)/fw_payload.bin
-RV_BOOTBIN := $(RV_BOOT_BIN_LOC)/RV_BOOT.bin
 
 #=================================================
 # OpenSBI Compilation
 #=================================================
-opensbi:
+opensbi: $(OPENSBI_PAYLOAD)
 	$(EXPORT_CC_PATH) && \
 		$(MAKE) -C $(OPENSBI_SRC) \
 		$(OPENSBI_COMPILE_FLAGS)
+
+$(OPENSBI_PAYLOAD): FORCE
+	mkdir -p $(RV_BOOT_BIN_LOC)
+	$(EXPORT_CC_PATH) && \
+		$(LINUX_GCC_PREFIX)strip -o $@ $(RV_VMLINUX)
 	
 opensbi_clean:
 	$(EXPORT_CC_PATH) && \
 		$(MAKE) -C $(OPENSBI_SRC) \
 		$(OPENSBI_COMPILE_FLAGS) clean
-	@rm -f $(RV_BOOT_BIN)
 
 opensbi_distclean:
-	@rm -rf $(OPENSBI_LOC) $(RV_BOOT_BIN)
+	@rm -rf $(OPENSBI_LOC)
