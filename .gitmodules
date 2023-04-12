@@ -11,4 +11,4 @@
 	url = ../xiangshan.git
 [submodule "nm37-xiangshan/software/opensbi"]
 	path = nm37-xiangshan/software/opensbi
-	url = ../ICT-SERVE-FARM/opensbi.git
+	url = ../../ICT-SERVE-FARM/opensbi.git
