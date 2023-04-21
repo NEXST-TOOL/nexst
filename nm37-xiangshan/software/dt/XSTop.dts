@@ -5,10 +5,20 @@
 	#size-cells = <2>;
 	compatible = "freechips,rocketchip-unknown-dev";
 	model = "freechips,rocketchip-unknown";
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	chosen {
+		bootargs = "earlycon clock_ignore_unused console=ttyUL0,115200n8 root=/dev/mmcblk0p2 rw rootwait";
+		stdout-path = "serial0:115200n8";
+	};
+	
 	L16: cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
-		timebase-frequency;
+		timebase-frequency = <1000000>;
 		L9: cpu@0 {
 			clock-frequency = <0>;
 			compatible = "ICT,xiangshan", "riscv";
@@ -39,7 +49,7 @@
 	};
 	L0: memory@80000000 {
 		device_type = "memory";
-		reg = <0x0 0x80000000 0x0 0x80000000 0x4 0x00000000 0x0 0x80000000>;
+		reg = <0x0 0x80000000 0x0 0x80000000>;
 	};
 	L15: soc {
 		#address-cells = <2>;
@@ -95,9 +105,13 @@
 			reg = <0x0 0x3a000000 0x0 0x1000>;
 			reg-names = "control";
 		};
-		L1: serial@40600000 {
-			compatible = "xilinx,uartlite";
-			reg = <0x0 0x30000000 0x0 0x10>;
+		uart0: serial@40600000 {
+			compatible = "xlnx,opb-uartlite-1.00.b";
+			reg = <0x0 0x30000000 0x0 0x10000>;
+			port-number = <0>;
+			current-speed = <115200>;
+			interrupt-parent = <&L4>;
+			interrupts = <3>;
 		};
 	};
 };
