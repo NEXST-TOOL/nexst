@@ -19,10 +19,10 @@ an ICT custom acceleration card named NM37.
 `cd work_farm/target`    
 `ln -s ../../nm37-xiangshan nm37-xiangshan` 
 
-2. Install Linux kernel header on the x86 server 
+3. Install Linux kernel header on the x86 server 
 side where the FPGA board/card is attached
 
-3. All compilation operations are launched in the directory of `work_farm`
+4. All compilation operations are launched in the directory of `work_farm`
 
 # Hardware Generation (including Nanhu-G core and its wrapper)
 
@@ -40,8 +40,8 @@ side where the FPGA board/card is attached
 ### Linux kernel (v6.1) compilation
 `make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
 
-### OpenSBI compilation fw_payload.bin gen
+### OpenSBI compilation (RV_BOOT.bin generation)
 `make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 ARCH=riscv opensbi`   
 
-    The boot image (i.e., fw_payload.bin) is located in
+    The boot image (i.e., RV_BOOT.bin) is located in
     `nm37-xiangshan/ready_for_download/vcu128/`
