@@ -43,6 +43,12 @@ proc create_design { design_name } {
     set_property CONFIG.ASSOCIATED_BUSIF {m_axi_mem:m_axi_io:s_axi_ctrl:s_axi_dma} [get_bd_ports aclk]
 
     #=============================================
+    # Misc ports
+    #=============================================
+
+    create_bd_port -dir I -from 15 -to 0 s2r_intr
+
+    #=============================================
     # Create IP blocks
     #=============================================
 
@@ -91,6 +97,13 @@ proc create_design { design_name } {
         CONFIG.ID_WIDTH {14} \
     ] $mem_axi_id_remover
 
+    # Create intr_sync
+    set intr_sync [create_bd_cell -type module -reference f2s_rising_intr_sync intr_sync]
+    set_property -dict [list \
+        CONFIG.WIDTH {16} \
+        CONFIG.SYNC_STAGE {3} \
+    ] $intr_sync
+
     #=============================================
     # System clock connection
     #=============================================
@@ -114,7 +127,8 @@ proc create_design { design_name } {
         [get_bd_pins axi_mem_ic/S00_ACLK] \
         [get_bd_pins xs_top/io_clock] \
         [get_bd_pins gpio_reset/s_axi_aclk] \
-        [get_bd_pins mem_axi_id_remover/aclk]
+        [get_bd_pins mem_axi_id_remover/aclk] \
+        [get_bd_pins intr_sync/sync_clk]
 
     #=============================================
     # System reset connection
@@ -211,6 +225,13 @@ proc create_design { design_name } {
 
     connect_bd_intf_net [get_bd_intf_pins axi_dma_ic/M00_AXI] \
         [get_bd_intf_pins xs_top/dma_0]
+
+    #=============================================
+    # Misc interface connection
+    #=============================================
+
+    connect_bd_net [get_bd_ports s2r_intr] [get_bd_pins intr_sync/intr_in]
+    connect_bd_net [get_bd_pins intr_sync/intr_out] [get_bd_pins xs_top/io_extIntrs]
 
     #=============================================
     # Create address segments

@@ -139,7 +139,9 @@ module role_top (
   input                 m_axis_trace_tready,
   output  [512-1:0]     m_axis_trace_tdata,
   output  [512/8-1:0]   m_axis_trace_tkeep,
-  output                m_axis_trace_tlast
+  output                m_axis_trace_tlast,
+
+  input   [15:0]  s2r_intr
 );
 
   role role_i
@@ -260,6 +262,7 @@ module role_top (
     .s_axi_dma_wlast(s_axi_dma_wlast),
     .s_axi_dma_wready(s_axi_dma_wready),
     .s_axi_dma_wstrb(s_axi_dma_wstrb),
-    .s_axi_dma_wvalid(s_axi_dma_wvalid));
+    .s_axi_dma_wvalid(s_axi_dma_wvalid),
+    .s2r_intr(s2r_intr));
  
 endmodule
