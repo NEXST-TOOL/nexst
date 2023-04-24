@@ -13,6 +13,7 @@ DTB := $(DT_LOC)/$(dtb)
 # Device Tree Source and Blob compilation 
 #==========================================
 target_dt: $(DTB)
+	@cp $(DTB) $(INSTALL_LOC)/
 
 $(DTB): 
 	$(EXPORT_DTC_PATH) && \

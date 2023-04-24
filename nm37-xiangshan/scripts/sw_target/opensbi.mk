@@ -7,7 +7,7 @@ OPENSBI_LOC := $(abspath $(NM37_SW_LOC)/riscv-opensbi)
 
 RV_BOOT_BIN_LOC := $(OPENSBI_LOC)/platform/ict/firmware
 OPENSBI_PAYLOAD := $(OPENSBI_LOC)/../../../work_farm/software/riscv-linux/phy_os/arch/riscv/boot/Image
-OPENSBI_DTB := $(OPENSBI_LOC)/../dt/XSTop.dtb
+OPENSBI_DTB := $(abspath $(INSTALL_LOC)/XSTop.dtb)
 
 # sub platform-specific OpenSBI compilation flags 
 USER_FLAGS := SERVE_PLAT=h \
@@ -24,6 +24,7 @@ OPENSBI_COMPILE_FLAGS := O=$(OPENSBI_LOC) \
 	$(USER_FLAGS)
 
 RV_OPENSBI := $(RV_BOOT_BIN_LOC)/fw_payload.bin
+RV_BOOT_BIN := $(INSTALL_LOC)/RV_BOOT.bin
 
 #=================================================
 # OpenSBI Compilation
@@ -33,6 +34,7 @@ opensbi:
 	$(EXPORT_CC_PATH) && \
 		$(MAKE) -C $(OPENSBI_SRC) \
 		$(OPENSBI_COMPILE_FLAGS)
+	@cp $(RV_OPENSBI) $(RV_BOOT_BIN)
 
 opensbi_clean:
 	$(EXPORT_CC_PATH) && \

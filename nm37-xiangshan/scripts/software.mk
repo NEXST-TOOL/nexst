@@ -10,5 +10,7 @@ include $(NM37_SW_LOC)/../scripts/sw_target/qdma_drv.mk
 
 include $(NM37_SW_LOC)/../scripts/sw_target/opensbi.mk
 
+include $(NM37_SW_LOC)/../scripts/sw_target/kernel.mk
+
 include $(NM37_SW_LOC)/../scripts/sw_target/dt.mk
 
