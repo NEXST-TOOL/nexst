@@ -1,15 +1,19 @@
 # Introduction
 
-This repo contains basic components for prototyping 
-and emulation of the reduced version (code name: Nanhu-G) 
-of XiangShan RISC-V processor core. 
+This repo contains basic components for FPGA prototyping 
+and emulation of the reduced version of 
+XiangShan RISC-V processor core (code name: Nanhu-G). 
 The target FPGA chip is Xilinx Ultrascale+ VU37P series. 
 FPGA boards currently supported are Xilinx VCU128 and 
 an ICT custom acceleration card named NM37. 
 
 # Prerequisite
 
-1. Launch the following commands
+1. Download all required repository submodules
+
+`git submodule update --init --recursive`   
+
+2. Launch the following commands
 
 `mkdir -p work_farm/target/`    
 `cd work_farm/target`    
@@ -24,52 +28,20 @@ side where the FPGA board/card is attached
 
 ## Nanhu-G compilation
 
-`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf xs_gen`
+`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 xs_gen`
 
-## Wrapper on Xilinx VCU128 board
+# RISC-V Side Software Compilation
 
-The following commands should be executed instead because DFX flow has not been implemented yet:
+## Linux boot via OpenSBI
 
-1. Shell bitstream generation:
+### DTB generation
+`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 target_dt`   
 
-`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=dcp_gen FPGA_VAL="xiangshan placeholder_role" vivado_prj`
-`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=xiangshan vivado_prj`
-`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=xiangshan vivado_prj`
-`make FPGA_PRJ=shell FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=xiangshan vivado_prj`
+### Linux kernel (v6.1) compilation
+`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
 
-2. Role bitstream generation (for XiangShan FPGA prototyping):
+### OpenSBI compilation fw_payload.bin gen
+`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 ARCH=riscv opensbi`   
 
-`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=prj_gen FPGA_VAL=proto vivado_prj`
-`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=run_syn FPGA_VAL=proto vivado_prj`
-`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 FPGA_ACT=bit_gen FPGA_VAL=proto vivado_prj`
-
-    The bitstream file is located in   
-    `work_farm/hw_plat/shell_xiangshan_vcu128/`    
-
-    Log files, timing/utilization reports and 
-    design checkpoint files (.dcp) generated during Xilinx Vivado design flow 
-    are located in   
-    `work_farm/fpga/vivado_out/shell_xiangshan_vcu128/shell_xiangshan` 
-
-## Wrapper on ICT's NM37 card (to be added) 
-
-# Software Compilation
-
-## QDMA driver compilation
-
-1. PF version kernel module compilation for x86
-
-`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf MODULE=mod_pf qdma_drv`
-
-2. PF version kernel module cross-compilation for ARMv8
-
-`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf MODULE=mod_pf TARGET_HOST=aarch64 qdma_drv`
-
-    Before module compilation, Linux kernel deployed on ARMv8 would be cross-compiled first using    
-    `make FPGA_PRJ=shell FPGA_BD=nf phy_os.os`
-
-3. kernel module clean
-
-`make FPGA_PRJ="target:nm37-xiangshan" FPGA_BD=nf qdma_drv_clean`
-    
-- **NOTE: FPGA_BD would be set to *nm37* in near future**
+    The boot image (i.e., fw_payload.bin) is located in
+    `nm37-xiangshan/ready_for_download/vcu128/`
