@@ -13,6 +13,7 @@ DTB := $(DT_LOC)/$(dtb)
 # Device Tree Source and Blob compilation 
 #==========================================
 target_dt: $(DTB)
+	@mkdir -p $(INSTALL_LOC)
 	@cp $(DTB) $(INSTALL_LOC)/
 
 $(DTB): 

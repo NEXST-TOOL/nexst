@@ -6,7 +6,7 @@ OPENSBI_SRC := $(NM37_SW_LOC)/opensbi
 OPENSBI_LOC := $(abspath $(NM37_SW_LOC)/riscv-opensbi)
 
 RV_BOOT_BIN_LOC := $(OPENSBI_LOC)/platform/ict/firmware
-OPENSBI_PAYLOAD := $(OPENSBI_LOC)/../../../work_farm/software/riscv-linux/phy_os/arch/riscv/boot/Image
+OPENSBI_PAYLOAD := $(abspath $(INSTALL_LOC)/Image)
 OPENSBI_DTB := $(abspath $(INSTALL_LOC)/XSTop.dtb)
 
 # sub platform-specific OpenSBI compilation flags 
