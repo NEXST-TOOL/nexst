@@ -101,7 +101,7 @@ proc create_design { design_name } {
     set intr_sync [create_bd_cell -type module -reference f2s_rising_intr_sync intr_sync]
     set_property -dict [list \
         CONFIG.INTR_WIDTH {16} \
-        CONFIG.SYNC_STAGE {3} \
+        CONFIG.SYNC_STAGE {2} \
     ] $intr_sync
 
     #=============================================
@@ -145,8 +145,7 @@ proc create_design { design_name } {
         [get_bd_pins axi_io_ic/ARESETN] \
         [get_bd_pins axi_io_ic/M00_ARESETN] \
         [get_bd_pins axi_mem_ic/ARESETN] \
-        [get_bd_pins axi_mem_ic/M00_ARESETN] \
-        [get_bd_pins intr_sync/fast_rstn]
+        [get_bd_pins axi_mem_ic/M00_ARESETN]
 
     connect_bd_net [get_bd_pins emu_clk_gen/locked] \
         [get_bd_pins emu_rst_gen/dcm_locked]
@@ -157,8 +156,7 @@ proc create_design { design_name } {
         [get_bd_pins axi_io_ic/S00_ARESETN] \
         [get_bd_pins axi_mem_ic/S00_ARESETN] \
         [get_bd_pins gpio_reset/s_axi_aresetn] \
-        [get_bd_pins mem_axi_id_remover/aresetn] \
-        [get_bd_pins intr_sync/slow_rstn]
+        [get_bd_pins mem_axi_id_remover/aresetn]
 
     connect_bd_net [get_bd_pins gpio_reset/gpio_io_o] \
         [get_bd_pins xs_top/io_reset]
