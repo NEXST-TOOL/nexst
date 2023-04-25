@@ -4,29 +4,67 @@
 // from a fast clock domain to a slow clock domain
 
 module f2s_rising_intr_sync #(
-    parameter   WIDTH       = 1,
-    parameter   SYNC_STAGE  = 3
+    parameter   INTR_WIDTH  = 1,
+    parameter   SYNC_STAGE  = 2
 )(
-    input  wire             sync_clk,
-    input  wire [WIDTH-1:0] intr_in,
-    output wire [WIDTH-1:0] intr_out
+    input  wire                     fast_clk,
+    input  wire                     fast_rstn,
+    input  wire [INTR_WIDTH-1:0]    fast_intr,
+
+    input  wire                     slow_clk,
+    input  wire                     slow_rstn,
+    output wire [INTR_WIDTH-1:0]    slow_intr
 );
 
     genvar g_i;
 
-    for (g_i=0; g_i<WIDTH; g_i=g_i+1) begin
+    for (g_i=0; g_i<INTR_WIDTH; g_i=g_i+1) begin
 
-        (* ASYNC_REG = "TRUE" *) reg [SYNC_STAGE-1:0] sync_reg;
+        wire f_intr = fast_intr[g_i];
 
-        integer i;
-        always @(posedge sync_clk or posedge intr_in[g_i]) begin : sync_reg_blk
-            if (intr_in[g_i])
-                sync_reg <= {SYNC_STAGE{1'b1}};
+        // pulse to level stage in fast clock domain
+
+        reg f_intr_pre;
+        reg f_p2l;
+
+        always @(posedge fast_clk) begin
+            if (~fast_rstn)
+                f_intr_pre <= 1'b0;
             else
-                sync_reg <= {intr_in[g_i], sync_reg[SYNC_STAGE-1:1]};
+                f_intr_pre <= f_intr;
         end
 
-        assign intr_out[g_i] = sync_reg[0];
+        always @(posedge fast_clk) begin
+            if (~fast_rstn)
+                f_p2l <= 1'b0;
+            else
+                f_p2l <= f_p2l ^ (f_intr & ~f_intr_pre);
+        end
+
+        // cdc stages
+
+        (* ASYNC_REG = "TRUE" *) reg [SYNC_STAGE-1:0] f2s_sync;
+
+        always @(posedge slow_clk) begin
+            if (~slow_rstn)
+                f2s_sync <= {SYNC_STAGE{1'b0}};
+            else
+                f2s_sync <= {f_p2l, f2s_sync[SYNC_STAGE-1:1]};
+        end
+
+        // level to pulse stage in slow clock domain
+
+        reg s_l2p;
+
+        always @(posedge slow_clk) begin
+            if (~slow_rstn)
+                s_l2p <= 1'b0;
+            else
+                s_l2p <= f2s_sync[0];
+        end
+
+        wire s_intr = s_l2p ^ f2s_sync[0];
+        assign slow_intr[g_i] = s_intr;
 
     end
 

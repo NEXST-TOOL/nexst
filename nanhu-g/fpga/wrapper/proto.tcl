@@ -100,7 +100,7 @@ proc create_design { design_name } {
     # Create intr_sync
     set intr_sync [create_bd_cell -type module -reference f2s_rising_intr_sync intr_sync]
     set_property -dict [list \
-        CONFIG.WIDTH {16} \
+        CONFIG.INTR_WIDTH {16} \
         CONFIG.SYNC_STAGE {3} \
     ] $intr_sync
 
@@ -117,7 +117,8 @@ proc create_design { design_name } {
         [get_bd_pins axi_io_ic/ACLK] \
         [get_bd_pins axi_io_ic/M00_ACLK] \
         [get_bd_pins axi_mem_ic/ACLK] \
-        [get_bd_pins axi_mem_ic/M00_ACLK]
+        [get_bd_pins axi_mem_ic/M00_ACLK] \
+        [get_bd_pins intr_sync/fast_clk]
 
     connect_bd_net [get_bd_pins emu_clk_gen/clk_out1] \
         [get_bd_pins emu_rst_gen/slowest_sync_clk] \
@@ -128,7 +129,7 @@ proc create_design { design_name } {
         [get_bd_pins xs_top/io_clock] \
         [get_bd_pins gpio_reset/s_axi_aclk] \
         [get_bd_pins mem_axi_id_remover/aclk] \
-        [get_bd_pins intr_sync/sync_clk]
+        [get_bd_pins intr_sync/slow_clk]
 
     #=============================================
     # System reset connection
@@ -144,7 +145,8 @@ proc create_design { design_name } {
         [get_bd_pins axi_io_ic/ARESETN] \
         [get_bd_pins axi_io_ic/M00_ARESETN] \
         [get_bd_pins axi_mem_ic/ARESETN] \
-        [get_bd_pins axi_mem_ic/M00_ARESETN]
+        [get_bd_pins axi_mem_ic/M00_ARESETN] \
+        [get_bd_pins intr_sync/fast_rstn]
 
     connect_bd_net [get_bd_pins emu_clk_gen/locked] \
         [get_bd_pins emu_rst_gen/dcm_locked]
@@ -155,7 +157,8 @@ proc create_design { design_name } {
         [get_bd_pins axi_io_ic/S00_ARESETN] \
         [get_bd_pins axi_mem_ic/S00_ARESETN] \
         [get_bd_pins gpio_reset/s_axi_aresetn] \
-        [get_bd_pins mem_axi_id_remover/aresetn]
+        [get_bd_pins mem_axi_id_remover/aresetn] \
+        [get_bd_pins intr_sync/slow_rstn]
 
     connect_bd_net [get_bd_pins gpio_reset/gpio_io_o] \
         [get_bd_pins xs_top/io_reset]
@@ -230,8 +233,8 @@ proc create_design { design_name } {
     # Misc interface connection
     #=============================================
 
-    connect_bd_net [get_bd_ports s2r_intr] [get_bd_pins intr_sync/intr_in]
-    connect_bd_net [get_bd_pins intr_sync/intr_out] [get_bd_pins xs_top/io_extIntrs]
+    connect_bd_net [get_bd_ports s2r_intr] [get_bd_pins intr_sync/fast_intr]
+    connect_bd_net [get_bd_pins intr_sync/slow_intr] [get_bd_pins xs_top/io_extIntrs]
 
     #=============================================
     # Create address segments
