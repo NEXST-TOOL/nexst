@@ -6,19 +6,19 @@
 	compatible = "freechips,rocketchip-unknown-dev";
 	model = "freechips,rocketchip-unknown";
 
-	aliases {
-		serial0 = &uart0;
-	};
+	// aliases {
+	// 	serial0 = &uart0;
+	// };
 
 	chosen {
-		bootargs = "earlycon clock_ignore_unused console=ttyUL0,115200n8 root=/dev/mmcblk0p2 rw rootwait";
-		stdout-path = "serial0:115200n8";
+		bootargs = "earlycon clock_ignore_unused console=hvc0";
+		//stdout-path = "serial0:115200n8";
 	};
 	
 	L16: cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
-		timebase-frequency = <1000000>;
+		timebase-frequency = <500000>; // clk freq / 100
 		L9: cpu@0 {
 			clock-frequency = <0>;
 			compatible = "ICT,xiangshan", "riscv";
@@ -38,7 +38,6 @@
 			reg = <0x0>;
 			riscv,isa = "rv64imafdc";
 			status = "okay";
-			timebase-frequency = <1000000>;
 			tlb-split;
 			L10: interrupt-controller {
 				#interrupt-cells = <1>;
@@ -56,11 +55,6 @@
 		#size-cells = <2>;
 		compatible = "freechips,rocketchip-unknown-soc", "simple-bus";
 		ranges;
-		L13: L3CacheCtrl {
-			compatible = "xiangshan,cache_ctrl";
-			interrupt-parent = <&L4>;
-			interrupts = <66>;
-		};
 		L11: bus-error-unit {
 			compatible = "sifive,buserror0";
 			interrupt-parent = <&L4>;
@@ -95,7 +89,7 @@
 			reg = <0x0 0x3c000000 0x0 0x4000000>;
 			reg-names = "control";
 			riscv,max-priority = <7>;
-			riscv,ndev = <66>;
+			riscv,ndev = <65>;
 		};
 		L8: mmpma@38021000 {
 			reg = <0x0 0x38021000 0x0 0x1000>;
@@ -105,13 +99,13 @@
 			reg = <0x0 0x3a000000 0x0 0x1000>;
 			reg-names = "control";
 		};
-		uart0: serial@40600000 {
-			compatible = "xlnx,opb-uartlite-1.00.b";
-			reg = <0x0 0x30000000 0x0 0x10000>;
-			port-number = <0>;
-			current-speed = <115200>;
-			interrupt-parent = <&L4>;
-			interrupts = <3>;
-		};
+		// uart0: serial@40600000 {
+		// 	compatible = "xlnx,opb-uartlite-1.00.b";
+		// 	reg = <0x0 0x30000000 0x0 0x10000>;
+		// 	port-number = <0>;
+		// 	current-speed = <115200>;
+		// 	interrupt-parent = <&L4>;
+		// 	interrupts = <1>;
+		// };
 	};
 };
