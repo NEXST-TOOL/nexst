@@ -27,8 +27,8 @@ module f2s_rising_intr_sync #(
 
         (* ASYNC_REG = "TRUE" *) reg f2s_presync;
 
-        always @(posedge slow_clk or posedge f_intr) begin
-            if (f_intr)
+        always @(posedge slow_clk or posedge f_intr_reg) begin
+            if (f_intr_reg)
                 f2s_presync <= 1'b1;
             else
                 f2s_presync <= f_intr_reg;
