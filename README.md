@@ -1,7 +1,8 @@
 # Introduction
 
-This repo contains basic components for FPGA prototyping 
-and emulation of the reduced version of 
+The repository of NEXST (Next Environment for XiangShan Target) 
+contains basic components for FPGA prototyping 
+and emulation of the reduced version of the open-source 
 XiangShan RISC-V processor core (code name: Nanhu-G). 
 The target FPGA chip is Xilinx Ultrascale+ VU37P series. 
 FPGA boards currently supported are Xilinx VCU128 and 
@@ -17,7 +18,7 @@ an ICT custom acceleration card named NM37.
 
 `mkdir -p work_farm/target/`    
 `cd work_farm/target`    
-`ln -s ../../nm37-xiangshan nm37-xiangshan` 
+`ln -s ../../nanhu-g nanhu-g` 
 
 3. Install Linux kernel header on the x86 server 
 side where the FPGA board/card is attached
@@ -28,20 +29,20 @@ side where the FPGA board/card is attached
 
 ## Nanhu-G compilation
 
-`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 xs_gen`
+`make PRJ="target:nanhu-g" FPGA_BD=vcu128 xs_gen`
 
 # RISC-V Side Software Compilation
 
 ## Linux boot via OpenSBI
 
 ### DTB generation
-`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 target_dt`   
+`make PRJ="target:nanhu-g" FPGA_BD=vcu128 target_dt`   
 
 ### Linux kernel (v6.1) compilation
-`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
+`make PRJ="target:nanhu-g" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
 
 ### OpenSBI compilation (RV_BOOT.bin generation)
-`make PRJ="target:nm37-xiangshan" FPGA_BD=vcu128 ARCH=riscv opensbi`   
+`make PRJ="target:nanhu-g" FPGA_BD=vcu128 ARCH=riscv opensbi`   
 
     The boot image (i.e., RV_BOOT.bin) is located in
-    `nm37-xiangshan/ready_for_download/vcu128/`
+    `nanhu-g/ready_for_download/vcu128/`
