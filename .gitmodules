@@ -1,13 +1,12 @@
-[submodule "nm37-xiangshan/software/qdma"]
-	path = nm37-xiangshan/software/qdma
-	url = ../dma_ip_drivers.git
-	branch = 2020.2
-[submodule "nm37-xiangshan/hardware/xs-gen"]
-	path = nm37-xiangshan/hardware/xs-gen
-	url = ../xiangshan.git
-[submodule "nm37-xiangshan/software/opensbi"]
-	path = nm37-xiangshan/software/opensbi
-	url = ../../ICT-SERVE-FARM/opensbi.git
 [submodule "work_farm"]
 	path = work_farm
 	url = ../work_farm.git
+[submodule "nanhu-g/software/opensbi"]
+	path = nanhu-g/software/opensbi
+	url = ../../ICT-SERVE-FARM/opensbi.git
+[submodule "nanhu-g/software/xdma"]
+	path = nanhu-g/software/xdma
+	url = ../dma_ip_drivers.git
+[submodule "nanhu-g/hardware/xs-gen"]
+	path = nanhu-g/hardware/xs-gen
+	url = ../xiangshan.git

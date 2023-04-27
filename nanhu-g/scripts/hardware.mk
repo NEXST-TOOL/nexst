@@ -1,6 +1,6 @@
-NM37_HW_LOC := target/nm37-xiangshan/hardware
-XS_SRC := $(NM37_HW_LOC)/xs-gen
-GEN_SRC := $(NM37_HW_LOC)/sources/generated
+NANHU_G_LOC := target/nanhu-g/hardware
+XS_SRC := $(NANHU_G_LOC)/xs-gen
+GEN_SRC := $(NANHU_G_LOC)/sources/generated
 
 CONFIG ?= NanHuGServeConfig
 

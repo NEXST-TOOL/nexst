@@ -2,8 +2,8 @@
 # Parameters for OpenSBI
 #=================================================
 
-OPENSBI_SRC := $(NM37_SW_LOC)/opensbi
-OPENSBI_LOC := $(abspath $(NM37_SW_LOC)/riscv-opensbi)
+OPENSBI_SRC := $(NANHU_G_SW_LOC)/opensbi
+OPENSBI_LOC := $(abspath $(NANHU_G_SW_LOC)/riscv-opensbi)
 
 RV_BOOT_BIN_LOC := $(OPENSBI_LOC)/platform/ict/firmware
 OPENSBI_PAYLOAD := $(abspath $(INSTALL_LOC)/Image)

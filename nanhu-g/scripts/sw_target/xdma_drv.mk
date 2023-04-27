@@ -1,7 +1,7 @@
 #=================================================
 # Parameters for QDMA Driver
 #=================================================
-QDMA_SRC := $(NM37_SW_LOC)/qdma/QDMA/linux-kernel
+QDMA_SRC := $(NANHU_G_SW_LOC)/qdma/QDMA/linux-kernel
 
 # source file locations of QDMA driver and apps
 QDMA_DRV_SRC := $(QDMA_SRC)/driver
@@ -21,20 +21,20 @@ drv-flags :=
 endif
 
 # generated Linux symbol version file
-modulesymfile := $(abspath $(NM37_SW_LOC)/build/qdma/drv/Module.symvers)
+modulesymfile := $(abspath $(NANHU_G_SW_LOC)/build/qdma/drv/Module.symvers)
 
 #=================================================
 # QDMA Driver Compilation
 #=================================================
 qdma_drv:
 	@echo "Compiling QDMA Linux driver..."
-	@mkdir -p $(NM37_SW_LOC)/build/qdma/drv 
+	@mkdir -p $(NANHU_G_SW_LOC)/build/qdma/drv 
 	$(EXPORT_CC_PATH) && $(MAKE) $(MODULE) -C $(QDMA_DRV_SRC) \
 		modulesymfile=$(modulesymfile) $(drv-flags)
 
-	@mv $(abspath $(QDMA_DRV_SRC)/../bin/*) $(abspath $(NM37_SW_LOC)/build/qdma/drv)
+	@mv $(abspath $(QDMA_DRV_SRC)/../bin/*) $(abspath $(NANHU_G_SW_LOC)/build/qdma/drv)
 
 qdma_drv_clean:
 	$(MAKE) -C $(QDMA_DRV_SRC) clean
-	@rm -rf $(NM37_SW_LOC)/build/qdma/drv
+	@rm -rf $(NANHU_G_SW_LOC)/build/qdma/drv
 
