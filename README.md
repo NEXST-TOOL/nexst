@@ -1,12 +1,15 @@
 # Introduction
 
 The repository of NEXST (Next Environment for XiangShan Target) 
-contains basic components for FPGA prototyping 
-and emulation of the reduced version of the open-source 
-XiangShan RISC-V processor core (code name: Nanhu-G). 
-The target FPGA chip is Xilinx Ultrascale+ VU37P series. 
-FPGA boards currently supported are Xilinx VCU128 and 
-an ICT custom acceleration card named NM37. 
+contains basic components for hardware-software 
+system-level FPGA prototyping 
+and emulation of the open-source 
+XiangShan RISC-V processor core. 
+Our current supported XiangShan target is a 
+compact edition called Nanhu-G. 
+The FPGA boards we leverage 
+are Xilinx VCU128 and an ICT custom acceleration card named NM37, 
+both of which are populated with Xilinx Ultrascale+ VU37P FPGA chips. 
 
 # Prerequisite
 
@@ -25,7 +28,7 @@ side where the FPGA board/card is attached
 
 4. All compilation operations are launched in the directory of `work_farm`
 
-# Hardware Generation (including Nanhu-G core and its wrapper)
+# Hardware Generation (including Nanhu-G core and its SoC wrapper)
 
 ## Nanhu-G compilation
 
