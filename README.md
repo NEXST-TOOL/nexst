@@ -45,6 +45,11 @@ side where the FPGA board/card is attached
 
 ## Compilation of ZSBL image leveraged in Boot ROM (To add)
 
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv zsbl`   
+
+    The bootrom.bin is located in
+    `nanhu-g/ready_for_download/proto_vcu128/`
+
 ## FPGA design flow
 
 ### FPGA Wrapper generation   

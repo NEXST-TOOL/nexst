@@ -1,3 +1,4 @@
 build/
 riscv-opensbi/
 dt/*.dtb
+riscv-zsbl/
