@@ -1,1 +1,1 @@
-source [file join $design_dir "../fpga/wrapper/${target_design}.tcl"]
+source [file join $design_dir "../fpga/wrapper/${prj_design}.tcl"]

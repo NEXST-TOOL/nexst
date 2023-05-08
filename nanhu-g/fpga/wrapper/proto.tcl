@@ -268,7 +268,8 @@ create_design ${bd_design}
 set_property synth_checkpoint_mode None [get_files ${bd_design}.bd]
 generate_target all [get_files ${bd_design}.bd]
 
-#make_wrapper -top -import [get_files ${bd_design}.bd]
+# using a custom wrapper
+# make_wrapper -top -import [get_files ${bd_design}.bd]
 
 validate_bd_design
 save_bd_design

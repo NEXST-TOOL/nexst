@@ -1,5 +1,5 @@
 # open shell checkpoint
-open_checkpoint ${script_dir}/../shell/${board}/dcp/shell_region.dcp
+open_checkpoint ${dcp_dir}/../shell_${board}_${board}/dcp/synth.dcp
 
 # open role checkpoint
 read_checkpoint -cell [get_cells xiangshan_i/u_role/inst] \
