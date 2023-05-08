@@ -29,8 +29,8 @@ the AMD/Xilinx Ultrascale+ VU37P FPGA chip
 2. Launch the following commands
 
 `mkdir -p work_farm/target/`    
-`cd work_farm/target`    
-`ln -s ../../nanhu-g nanhu-g` 
+`cd work_farm/target && ln -s ../../nanhu-g nanhu-g`   
+`cd ../ && ln -s ../shell shell` 
 
 3. Install Linux kernel header on the x86 server 
 side where the FPGA board/card is attached
@@ -43,18 +43,46 @@ side where the FPGA board/card is attached
 
 `make PRJ="target:nanhu-g" FPGA_BD=vcu128 xs_gen`
 
+## Compilation of ZSBL image leveraged in Boot ROM (To add)
+
+## FPGA design flow
+
+### FPGA Wrapper generation   
+`make PRJ="shell:vcu128" FPGA_BD=vcu128 FPGA_ACT=prj_gen vivado_prj`    
+`make PRJ="shell:vcu128" FPGA_BD=vcu128 FPGA_ACT=run_syn vivado_prj`   
+
+### Xiangshan FPGA synthesis  
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=prj_gen vivado_prj`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=run_syn vivado_prj`
+
+### FPGA Bitstream generation  
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=bit_gen vivado_prj`
+
+    The bitstream file is located in   
+    `nanhu-g/ready_for_download/proto_vcu128/`
+    
+    Log files, timing/utilization reports and 
+    design checkpoint files (.dcp) generated during Xilinx Vivado design flow 
+    are located in   
+    `work_farm/fpga/vivado_out/target_nanhu-g_proto_vcu128/` 
+    
+    Generated Vivado project of the SoC wrapper and target XiangShan 
+    are located in  
+    `work_farm/fpga/vivado_prj/shell_vcu128_vcu128/` and   
+    `work_farm/fpga/vivado_prj/target_nanhu-g_proto_vcu128`, respectively.   
+
 # RISC-V Side Software Compilation
 
 ## Linux boot via OpenSBI
 
 ### DTB generation
-`make PRJ="target:nanhu-g" FPGA_BD=vcu128 target_dt`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 target_dt`   
 
 ### Linux kernel (v5.16) compilation
-`make PRJ="target:nanhu-g" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
 
 ### OpenSBI compilation (RV_BOOT.bin generation)
-`make PRJ="target:nanhu-g" FPGA_BD=vcu128 ARCH=riscv opensbi`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv opensbi`   
 
     The boot image (i.e., RV_BOOT.bin) is located in
-    `nanhu-g/ready_for_download/vcu128/`
+    `nanhu-g/ready_for_download/proto_vcu128/`
