@@ -102,7 +102,7 @@ side where the FPGA board/card is attached
 
 <!-- TODO: xdma driver compilation -->
 
-- Copy `bootrom.bin`, `fw_payload.bin` generated in the steps above and `tools/pcie-util` directory to the x86 host machine.
+- Copy `bootrom.bin`, `RV_BOOT.bin` generated in the steps above and `tools/pcie-util` directory to the x86 host machine.
 
 - Program the FPGA with `system.bit` generated in the steps above (in `nanhu-g/ready_for_download/proto_vcu128/`).
 
@@ -120,7 +120,7 @@ side where the FPGA board/card is attached
     ```sh
     cd pcie-util
     make # if pcie-util is not compiled
-    sudo ./load_and_run.sh xdma<N> bootrom.bin fw_payload.bin # <N> is the assigned xdma device number
+    sudo ./load_and_run.sh xdma<N> bootrom.bin RV_BOOT.bin # <N> is the assigned xdma device number
     ```
 
     This will reset the XiangShan core, load images and start the execution. At the end the serial is connected and the user can interact with the system running on XiangShan. To exit the serial connection, press the escape key CTRL+\\.
