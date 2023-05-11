@@ -4,9 +4,9 @@
 [submodule "nanhu-g/software/opensbi"]
 	path = nanhu-g/software/opensbi
 	url = ../../ICT-SERVE-FARM/opensbi.git
-[submodule "nanhu-g/software/xdma"]
-	path = nanhu-g/software/xdma
-	url = ../dma_ip_drivers.git
 [submodule "nanhu-g/hardware/xs-gen"]
 	path = nanhu-g/hardware/xs-gen
 	url = ../xiangshan.git
+[submodule "shell/software/xdma_drv"]
+	path = shell/software/xdma_drv
+	url = ../dma_ip_drivers.git
