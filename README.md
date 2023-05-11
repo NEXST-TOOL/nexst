@@ -30,7 +30,8 @@ the AMD/Xilinx Ultrascale+ VU37P FPGA chip
 
 `mkdir -p work_farm/target/`    
 `cd work_farm/target && ln -s ../../nanhu-g nanhu-g`   
-`cd ../ && ln -s ../shell shell` 
+`cd ../ && ln -s ../shell shell`   
+`ln -s ../tools/ tools` 
 
 3. Install Linux kernel header on the x86 server 
 side where the FPGA board/card is attached
@@ -42,13 +43,6 @@ side where the FPGA board/card is attached
 ## Nanhu-G compilation
 
 `make PRJ="target:nanhu-g" FPGA_BD=vcu128 xs_gen`
-
-## Compilation of ZSBL image leveraged in Boot ROM (To add)
-
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv zsbl`   
-
-    The bootrom.bin is located in
-    `nanhu-g/ready_for_download/proto_vcu128/`
 
 ## FPGA design flow
 
@@ -78,6 +72,13 @@ side where the FPGA board/card is attached
 
 # RISC-V Side Software Compilation
 
+## Compilation of ZSBL image leveraged in Boot ROM
+
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv zsbl`   
+
+    The bootrom.bin is located in
+    `nanhu-g/ready_for_download/proto_vcu128/`
+
 ## Linux boot via OpenSBI
 
 ### DTB generation
@@ -94,23 +95,37 @@ side where the FPGA board/card is attached
 
 # FPGA evaluation flow
 
-## Preparations
+## Setup of Hardware Environment
 
-- Connect FPGA board to an x86 host machine via PCIe connector. Also connect the FPGA board power properly.
+- Attach one of the target FPGA boards listed above 
+  to a PCIe slot of one x86 host machine. 
+  
+  Please carefully check if the power supply of the PCIe-attached FPGA board is properly setup.
+
+  AMD/Xilinx Vivado toolset must be installed on the x86 host.
+
+## Compilation of x86-side PCIe XDMA Linux driver
+
+### Clone this repository on the x86 host and update the submodule of shell/software/xdma_drv
+
+### Driver compilation
+
+`make PRJ="shell:vcu128" xdma_drv`   
+
+    The kernel module (i.e., xdma.ko) is located in
+    `shell/software/build/xdma_drv/`
 
 ## Evaluation steps
 
-<!-- TODO: xdma driver compilation -->
+- Copy `bootrom.bin`, `RV_BOOT.bin` generated in the steps above and `tools/proto` directory to the x86 host machine.
 
-- Copy `bootrom.bin`, `RV_BOOT.bin` generated in the steps above and `tools/pcie-util` directory to the x86 host machine.
-
-- Program the FPGA with `system.bit` generated in the steps above (in `nanhu-g/ready_for_download/proto_vcu128/`).
+- Use Vivado toolset to program the FPGA with `system.bit` generated in the steps above (in `nanhu-g/ready_for_download/proto_vcu128/`).
 
 - Restart the x86 host machine to probe the FPGA as a PCIe device.
 
 - Load XDMA driver.
 
-    `sudo insmod xdma.ko`
+    `cd shell/software/build/xdma_drv && sudo insmod xdma.ko`
 
     If successful, a series of `/dev/xdma<N>*` devices will be created (`<N>` is an assigned number), and detailed log can be viewed in `sudo dmesg`.
 
@@ -118,8 +133,8 @@ side where the FPGA board/card is attached
 
     Launch the following commands:
     ```sh
-    cd pcie-util
-    make # if pcie-util is not compiled
+    cd tools/proto
+    make # if proto is not compiled
     sudo ./load_and_run.sh xdma<N> bootrom.bin RV_BOOT.bin # <N> is the assigned xdma device number
     ```
 
