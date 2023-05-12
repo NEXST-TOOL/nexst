@@ -87,7 +87,7 @@ int cmd_uart(const std::string &dev_name, const std::vector<std::string> &args)
                 uart_send(devmem, ch);
             }
 
-            usleep(100);
+            //usleep(100);
         }
     }
     catch (std::runtime_error &e) {
