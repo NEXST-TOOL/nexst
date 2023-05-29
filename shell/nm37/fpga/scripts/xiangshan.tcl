@@ -147,17 +147,15 @@ proc create_root_design { parentCell } {
 
   # Create instance: DDR4 MIG 
     set ddr4_mig [ create_bd_cell -type ip -vlnv xilinx.com:ip:ddr4:2.2 ddr4_mig ]
-    set_property -dict [ list \
-        CONFIG.C0.DDR4_isCustom {false} \
-        CONFIG.C0.DDR4_AxiAddressWidth {32} \
-        CONFIG.C0.DDR4_AxiDataWidth {512} \
-        CONFIG.C0.DDR4_AxiIDWidth.VALUE_SRC {PROPAGATED} \
-        CONFIG.C0.DDR4_Clamshell {true} \
-        CONFIG.C0.DDR4_DataMask {DM_NO_DBI} \
-        CONFIG.C0.DDR4_DataWidth {64} \
+    set_property -dict [ list CONFIG.C0.DDR4_isCustom {false} \
         CONFIG.C0.DDR4_InputClockPeriod {10005} \
         CONFIG.C0.DDR4_TimePeriod {938} \
+        CONFIG.C0.DDR4_MemoryType {SODIMMs} \
         CONFIG.C0.DDR4_MemoryPart {MTA16ATF2G64HZ-2G3} \
+        CONFIG.C0.DDR4_AxiAddressWidth {34} \
+        CONFIG.C0.DDR4_AxiDataWidth {512} \
+        CONFIG.C0.DDR4_AxiIDWidth.VALUE_SRC {PROPAGATED} \
+        CONFIG.C0.DDR4_DataWidth {64} \
         CONFIG.C0_DDR4_CasLatency {15} \
         CONFIG.System_Clock {Differential} \
         ] $ddr4_mig
@@ -299,16 +297,6 @@ proc create_root_design { parentCell } {
 #=============================================
   
   create_bd_intf_port -mode Master -vlnv xilinx.com:interface:ddr4_rtl:1.0 c0_ddr4
-
-#=============================================
-# MISC ports
-#=============================================
-  ## DRAM calibration done
-  create_bd_port -dir O ddr4_mig_calib_done
-
-  ## PCIe EP PHY ready and link up signals
-  create_bd_port -dir O pcie_ep_phy_ready
-  create_bd_port -dir O pcie_ep_lnk_up
 
 #=============================================
 # System clock connection
