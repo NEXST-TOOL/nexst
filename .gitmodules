@@ -10,3 +10,9 @@
 [submodule "shell/software/xdma_drv"]
 	path = shell/software/xdma_drv
 	url = ../dma_ip_drivers.git
+[submodule "tools/remu/framework"]
+	path = tools/remu/framework
+	url = ../../remu/remu.git
+[submodule "tools/remu/iverilog"]
+	path = tools/remu/iverilog
+	url = ../../remu/iverilog.git
