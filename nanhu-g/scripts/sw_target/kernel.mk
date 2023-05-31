@@ -45,6 +45,11 @@ KERN_IMAGE_GEN := $(KERN_LOC)/$(OS)/arch/$(KERN_PLAT)/boot/Image
 # kernel installation
 KERN_IMAGE := $(INSTALL_LOC)/Image
 
+ROOTFS_SRC := $(NANHU_G_SW_LOC)/rootfs
+INITRAMFS_TXT := $(abspath $(ROOTFS_SRC)/initramfs.txt)
+
+KERN_COMPILE_FLAGS += CONFIG_INITRAMFS_SOURCE=$(INITRAMFS_TXT)
+
 #==================================
 # Linux kernel compilation
 #==================================
@@ -56,7 +61,7 @@ $(KERN_IMAGE_GEN): $(KERN_LOC)/$(OS)/.config FORCE
 	$(EXPORT_CC_PATH) && $(MAKE) -C $(KERN_SRC) \
 		$(KERN_COMPILE_FLAGS) $(KERN_TARGET) -j 10
 
-$(KERN_LOC)/%/.config: $(KERN_CONFIG_LOC)/$($(OS)-kern-config)
+$(KERN_LOC)/%/.config: $(KERN_CONFIG_LOC)/$($(OS)-kern-config) $(INITRAMFS_TXT)
 	$(EXPORT_CC_PATH) && $(MAKE) -C $(KERN_SRC) \
 		$(KERN_COMPILE_FLAGS) $($(OS)-kern-config) olddefconfig
 
@@ -66,3 +71,11 @@ linux_clean: $(obj-modules-clean-y)
 
 linux_distclean: $(obj-modules-clean-y)
 	@rm -rf $(KERN_LOC)/$(OS) $(KERN_INSTALL_LOC)
+
+rootfs: $(INITRAMFS_TXT)
+
+$(INITRAMFS_TXT):
+	$(EXPORT_CC_PATH) && $(MAKE) -C $(ROOTFS_SRC) RISCV=$(abspath $(riscv_LINUX_GCC_PATH)/..) CROSS_COMPILE=$(riscv_LINUX_GCC_PREFIX)
+
+rootfs_clean:
+	$(MAKE) -C $(ROOTFS_SRC) clean

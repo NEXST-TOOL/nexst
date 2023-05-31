@@ -10,3 +10,6 @@
 [submodule "shell/software/xdma_drv"]
 	path = shell/software/xdma_drv
 	url = ../dma_ip_drivers.git
+[submodule "nanhu-g/software/rootfs"]
+	path = nanhu-g/software/rootfs
+	url = ../rootfs.git
