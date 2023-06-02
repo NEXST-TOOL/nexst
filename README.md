@@ -70,6 +70,10 @@ side where the FPGA board/card is attached
     `work_farm/fpga/vivado_prj/shell_vcu128_vcu128/` and   
     `work_farm/fpga/vivado_prj/target_nanhu-g_proto_vcu128`, respectively.   
 
+    
+**If you want to deploy prototyping on the NM37 card, please 
+substitute the `vcu128` to `nm37_vu37p` in each command line.**
+
 # RISC-V Side Software Compilation
 
 ## Compilation of ZSBL image leveraged in Boot ROM

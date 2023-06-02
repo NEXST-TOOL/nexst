@@ -395,7 +395,7 @@ proc create_root_design { parentCell } {
       [get_bd_pins host_uart/s_axi_aresetn]
 
   # Reset signals for DDR4 MIG related AXI interfaces in MIG ui clock domain
-  connect_bd_net -net mig_calib_done [get_bd_pins ddr4_mig/c0_init_calib_complete] \
+  # connect_bd_net -net mig_calib_done [get_bd_pins ddr4_mig/c0_init_calib_complete] \
       [get_bd_ports ddr4_mig_calib_done]
 
   connect_bd_net [get_bd_pins ddr4_mig_sync_reset/peripheral_aresetn] \
