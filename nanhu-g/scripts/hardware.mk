@@ -3,7 +3,7 @@ XS_SRC := $(NANHU_G_LOC)/xs-gen
 GEN_DIR := $(NANHU_G_LOC)/sources/generated
 PATCH_DIR := $(NANHU_G_LOC)/sources/patch
 
-CONFIG ?= NanHuGServeConfig
+CONFIG ?= NanHuGNEXSTConfig
 NUM_CORES ?= 1
 
 .PHONY: xs_gen
