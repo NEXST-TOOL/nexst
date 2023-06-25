@@ -1,0 +1,11 @@
+mem:
+  type: pcie-dma
+  base: 0x0
+  size: 0x200000000
+  c2h: "/dev/xdma1_c2h_0"
+  h2c: "/dev/xdma1_h2c_0"
+reg:
+  type: pcie-bar
+  base: 0x100000
+  size: 0x10000
+  bar: "/dev/xdma1_user"

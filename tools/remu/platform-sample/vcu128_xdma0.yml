@@ -1,0 +1,13 @@
+mem:
+  type: pcie-bar
+  base: 0x0
+  size: 0x100000000
+  mem_bar: "/dev/xdma0_bypass"
+  ctrl_bar: "/dev/xdma0_user"
+  mem_bar_size: 0x10000000
+  ctrl_reg_address: 0x10000
+reg:
+  type: pcie-bar
+  base: 0x100000
+  size: 0x10000
+  bar: "/dev/xdma0_user"

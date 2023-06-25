@@ -7,7 +7,7 @@ proc create_design { design_name } {
     # Clock ports
     #=============================================
 
-    create_bd_port -dir I -type clk -freq_hz 50000000 aclk
+    create_bd_port -dir I -type clk -freq_hz 250000000 aclk
 
     #=============================================
     # Reset ports
@@ -36,6 +36,19 @@ proc create_design { design_name } {
     # Create IP blocks
     #=============================================
 
+    set freq 50
+    puts "freq: $freq mhz"
+
+    # Create instance: emu_clk_gen
+    set emu_clk_gen [create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 emu_clk_gen]
+    set_property -dict [list \
+        CONFIG.RESET_TYPE {ACTIVE_LOW} \
+        CONFIG.CLKOUT1_REQUESTED_OUT_FREQ ${freq} \
+    ] $emu_clk_gen
+
+    # Create instance: emu_rst_gen
+    set emu_rst_gen [create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 emu_rst_gen]
+
     # Create instance: emu_system
     set emu_system [create_bd_cell -type module -reference EMU_SYSTEM emu_system]
     set emu_system_axi_list [get_bd_intf_pins emu_system/EMU_AXI_*]
@@ -50,6 +63,8 @@ proc create_design { design_name } {
         CONFIG.ASSOCIATED_BUSIF $axi_names \
     ] [get_bd_pins emu_system/EMU_HOST_CLK]
 
+    set_property -dict [list CONFIG.POLARITY {ACTIVE_HIGH}] [get_bd_pins emu_system/EMU_HOST_RST]
+
     # Create instance: axi_mmio_ic
     set axi_mmio_ic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_mmio_ic ]
     set_property -dict [list CONFIG.NUM_MI {1} CONFIG.NUM_SI {1}] $axi_mmio_ic
@@ -59,31 +74,49 @@ proc create_design { design_name } {
     set axi_mem_ic [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_mem_ic ]
     set_property -dict [list CONFIG.NUM_MI {1} CONFIG.NUM_SI $m_axi_num CONFIG.STRATEGY {1} ] $axi_mem_ic
 
+    set const_vcc [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 const_vcc ]
+    set_property -dict [list CONFIG.CONST_WIDTH {1} CONFIG.CONST_VAL {0x1} ] $const_vcc
+
     #=============================================
     # System clock connection
     #=============================================
 
     connect_bd_net [get_bd_ports aclk] \
+        [get_bd_pins emu_clk_gen/clk_in1] \
+        [get_bd_pins axi_mmio_ic/S00_ACLK] \
+        [get_bd_pins axi_mem_ic/M00_ACLK]
+
+    connect_bd_net [get_bd_pins emu_clk_gen/clk_out1] \
+        [get_bd_pins emu_rst_gen/slowest_sync_clk] \
         [get_bd_pins emu_system/EMU_HOST_CLK] \
         [get_bd_pins axi_mmio_ic/ACLK] \
-        [get_bd_pins axi_mmio_ic/S00_ACLK] \
         [get_bd_pins axi_mmio_ic/M00_ACLK] \
         [get_bd_pins axi_mem_ic/ACLK] \
-        [get_bd_pins axi_mem_ic/S*_ACLK] \
-        [get_bd_pins axi_mem_ic/M00_ACLK]
+        [get_bd_pins axi_mem_ic/S*_ACLK]
 
     #=============================================
     # System reset connection
     #=============================================
 
     connect_bd_net [get_bd_ports aresetn] \
-        [get_bd_pins emu_system/EMU_HOST_RST] \
-        [get_bd_pins axi_mmio_ic/ARESETN] \
+        [get_bd_pins emu_clk_gen/resetn] \
+        [get_bd_pins emu_rst_gen/ext_reset_in] \
         [get_bd_pins axi_mmio_ic/S00_ARESETN] \
-        [get_bd_pins axi_mmio_ic/M00_ARESETN] \
-        [get_bd_pins axi_mem_ic/ARESETN] \
-        [get_bd_pins axi_mem_ic/S*_ARESETN] \
         [get_bd_pins axi_mem_ic/M00_ARESETN]
+
+    connect_bd_net [get_bd_pins emu_clk_gen/locked] \
+        [get_bd_pins emu_rst_gen/dcm_locked]
+
+    connect_bd_net [get_bd_pins emu_rst_gen/interconnect_aresetn] \
+        [get_bd_pins axi_mmio_ic/ARESETN] \
+        [get_bd_pins axi_mem_ic/ARESETN] 
+
+    connect_bd_net [get_bd_pins emu_rst_gen/peripheral_aresetn] \
+        [get_bd_pins axi_mmio_ic/M00_ARESETN] \
+        [get_bd_pins axi_mem_ic/S*_ARESETN]
+
+    connect_bd_net [get_bd_pins emu_rst_gen/peripheral_reset] \
+        [get_bd_pins emu_system/EMU_HOST_RST] \
 
     #=============================================
     # AXI interface connection
@@ -109,7 +142,7 @@ proc create_design { design_name } {
         create_bd_addr_seg -range 0x1000000000 -offset 0x0 [get_bd_addr_spaces $axi] [get_bd_addr_segs m_axi_mem/Reg] EMU_HOST_AXI
     }
 
-    create_bd_addr_seg -range 0x100000 -offset 0x0 [get_bd_addr_spaces s_axi_ctrl] [get_bd_addr_segs emu_system/EMU_CTRL/reg0] EMU_MMIO
+    create_bd_addr_seg -range 0x10000 -offset 0x0 [get_bd_addr_spaces s_axi_ctrl] [get_bd_addr_segs emu_system/EMU_CTRL/reg0] EMU_MMIO
 
     #=============================================
     # Finish BD creation 
@@ -120,22 +153,17 @@ proc create_design { design_name } {
 }
 
 # add source HDL files
-add_files -fileset sources_1 ${design_dir}/../hardware/sources/generated/
-add_files -fileset sources_1 ${design_dir}/../fpga/sources/hdl/
+set remu_install_prefix ${script_dir}/../../tools/remu/install
+add_files -fileset sources_1 ${design_dir}/../hardware/remu_out/emu_system.v
+add_files -fileset sources_1 [exec ${remu_install_prefix}/bin/remu-config --includes]
+add_files -fileset sources_1 [exec ${remu_install_prefix}/bin/remu-config --plat xilinx --sources]
 add_files -fileset sources_1 ${design_dir}/../fpga/sources/wrapper/role_top_remu.v
-
-# clear IP catalog
-# update_ip_catalog -clear_ip_cache
-check_ip_cache -clear_output_repo
 
 set bd_design role
 create_design ${bd_design}
 
 set_property synth_checkpoint_mode None [get_files ${bd_design}.bd]
 generate_target all [get_files ${bd_design}.bd]
-
-# using a custom wrapper
-# make_wrapper -top -import [get_files ${bd_design}.bd]
 
 validate_bd_design
 save_bd_design
