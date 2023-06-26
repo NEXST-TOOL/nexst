@@ -42,7 +42,15 @@ side where the FPGA board/card is attached
 
 ## Nanhu-G compilation
 
-`make PRJ="target:nanhu-g" FPGA_BD=vcu128 xs_gen`
+`make PRJ="target:nanhu-g" FPGA_BD=<board> CONFIG=<config> NUM_CORES=<num cores> xs_gen`
+
+Available configurations:
+
+- `MinimalNEXSTConfig`
+- `NanHuGNEXSTConfig`
+- `DefaultNEXSTConfig`
+
+`CONFIG` and `NUM_CORES` are by default `NanHuGNEXSTConfig` and `1` respectively. 
 
 ## FPGA design flow
 
