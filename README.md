@@ -32,6 +32,8 @@ the AMD/Xilinx Ultrascale+ VU37P FPGA chip
 `cd work_farm/target && ln -s ../../nanhu-g nanhu-g`   
 `cd ../ && ln -s ../shell shell`   
 `ln -s ../tools/ tools` 
+`cd software/linux && git checkout -b xilinx-v2022.2-lvna-dev origin/xilinx-v2022.2-lvna-dev`
+`cd -`
 
 3. Install Linux kernel header on the x86 server 
 side where the FPGA board/card is attached
@@ -42,7 +44,16 @@ side where the FPGA board/card is attached
 
 ## Nanhu-G compilation
 
-`make PRJ="target:nanhu-g" FPGA_BD=vcu128 xs_gen`
+`make PRJ="target:nanhu-g" FPGA_BD=<board> CONFIG=<config> NUM_CORES=<num cores> xs_gen`
+
+Available configurations:
+
+- `MinimalNEXSTConfig`
+- `NanHuGNEXSTConfig`
+- `DefaultNEXSTConfig`
+- `NohypeFPGAConfig`
+
+`CONFIG` and `NUM_CORES` are by default `NohypeFPGAConfig` and `2` respectively. 
 
 ## FPGA design flow
 
@@ -145,3 +156,14 @@ side where the FPGA board/card is attached
     ```sh
     sudo ./load_and_run.sh xdma<N>
     ```
+## Labeling Feature Enabling
+
+    Labeling is a technique of attaching labels to applications. These labels can be passed from software to hardware, allowing the hardware to identify the source of memory access requests from a particular application. Additionally, there are some new hardware resource management components that enable users to manually set policies based on these labels for allocating hardware resources.
+
+    Launch the following commands:
+    ```sh
+    mount -t tmpfs cgroup_root /sys/fs/cgroup
+    mount -t cgroup -o dsid dsid /sys/fs/cgroup/dsid
+    ```
+
+    This will mount and configure control groups (cgroups) to enable labeling.The token bucket-related parameters can be configured in `/sys/fs/cgroup/dsid/test-1/dsid.dsid-cp`.

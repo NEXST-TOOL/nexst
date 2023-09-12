@@ -2,7 +2,8 @@ NANHU_G_LOC := target/nanhu-g/hardware
 XS_SRC := $(NANHU_G_LOC)/xs-gen
 GEN_SRC := $(NANHU_G_LOC)/sources/generated
 
-CONFIG ?= NanHuGServeConfig
+CONFIG ?= NohypeFPGAConfig
+NUM_CORES ?= 2
 
 .PHONY: xs_gen
 xs_gen:
