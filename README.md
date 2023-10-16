@@ -3,10 +3,14 @@
 The repository of NEXST (Next Environment for XiangShan Target) 
 contains basic hardware and software components 
 for system-level FPGA prototyping and emulation 
-of the open-source XiangShan RISC-V processor core.
+of the open-source XiangShan RISC-V processor core. 
+
+The branch `Nanhu-mini-LvNA` mainly focuses on 
+how to generate a prototyping for LvNA 
+(Labeled von Neumann Architecture) with a dual-core 
+XiangShan Nanhu-minimal processor.   
 
 ## XiangShan Targets with Nanhu Microarchitecture
-- **Nanhu-G**, a compact version of XiangShan Nanhu   
 
 - **Nanhu-minimal**, a minimal version of XiangShan NanHu
 
@@ -14,11 +18,10 @@ Note: Please refer to https://xiangshan-doc.readthedocs.io
 for more detailed information of Xiangshan Nanhu microarchitecture
 
 ## Fully-fledged and Cost-effective FPGA Environment
-- **AMD/Xilinx VCU128**, a commercial development board with 
-the AMD/Xilinx Ultrascale+ VU37P FPGA chip
-(https://www.xilinx.com/products/boards-and-kits/vcu128.html) 
 
-- **NM37**, a custom acceleration card designed by our team
+- **mimic_turbo**, a commercial development board with
+the AMD/Xilinx Ultrascale+ VU19P FPGA chip 
+(https://www.corigine.com/products-MimicTurboGT.html)
 
 # Prerequisite
 
@@ -44,65 +47,56 @@ side where the FPGA board/card is attached
 
 ## Nanhu-G compilation
 
-`make PRJ="target:nanhu-g" FPGA_BD=<board> CONFIG=<config> NUM_CORES=<num cores> xs_gen`
-
-Available configurations:
-
-- `MinimalNEXSTConfig`
-- `NanHuGNEXSTConfig`
-- `DefaultNEXSTConfig`
-- `NohypeFPGAConfig`
-
-`CONFIG` and `NUM_CORES` are by default `NohypeFPGAConfig` and `2` respectively. 
+`make PRJ="target:nanhu-g" FPGA_BD=mimic_turbo CONFIG=NohypeFPGAConfig NUM_CORES=2 xs_gen`
 
 ## FPGA design flow
 
 ### FPGA Wrapper generation   
-`make PRJ="shell:vcu128" FPGA_BD=vcu128 FPGA_ACT=prj_gen vivado_prj`    
-`make PRJ="shell:vcu128" FPGA_BD=vcu128 FPGA_ACT=run_syn vivado_prj`   
+`make PRJ="shell:mimic_turbo" FPGA_BD=mimic_turbo FPGA_ACT=prj_gen vivado_prj`    
+`make PRJ="shell:mimic_turbo" FPGA_BD=mimic_turbo FPGA_ACT=run_syn vivado_prj`   
 
 ### Xiangshan FPGA synthesis  
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=prj_gen vivado_prj`   
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=run_syn vivado_prj`
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo FPGA_ACT=prj_gen vivado_prj`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo FPGA_ACT=run_syn vivado_prj`
 
 ### FPGA Bitstream generation  
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=bit_gen vivado_prj`
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo FPGA_ACT=bit_gen vivado_prj`
 
     The bitstream file is located in   
-    `nanhu-g/ready_for_download/proto_vcu128/`
+    `nanhu-g/ready_for_download/proto_mimic_turbo/`
     
     Log files, timing/utilization reports and 
     design checkpoint files (.dcp) generated during Xilinx Vivado design flow 
     are located in   
-    `work_farm/fpga/vivado_out/target_nanhu-g_proto_vcu128/` 
+    `work_farm/fpga/vivado_out/target_nanhu-g_proto_mimic_turbo/` 
     
     Generated Vivado project of the SoC wrapper and target XiangShan 
     are located in  
-    `work_farm/fpga/vivado_prj/shell_vcu128_vcu128/` and   
-    `work_farm/fpga/vivado_prj/target_nanhu-g_proto_vcu128`, respectively.   
+    `work_farm/fpga/vivado_prj/shell_mimic_turbo_mimic_turbo/` and   
+    `work_farm/fpga/vivado_prj/target_nanhu-g_proto_mimic_turbo`, respectively.   
 
 # RISC-V Side Software Compilation
 
 ## Compilation of ZSBL image leveraged in Boot ROM
 
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv zsbl`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv zsbl`   
 
     The bootrom.bin is located in
-    `nanhu-g/ready_for_download/proto_vcu128/`
+    `nanhu-g/ready_for_download/proto_mimic_turbo/`
 
 ## Linux boot via OpenSBI
 
 ### DTB generation
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 target_dt`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo DT_TARGET=XSTop_LvNA target_dt`   
 
 ### Linux kernel (v5.16) compilation
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv phy_os.os`   
 
 ### OpenSBI compilation (RV_BOOT.bin generation)
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv opensbi`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv HART_COUNT=2 opensbi`   
 
     The boot image (i.e., RV_BOOT.bin) is located in
-    `nanhu-g/ready_for_download/proto_vcu128/`
+    `nanhu-g/ready_for_download/proto_mimic_turbo/`
 
 # FPGA evaluation flow
 
@@ -121,7 +115,7 @@ Available configurations:
 
 ### Driver compilation
 
-`make PRJ="shell:vcu128" xdma_drv`   
+`make PRJ="shell:mimic_turbo" xdma_drv`   
 
     The kernel module (i.e., xdma.ko) is located in
     `shell/software/build/xdma_drv/`
@@ -130,7 +124,7 @@ Available configurations:
 
 - Copy `bootrom.bin`, `RV_BOOT.bin` generated in the steps above and `tools/proto` directory to the x86 host machine.
 
-- Use Vivado toolset to program the FPGA with `system.bit` generated in the steps above (in `nanhu-g/ready_for_download/proto_vcu128/`).
+- Use Vivado toolset to program the FPGA with `system.bit` generated in the steps above (in `nanhu-g/ready_for_download/proto_mimic_turbo/`).
 
 - Restart the x86 host machine to probe the FPGA as a PCIe device.
 
