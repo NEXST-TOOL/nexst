@@ -31,5 +31,5 @@ set main_constraints ${design_dir}/../fpga/constraints/top.xdc
 add_files -fileset constrs_1 -norecurse ${main_constraints}
 
 # Copy PCIe EP DCP file generated in dcp_gen stage
-exec cp ${dcp_dir}/../../${prj_loc}_${prj_name}_placeholder_role_${board}/dcp/placeholder_role.dcp \
+# exec cp ${dcp_dir}/../../${prj_loc}_${prj_name}_placeholder_role_${board}/dcp/placeholder_role.dcp \
     ${dcp_dir}/
