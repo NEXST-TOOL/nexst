@@ -2,7 +2,7 @@
 
 DT_LOC := $(abspath $(NANHU_G_SW_LOC)/dt)
 
-DT_TARGET := XSTop
+DT_TARGET ?= XSTop
 dts := $(DT_TARGET).dts
 dtb := $(DT_TARGET).dtb
 
