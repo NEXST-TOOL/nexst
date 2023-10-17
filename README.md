@@ -99,9 +99,13 @@ side where the FPGA board/card is attached
     `nanhu-g/ready_for_download/proto_mimic_turbo/`
 
 ## New software workloads addition
-The target software workload that will run on the RISC-V side Linux system should be installed in the `nanhu-g/software/rootfs/initramfs` directory. Please modify the `nanhu-g/software/rootfs/scripts/gen-initramfs-list.sh` file as needed. 
+The target software workload that is executable in the RISC-V Linux user-space 
+must be installed in the directory `nanhu-g/software/rootfs/initramfs` 
+and specified in the script file `nanhu-g/software/rootfs/scripts/gen-initramfs-list.sh`.     
 
-The simplest method is to install the executable binary of the target payload at the initramfs's `/bin` directory and add its name to the `BINS` array in `gen-initramfs-list.sh`.
+It is the simplest approach to installing workloads 
+to copy the target software binaries into the initramfs' 
+`/bin` directory and add the workload name to the `BINS` array in `gen-initramfs-list.sh`.
 
 # FPGA evaluation flow
 
