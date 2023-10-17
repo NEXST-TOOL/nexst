@@ -93,10 +93,15 @@ side where the FPGA board/card is attached
 `make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv phy_os.os`   
 
 ### OpenSBI compilation (RV_BOOT.bin generation)
-`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv HART_COUNT=2 opensbi`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv HART_COUNT=2 opensbi`
 
     The boot image (i.e., RV_BOOT.bin) is located in
     `nanhu-g/ready_for_download/proto_mimic_turbo/`
+
+## New software workloads addition
+The target software workload that will run on the RISC-V side Linux system should be installed in the `nanhu-g/software/rootfs/initramfs` directory. Please modify the `nanhu-g/software/rootfs/scripts/gen-initramfs-list.sh` file as needed. 
+
+The simplest method is to install the executable binary of the target payload at the initramfs's `/bin` directory and add its name to the `BINS` array in `gen-initramfs-list.sh`.
 
 # FPGA evaluation flow
 
