@@ -25,11 +25,13 @@ the AMD/Xilinx Ultrascale+ VU19P FPGA chip
 
 # Prerequisite
 
-1. Download all required repository submodules
+1. Contact chenfeiyu22s@ict.ac.cn to obtain server login access, as all hardware generation and software compilation tasks can be performed on server `node48`.
+
+2. Download all required repository submodules
 
 `git submodule update --init --recursive`   
 
-2. Launch the following commands
+3. Launch the following commands
 
 `mkdir -p work_farm/target/`    
 `cd work_farm/target && ln -s ../../nanhu-g nanhu-g`   
@@ -38,10 +40,10 @@ the AMD/Xilinx Ultrascale+ VU19P FPGA chip
 `cd software/linux && git checkout -b xilinx-v2022.2-lvna-dev origin/xilinx-v2022.2-lvna-dev`   
 `cd -`
 
-3. Install Linux kernel header on the x86 server 
+4. Install Linux kernel header on the x86 server 
 side where the FPGA board/card is attached
 
-4. All compilation operations are launched in the directory of `work_farm`
+5. All compilation operations are launched in the directory of `work_farm`
 
 # Hardware Generation (including Nanhu-G core and its SoC wrapper)
 
