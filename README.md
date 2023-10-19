@@ -25,7 +25,7 @@ the AMD/Xilinx Ultrascale+ VU19P FPGA chip
 
 # Prerequisite
 
-1. Contact chenfeiyu22s@ict.ac.cn to obtain server login access, as all hardware generation and software compilation tasks can be performed on server `node48`.
+1. Contact chenfeiyu22s@ict.ac.cn to obtain server login access, as all hardware/software compilation tasks and FPGA emulation flow can be performed on server `node48`.
 
 2. Download all required repository submodules
 
