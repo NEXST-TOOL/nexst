@@ -25,9 +25,11 @@ the AMD/Xilinx Ultrascale+ VU19P FPGA chip
 
 # Prerequisite
 
-1. Contact chenfeiyu22s@ict.ac.cn to obtain server login access, as all hardware/software compilation tasks and FPGA emulation flow can be performed on server `node48`.
+1. Please contact administrator (chenfeiyu22s@ict.ac.cn) to obtain login permissions 
+to the x86 server that attaches one mimic_turbo FPGA card. 
+Colleagues conduct hardware/software compilation tasks and FPGA evaluation flow on the server.
 
-2. Download all required repository submodules
+2. Download all required repository submodules after acquiring the server login permission
 
 `git submodule update --init --recursive`   
 
@@ -111,7 +113,19 @@ to copy the target software binaries into the initramfs'
 
 # FPGA evaluation flow
 
-## Setup of Hardware Environment
+## FPGA card reservation
+
+As we have only one mimic_turbo FPGA board currently, 
+it is extremely difficult to service multiple tenants simultaneously. 
+
+To overcome potential conflicts, colleagues need to contact administrator (chenfeiyu22s@ict.ac.cn) 
+to reserve the time window you expected to conduct FPGA evaluation first. 
+Our administration team would schedule all reservation and feed back to all colleagues 
+the final scheduled time window. 
+
+We do apologize for inconvenience we made to our colleagues.   
+
+## Setup of Hardware Environment (conducted by administrator)
 
 - Attach one of the target FPGA boards listed above 
   to a PCIe slot of one x86 host machine. 
@@ -120,7 +134,7 @@ to copy the target software binaries into the initramfs'
 
   AMD/Xilinx Vivado toolset must be installed on the x86 host.
 
-## Compilation of x86-side PCIe XDMA Linux driver
+## Compilation of x86-side PCIe XDMA Linux driver (conducted by administrator)
 
 ### Clone this repository on the x86 host and update the submodule of shell/software/xdma_drv
 
@@ -131,7 +145,7 @@ to copy the target software binaries into the initramfs'
     The kernel module (i.e., xdma.ko) is located in
     `shell/software/build/xdma_drv/`
 
-## Evaluation steps
+## Evaluation steps (conducted by our colleagues)
 
 - Copy `bootrom.bin`, `RV_BOOT.bin` generated in the steps above and `tools/proto` directory to the x86 host machine.
 
@@ -161,7 +175,7 @@ to copy the target software binaries into the initramfs'
     ```sh
     sudo ./load_and_run.sh xdma<N>
     ```
-## Labeling Feature Enabling
+## Labeling Feature Enabling (conducted by our colleagues)
 
 Labeling is a technique of attaching labels to applications. These labels can be passed from software to hardware, allowing the hardware to identify the source of memory access requests from a particular application. Additionally, there are some new hardware resource management components that enable users to manually set policies based on these labels for allocating hardware resources.
 
