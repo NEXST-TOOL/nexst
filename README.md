@@ -97,7 +97,7 @@ side where the FPGA board/card is attached
 `make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv phy_os.os`   
 
 ### OpenSBI compilation (RV_BOOT.bin generation)
-`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv HART_COUNT=2 opensbi`
+`make PRJ="target:nanhu-g:proto" FPGA_BD=mimic_turbo ARCH=riscv HART_COUNT=2 DT_TARGET=XSTop_LvNA opensbi`
 
     The boot image (i.e., RV_BOOT.bin) is located in
     `nanhu-g/ready_for_download/proto_mimic_turbo/`

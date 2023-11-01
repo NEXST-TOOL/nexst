@@ -7,7 +7,8 @@ OPENSBI_LOC := $(abspath $(NANHU_G_SW_LOC)/riscv-opensbi)
 
 RV_BOOT_BIN_LOC := $(OPENSBI_LOC)/platform/ict/firmware
 OPENSBI_PAYLOAD := $(abspath $(INSTALL_LOC)/Image)
-OPENSBI_DTB := $(abspath $(INSTALL_LOC)/XSTop.dtb)
+DT_TARGET ?= XSTop
+OPENSBI_DTB := $(abspath $(INSTALL_LOC)/$(DT_TARGET).dtb)
 
 # sub platform-specific OpenSBI compilation flags 
 USER_FLAGS := SERVE_PLAT=h \
