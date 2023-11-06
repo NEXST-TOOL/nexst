@@ -109,7 +109,7 @@ and specified in the script file `nanhu-g/software/rootfs/scripts/gen-initramfs-
 
 It is the simplest approach to installing workloads 
 to copy the target software binaries into the initramfs' 
-`/bin` directory and add the workload name to the `BINS` array in `gen-initramfs-list.sh`.
+`/my-dir` directory.
 
 # FPGA evaluation flow
 
