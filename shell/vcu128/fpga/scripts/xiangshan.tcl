@@ -627,6 +627,7 @@ proc create_root_design { parentCell } {
     set_property -dict [list CONFIG.NUM_PORTS {16}] $role_intr_concat
 
   connect_bd_net [get_bd_pins role_uart/interrupt] [get_bd_pins role_intr_concat/In0]
+  connect_bd_net [get_bd_pins shell_uart/interrupt] [get_bd_pins xdma_ep/usr_irq_req]
 
   connect_bd_net [get_bd_pins const_gnd/dout] \
     [get_bd_pins role_intr_concat/In1] \
