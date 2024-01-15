@@ -10,6 +10,11 @@ create_clock -period 10.000 -name pcie_ep_ref_clk -waveform {0.000 5.000} [get_p
 
 set_property PACKAGE_PIN AR15 [get_ports {pcie_ep_gt_ref_clk_clk_p[0]}]
 
+# PCIe RP GT reference clock
+create_clock -period 10.000 -name pcie_rp_ref_clk -waveform {0.000 5.000} [get_ports pcie_rp_gt_ref_clk_clk_p]
+
+set_property PACKAGE_PIN AJ15 [get_ports {pcie_rp_gt_ref_clk_clk_p[0]}]
+
 # PL DDR reference clock
 create_clock -period 10.000 -name ddr4_mig_sys_clk -waveform {0.000 5.000} [get_ports ddr4_mig_sys_clk_clk_p]
 
@@ -22,6 +27,17 @@ set_property PACKAGE_PIN BH42 [get_ports ddr4_mig_sys_clk_clk_p]
 # PCIe EP perstn physical location
 set_property PACKAGE_PIN BF5 [get_ports pcie_ep_perstn]
 set_property IOSTANDARD LVCMOS18 [get_ports pcie_ep_perstn]
+
+# PCIe RP perstn physical location
+# NM37 U.2
+set_property PACKAGE_PIN A18 [get_ports {pcie_rp_perstn[0]}]
+set_property IOSTANDARD LVCMOS18 [get_ports {pcie_rp_perstn[0]}]
+
+# PCIe RP GT physical location
+set_property LOC GTYE4_CHANNEL_X0Y16 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[3].GTYE4_CHANNEL_PRIM_INST}]
+set_property LOC GTYE4_CHANNEL_X0Y17 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[2].GTYE4_CHANNEL_PRIM_INST}]
+set_property LOC GTYE4_CHANNEL_X0Y18 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[1].GTYE4_CHANNEL_PRIM_INST}]
+set_property LOC GTYE4_CHANNEL_X0Y19 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[0].GTYE4_CHANNEL_PRIM_INST}]
 
 # DDR
 set_property PACKAGE_PIN BP44  [get_ports c0_ddr4_act_n]
