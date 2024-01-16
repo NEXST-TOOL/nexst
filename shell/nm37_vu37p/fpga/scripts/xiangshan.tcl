@@ -680,7 +680,7 @@ proc create_root_design { parentCell } {
   ## Role address space
   create_bd_addr_seg -range 0x10000 -offset 0x10000000 [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs bootrom_bram_ctrl/S_AXI/Mem0] ROLE_BOOTROM
   create_bd_addr_seg -offset 0x50000000 -range 0x00100000  [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs xdma_rp/S_AXI_B/BAR0] PCIE_RP_S_BAR
-  create_bd_addr_seg -offset 0x60000000 -range 0x00800000  [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs xdma_rp/S_AXI_LITE/CTL0] PCIE_RP_S_LITE
+  create_bd_addr_seg -offset 0x60000000 -range 0x00080000  [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs xdma_rp/S_AXI_LITE/CTL0] PCIE_RP_S_LITE
   create_bd_addr_seg -offset 0x00000000 -range 0x000100000000  [get_bd_addr_spaces xdma_rp/M_AXI_B] [get_bd_addr_segs u_role/s_axi_dma/reg0] PCIE_RP_DMA
   create_bd_addr_seg -range 0x10000 -offset 0x30000000 [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs role_uart/S_AXI/Reg] ROLE_UART
   create_bd_addr_seg -range 0x100000000 -offset 0x0 [get_bd_addr_spaces u_role/m_axi_mem] [get_bd_addr_segs ddr4_mig/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] ROLE_DDR

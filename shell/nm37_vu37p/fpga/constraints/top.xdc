@@ -34,10 +34,10 @@ set_property PACKAGE_PIN A18 [get_ports {pcie_rp_perstn[0]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {pcie_rp_perstn[0]}]
 
 # PCIe RP GT physical location
-set_property LOC GTYE4_CHANNEL_X0Y16 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[3].GTYE4_CHANNEL_PRIM_INST}]
-set_property LOC GTYE4_CHANNEL_X0Y17 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[2].GTYE4_CHANNEL_PRIM_INST}]
-set_property LOC GTYE4_CHANNEL_X0Y18 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[1].GTYE4_CHANNEL_PRIM_INST}]
-set_property LOC GTYE4_CHANNEL_X0Y19 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[0].GTYE4_CHANNEL_PRIM_INST}]
+set_property LOC GTYE4_CHANNEL_X1Y16 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[3].GTYE4_CHANNEL_PRIM_INST}]
+set_property LOC GTYE4_CHANNEL_X1Y17 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[2].GTYE4_CHANNEL_PRIM_INST}]
+set_property LOC GTYE4_CHANNEL_X1Y18 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[1].GTYE4_CHANNEL_PRIM_INST}]
+set_property LOC GTYE4_CHANNEL_X1Y19 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[28].*gen_gtye4_channel_inst[0].GTYE4_CHANNEL_PRIM_INST}]
 
 # DDR
 set_property PACKAGE_PIN BP44  [get_ports c0_ddr4_act_n]
