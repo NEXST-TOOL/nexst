@@ -142,7 +142,7 @@ substitute the `vcu128` to `nm37_vu37p` in each command line.**
     sudo ./load_and_run.sh xdma<N> bootrom.bin RV_BOOT.bin # <N> is the assigned xdma device number
     ```
 
-    This will reset the XiangShan core, load images and start the execution. At the end the serial is connected and the user can interact with the system running on XiangShan. To exit the serial connection, press the escape key CTRL+\\.
+    This will reset the XiangShan core, load images and start the execution. At the end the serial is connected and the user can interact with the system running on XiangShan. To exit the serial connection, press the escape key CTRL+A+X.
 
     To resume the serial connection without a system reset, use the following command:
 
