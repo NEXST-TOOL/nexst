@@ -99,13 +99,39 @@
 			reg = <0x0 0x3a000000 0x0 0x1000>;
 			reg-names = "control";
 		};
-		// uart0: serial@40600000 {
-		// 	compatible = "xlnx,opb-uartlite-1.00.b";
-		// 	reg = <0x0 0x30000000 0x0 0x10000>;
-		// 	port-number = <0>;
-		// 	current-speed = <115200>;
-		// 	interrupt-parent = <&L4>;
-		// 	interrupts = <1>;
-		// };
-	};
+		pcie_rc: axi-pcie@60000000 {
+			compatible = "xlnx,xdma-host-3.00";
+			device_type = "pci";
+			reg = <0x0 0x60000000 0x0 0x800000>; /*Root port 0 ctrl*/
+			reg-names = "rp0";
+			#address-cells = <3>;
+			#size-cells = <2>;
+			ranges = <0x02000000 0x0 0x50000000 0x0 0x50000000 0x0 0x100000>;/*Root port 0 BAR*/
+			#interrupt-cells = <1>;
+			interrupts = <2>,  /*Root port 0 INTx*/
+				   <3>,  /*Root port 0 MSI0*/
+				   <4>;  /*Root port 0 MSI1*/
+			interrupt-parent = <&L4>;
+
+			pcie_rp0: pcie@0,0 {
+				device_type = "pci";
+				reg = <0x0000 0 0 0 0>;
+				#address-cells = <3>;
+				#size-cells = <2>;
+				ranges;
+				#interrupt-cells = <1>;
+				interrupt-map-mask = <0 0 0 7>;
+				interrupt-map = <0 0 0 1 &pcie_intc0 1>,
+					<0 0 0 2 &pcie_intc0 2>,
+					<0 0 0 3 &pcie_intc0 3>,
+					<0 0 0 4 &pcie_intc0 4>;
+				pcie_intc0: interrupt-controller {
+					interrupt-controller;
+					#address-cells = <0>;
+					#interrupt-cells = <1>;
+				};
+			};
+
+    	};
+    };
 };
