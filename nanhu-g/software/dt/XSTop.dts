@@ -106,7 +106,8 @@
 			reg-names = "rp0";
 			#address-cells = <3>;
 			#size-cells = <2>;
-			ranges = <0x02000000 0x0 0x50000000 0x0 0x50000000 0x0 0x100000>;/*Root port 0 BAR*/
+			bus-range = <0 1>;
+			ranges = <0x02000000 0x00000000 0x50000000 0x0 0x50000000 0x00000000 0x00100000>;/*Root port 0 BAR*/
 			#interrupt-cells = <1>;
 			interrupts = <2>,  /*Root port 0 INTx*/
 				   <3>,  /*Root port 0 MSI0*/
