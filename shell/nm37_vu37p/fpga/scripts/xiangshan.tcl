@@ -180,6 +180,7 @@ proc create_root_design { parentCell } {
     CONFIG.msi_rx_pin_en {true} \
     CONFIG.select_quad {GTY_Quad_127} \
     CONFIG.pcie_blk_locn {PCIE4C_X0Y1} \
+    CONFIG.axibar2pciebar_0 {0x0000000050000000} \
   ] $xdma_rp
 
   set axi_dwidth_converter_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dwidth_converter:2.1 axi_dwidth_converter_0 ]
@@ -637,9 +638,10 @@ proc create_root_design { parentCell } {
   connect_bd_net [get_bd_pins role_uart/interrupt] [get_bd_pins role_intr_concat/In0]
   connect_bd_net [get_bd_pins host_uart/interrupt] [get_bd_pins xdma_ep/usr_irq_req]
 
-  connect_bd_net -net xdma_rp_interrupt_out_msi_vec0to31 [get_bd_pins xdma_rp/interrupt_out_msi_vec0to31] [get_bd_pins role_intr_concat/In1]
-  connect_bd_net -net xdma_rp_interrupt_out_msi_vec32to63 [get_bd_pins xdma_rp/interrupt_out_msi_vec32to63] [get_bd_pins role_intr_concat/In2]
-  connect_bd_net -net xdma_rp_interrupt_out [get_bd_pins xdma_rp/interrupt_out] [get_bd_pins role_intr_concat/In3]
+  connect_bd_net -net xdma_rp_interrupt_out [get_bd_pins xdma_rp/interrupt_out] [get_bd_pins role_intr_concat/In1]
+  connect_bd_net -net xdma_rp_interrupt_out_msi_vec0to31 [get_bd_pins xdma_rp/interrupt_out_msi_vec0to31] [get_bd_pins role_intr_concat/In2]
+  connect_bd_net -net xdma_rp_interrupt_out_msi_vec32to63 [get_bd_pins xdma_rp/interrupt_out_msi_vec32to63] [get_bd_pins role_intr_concat/In3]
+  
   connect_bd_net [get_bd_pins const_gnd/dout] \
     [get_bd_pins role_intr_concat/In4] \
     [get_bd_pins role_intr_concat/In5] \
