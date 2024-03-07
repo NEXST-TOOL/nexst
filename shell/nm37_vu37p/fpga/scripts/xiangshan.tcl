@@ -689,7 +689,19 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_0_AXI] [get_bd_intf_pins u_role/m_axi_mem]
   connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_1_AXI] [get_bd_intf_pins u_role/m_axi_io]
   connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_2_AXI] [get_bd_intf_pins u_role/s_axi_ctrl]
-  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_3_AXI] [get_bd_intf_pins axi_dwidth_converter_0/M_AXI]
+  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_3_AXI] [get_bd_intf_pins u_role/s_axi_dma]
+
+  set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
+  set_property -dict [ list \
+    CONFIG.C_NUM_MONITOR_SLOTS {3} \
+  ] $system_ila_0
+
+  connect_bd_net [get_bd_pins xdma_rp/axi_aclk] [get_bd_pins system_ila_0/clk]
+  connect_bd_net [get_bd_pins xdma_rp/axi_aresetn] [get_bd_pins system_ila_0/resetn]
+
+  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_0_AXI] [get_bd_intf_pins xdma_rp/M_AXI_B]
+  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_1_AXI] [get_bd_intf_pins xdma_rp/S_AXI_B]
+  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_2_AXI] [get_bd_intf_pins xdma_rp/S_AXI_LITE]
 
 #=============================================
 # Address segments
