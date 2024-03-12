@@ -33,9 +33,9 @@ the AMD/Xilinx Ultrascale+ VU37P FPGA chip
 `cd ../ && ln -s ../shell shell`   
 `ln -s ../tools/ tools` 
 
-**If you want to deploy prototyping on the NM37 card with a NVMe SSD, please launch the following two commands.**
+If you want to deploy prototyping on the NM37 card with a NVMe SSD, please launch the following two commands.
 
-`cd software/linux && git checkout -b xilinx-v2022.2-lvna-dev origin/xilinx-v2022.2-dev`
+`cd software/linux && git checkout -b xilinx-v2022.2-dev origin/xilinx-v2022.2-dev`     
 `cd -`
 
 3. Install Linux kernel header on the x86 server 
@@ -90,8 +90,8 @@ substitute the `vcu128` to `nm37_vu37p` in each command line.**
 
 ## Linux boot via OpenSBI
 
-**If you want to deploy prototyping on the NM37 card with NVMe SSD, please 
-substitute the value of `DT_TARGET` from `XSTop` to `XSTop_pci` in the following command line.**
+If you want to deploy prototyping on the NM37 card with NVMe SSD, please 
+substitute the value of `DT_TARGET` from `XSTop` to `XSTop_pci` in the following command line.
 
 ### DTB generation
 `make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 DT_TARGET=XSTop target_dt`   
