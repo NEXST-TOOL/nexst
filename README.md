@@ -33,6 +33,11 @@ the AMD/Xilinx Ultrascale+ VU37P FPGA chip
 `cd ../ && ln -s ../shell shell`   
 `ln -s ../tools/ tools` 
 
+If you want to deploy prototyping on the NM37 card with a NVMe SSD, please launch the following two commands.
+
+`cd software/linux && git checkout -b xilinx-v2022.2-dev origin/xilinx-v2022.2-dev`     
+`cd -`
+
 3. Install Linux kernel header on the x86 server 
 side where the FPGA board/card is attached
 
@@ -85,14 +90,17 @@ substitute the `vcu128` to `nm37_vu37p` in each command line.**
 
 ## Linux boot via OpenSBI
 
+If you want to deploy prototyping on the NM37 card with NVMe SSD, please 
+substitute the value of `DT_TARGET` from `XSTop` to `XSTop_pci` in the following command line.
+
 ### DTB generation
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 target_dt`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 DT_TARGET=XSTop target_dt`   
 
 ### Linux kernel (v5.16) compilation
 `make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
 
 ### OpenSBI compilation (RV_BOOT.bin generation)
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv opensbi`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv DT_TARGET=XSTop opensbi`   
 
     The boot image (i.e., RV_BOOT.bin) is located in
     `nanhu-g/ready_for_download/proto_vcu128/`
@@ -142,7 +150,7 @@ substitute the `vcu128` to `nm37_vu37p` in each command line.**
     sudo ./load_and_run.sh xdma<N> bootrom.bin RV_BOOT.bin # <N> is the assigned xdma device number
     ```
 
-    This will reset the XiangShan core, load images and start the execution. At the end the serial is connected and the user can interact with the system running on XiangShan. To exit the serial connection, press the escape key CTRL+\\.
+    This will reset the XiangShan core, load images and start the execution. At the end the serial is connected and the user can interact with the system running on XiangShan. To exit the serial connection, press the escape key CTRL+A+X.
 
     To resume the serial connection without a system reset, use the following command:
 

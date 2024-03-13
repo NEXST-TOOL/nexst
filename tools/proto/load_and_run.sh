@@ -19,7 +19,7 @@ fi
 
 if [ $# -eq 1 ]; then
 
-    minicom -D /dev/ttyUL0
+    minicom -D /dev/$1_ttyUL0
 
 elif [ $# -eq 3 ]; then
 
@@ -50,7 +50,11 @@ elif [ $# -eq 3 ]; then
     ./pcie-util $xdma_user write 0x100000 0
 
     echo "Start serial connection"
+<<<<<<< HEAD
     minicom -D /dev/ttyUL0
+=======
+    minicom -D /dev/$1_ttyUL0
+>>>>>>> 7b3ca9fdbba207dc0227ca37d58b872dbbfff386
 else
 
 cat <<EOF
