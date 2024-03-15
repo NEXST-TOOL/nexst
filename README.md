@@ -18,7 +18,8 @@ for more detailed information of Xiangshan Nanhu microarchitecture
 the AMD/Xilinx Ultrascale+ VU37P FPGA chip
 (https://www.xilinx.com/products/boards-and-kits/vcu128.html) 
 
-- **NM37**, a custom acceleration card designed by our team
+- **NM37**, a custom acceleration card designed by our team, 
+allowing integration of a PCIe-attached NVMe SSD to XiangShan SoC   
 
 # Prerequisite
 
@@ -33,15 +34,14 @@ the AMD/Xilinx Ultrascale+ VU37P FPGA chip
 `cd ../ && ln -s ../shell shell`   
 `ln -s ../tools/ tools` 
 
-If you want to deploy prototyping on the NM37 card with a NVMe SSD, please launch the following two commands.
-
-`cd software/linux && git checkout -b xilinx-v2022.2-dev origin/xilinx-v2022.2-dev`     
-`cd -`
-
 3. Install Linux kernel header on the x86 server 
-side where the FPGA board/card is attached
+side where the FPGA board/card is attached   
 
-4. All compilation operations are launched in the directory of `work_farm`
+4. Install `minicom` on the x86 server  
+
+5. Prepare the Chisel compilation environment on the x86 server  
+
+5. All compilation operations are launched in the directory of `work_farm`
 
 # Hardware Generation (including Nanhu-G core and its SoC wrapper)
 
@@ -65,7 +65,7 @@ side where the FPGA board/card is attached
     The bitstream file is located in   
     `nanhu-g/ready_for_download/proto_vcu128/`
     
-    Log files, timing/utilization reports and 
+    Log files, timing and utilization reports and 
     design checkpoint files (.dcp) generated during Xilinx Vivado design flow 
     are located in   
     `work_farm/fpga/vivado_out/target_nanhu-g_proto_vcu128/` 
@@ -75,9 +75,8 @@ side where the FPGA board/card is attached
     `work_farm/fpga/vivado_prj/shell_vcu128_vcu128/` and   
     `work_farm/fpga/vivado_prj/target_nanhu-g_proto_vcu128`, respectively.   
 
-    
 **If you want to deploy prototyping on the NM37 card, please 
-substitute the `vcu128` to `nm37_vu37p` in each command line.**
+substitute the `vcu128` to `nm37_vu37p` in each command line.** 
 
 # RISC-V Side Software Compilation
 
@@ -129,9 +128,11 @@ substitute the value of `DT_TARGET` from `XSTop` to `XSTop_pci` in the following
 
 ## Evaluation steps
 
-- Copy `bootrom.bin`, `RV_BOOT.bin` generated in the steps above and `tools/proto` directory to the x86 host machine.
+- Ensure that `bootrom.bin`, `RV_BOOT.bin` mentioned in the above steps   
+  and `tools/proto` directory have been generated or located on the x86 host machine.   
 
-- Use Vivado toolset to program the FPGA with `system.bit` generated in the steps above (in `nanhu-g/ready_for_download/proto_vcu128/`).
+- Use Vivado toolset to program the FPGA with `system.bit` generated in the steps above   
+(in `nanhu-g/ready_for_download/proto_vcu128/`).
 
 - Restart the x86 host machine to probe the FPGA as a PCIe device.
 
@@ -140,6 +141,9 @@ substitute the value of `DT_TARGET` from `XSTop` to `XSTop_pci` in the following
     `cd shell/software/build/xdma_drv && sudo insmod xdma.ko`
 
     If successful, a series of `/dev/xdma<N>*` devices will be created (`<N>` is an assigned number), and detailed log can be viewed in `sudo dmesg`.
+
+- Open minicom to setup a console as the XiangShan terminal.  
+    Please launch `sudo minicom -s /dev/xdma0_ttyUL0` to configure the terminal as 115200n8    
 
 - Load images & run.
 
