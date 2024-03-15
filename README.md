@@ -93,7 +93,9 @@ If you want to deploy prototyping on the NM37 card with NVMe SSD, please
 substitute the value of `DT_TARGET` from `XSTop` to `XSTop_pci` in the following command line.
 
 ### DTB generation
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 DT_TARGET=XSTop target_dt`   
+`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 DT_TARGET=XSTop target_dt` 
+
+If you want to generate the device tree blob that specifies the PCIe root port, please substitute the `DT_TARGET` variable by `XSTop_pci`   
 
 ### Linux kernel (v5.16) compilation
 `make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
