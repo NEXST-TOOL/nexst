@@ -3,7 +3,7 @@
 	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/work_farm.git
 [submodule "nanhu-g/software/opensbi"]
 	path = nanhu-g/software/opensbi
-	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/ICT-SERVE-FARM/opensbi.git
+	url = https://gitlab.agileserve.org.cn:8001/ICT-SERVE-FARM/opensbi.git
 [submodule "nanhu-g/hardware/xs-gen"]
 	path = nanhu-g/hardware/xs-gen
 	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/xiangshan.git
