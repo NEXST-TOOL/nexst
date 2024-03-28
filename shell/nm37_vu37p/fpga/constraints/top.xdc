@@ -33,12 +33,6 @@ set_property IOSTANDARD LVCMOS18 [get_ports pcie_ep_perstn]
 set_property PACKAGE_PIN J16 [get_ports {pcie_rp_perstn[0]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {pcie_rp_perstn[0]}]
 
-# PCIe RP GT physical location
-set_property LOC GTYE4_CHANNEL_X0Y12 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[3].*gen_gtye4_channel_inst[3].GTYE4_CHANNEL_PRIM_INST}]
-set_property LOC GTYE4_CHANNEL_X0Y13 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[3].*gen_gtye4_channel_inst[2].GTYE4_CHANNEL_PRIM_INST}]
-set_property LOC GTYE4_CHANNEL_X0Y14 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[3].*gen_gtye4_channel_inst[1].GTYE4_CHANNEL_PRIM_INST}]
-set_property LOC GTYE4_CHANNEL_X0Y15 [get_cells -hierarchical -filter {NAME =~ *gen_channel_container[3].*gen_gtye4_channel_inst[0].GTYE4_CHANNEL_PRIM_INST}]
-
 # DDR
 set_property PACKAGE_PIN BP44 [get_ports c0_ddr4_act_n]
 set_property PACKAGE_PIN BK45 [get_ports {c0_ddr4_adr[0]}]
