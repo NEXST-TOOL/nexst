@@ -75,7 +75,7 @@ linux_distclean: $(obj-modules-clean-y)
 rootfs: $(INITRAMFS_TXT)
 
 $(INITRAMFS_TXT):
-	$(EXPORT_CC_PATH) && $(MAKE) -C $(ROOTFS_SRC) RISCV=$(abspath $(riscv_LINUX_GCC_PATH)/..) CROSS_COMPILE=$(riscv_LINUX_GCC_PREFIX)
+	$(EXPORT_CC_PATH) && $(MAKE) -C $(ROOTFS_SRC) CROSS_COMPILE=$(riscv_LINUX_GCC_PREFIX)
 
 rootfs_clean:
 	$(MAKE) -C $(ROOTFS_SRC) clean

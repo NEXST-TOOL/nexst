@@ -55,11 +55,11 @@
 		#size-cells = <2>;
 		compatible = "freechips,rocketchip-unknown-soc", "simple-bus";
 		ranges;
-		L11: bus-error-unit {
-			compatible = "sifive,buserror0";
-			interrupt-parent = <&L4>;
-			interrupts = <65>;
-		};
+//		L11: bus-error-unit {
+//			compatible = "sifive,buserror0";
+//			interrupt-parent = <&L4>;
+//			interrupts = <65>;
+//		};
 		L12: cache-controller@39000000 {
 			reg = <0x0 0x39000000 0x0 0x10000>;
 			reg-names = "control";
@@ -70,17 +70,17 @@
 			reg = <0x0 0x38000000 0x0 0x10000>;
 			reg-names = "control";
 		};
-		L6: debug-controller@38020000 {
-			compatible = "sifive,debug-013", "riscv,debug-013";
-			debug-attach = "jtag";
-			interrupts-extended = <&L10 65535>;
-			reg = <0x0 0x38020000 0x0 0x1000>;
-			reg-names = "control";
-		};
-		L2: error-device@0 {
-			compatible = "sifive,error0";
-			reg = <0x0 0x0 0x0 0x80000000>;
-		};
+//		L6: debug-controller@38020000 {
+//			compatible = "sifive,debug-013", "riscv,debug-013";
+//			debug-attach = "jtag";
+//			interrupts-extended = <&L10 65535>;
+//			reg = <0x0 0x38020000 0x0 0x1000>;
+//			reg-names = "control";
+//		};
+//		L2: error-device@0 {
+//			compatible = "sifive,error0";
+//			reg = <0x0 0x0 0x0 0x80000000>;
+//		};
 		L4: interrupt-controller@3c000000 {
 			#interrupt-cells = <1>;
 			compatible = "riscv,plic0";
@@ -107,7 +107,43 @@
 		// 	interrupt-parent = <&L4>;
 		// 	interrupts = <1>;
 		// };
+		
+		eth_dma0: eth_dma@30100000 {
+			reg = <0x0 0x30100000 0x0 0x10000>;
+			interrupts = <6>,  /*axi_ethernet_dma mm2s INT*/
+				   		 <7>;  /*axi_ethernet_dma mm2s INT*/
+			interrupt-parent = <&L4>;
+		};
+		eth0: eth0@30200000 {
+			compatible = "xlnx,axi-ethernet-1.00.a";
+			reg = <0x0 0x30200000 0x0 0x40000>;
+			mac-address = [00 11 22 33 44 55];
+			device_type = "network";
+			clock-frequency = <250000000>;
+			axistream-connected = <&eth_dma0>;
+			axistream-control-connected = <&eth_dma0>;
+			phy-handle = <&ti_dp83867>;
+			phy-mode = "sgmii";
+			interrupts = <5>;  /*axi_ethernet INT*/
+			interrupt-parent = <&L4>;
+			mdio: mdio {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				xilinx_phy: phy@0 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <0>;
+				};
+
+				ti_dp83867: phy@3 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <3>;
+					ti,sgmii-ref-clock-output-enable;
+					ti,dp83867-rxctrl-strap-quirk;
+				};
+			};
+		};
 	};
 };
-
-

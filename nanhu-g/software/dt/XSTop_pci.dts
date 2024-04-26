@@ -55,11 +55,11 @@
 		#size-cells = <2>;
 		compatible = "freechips,rocketchip-unknown-soc", "simple-bus";
 		ranges;
-		L11: bus-error-unit {
-			compatible = "sifive,buserror0";
-			interrupt-parent = <&L4>;
-			interrupts = <65>;
-		};
+//		L11: bus-error-unit {
+//			compatible = "sifive,buserror0";
+//			interrupt-parent = <&L4>;
+//			interrupts = <65>;
+//		};
 		L12: cache-controller@39000000 {
 			reg = <0x0 0x39000000 0x0 0x10000>;
 			reg-names = "control";
@@ -92,19 +92,24 @@
 			reg = <0x0 0x3a000000 0x0 0x1000>;
 			reg-names = "control";
 		};
-
 		eth_dma0: eth_dma@30100000 {
-			reg = <0x30100000 0x10000>;
+			reg = <0x0 0x30100000 0x0 0x10000>;
+			interrupts = <6>,  /*axi_ethernet_dma mm2s INT*/
+				   		 <7>;  /*axi_ethernet_dma mm2s INT*/
+			interrupt-parent = <&L4>;
 		};
 		eth0: eth0@30200000 {
 			compatible = "xlnx,axi-ethernet-1.00.a";
-			reg = <0x30200000 0x40000>;
+			reg = <0x0 0x30200000 0x0 0x40000>;
 			mac-address = [00 11 22 33 44 55];
 			device_type = "network";
+			clock-frequency = <250000000>;
 			axistream-connected = <&eth_dma0>;
+			axistream-control-connected = <&eth_dma0>;
 			phy-handle = <&ti_dp83867>;
 			phy-mode = "sgmii";
-
+			interrupts = <5>;  /*axi_ethernet INT*/
+			interrupt-parent = <&L4>;
 			mdio: mdio {
 				#address-cells = <1>;
 				#size-cells = <0>;
@@ -125,7 +130,7 @@
 			};
 		};
 
-		pcie_rc: axi-pcie@60000000 {
+		pcie_rc: pcie@60000000 {
 			compatible = "xlnx,xdma-host-3.00";
 			device_type = "pci";
 			reg = <0x0 0x60000000 0x0 0x800000>; /*Root port 0 ctrl*/

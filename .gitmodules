@@ -12,4 +12,4 @@
 	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/dma_ip_drivers.git
 [submodule "nanhu-g/software/rootfs"]
 	path = nanhu-g/software/rootfs
-	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/rootfs.git
+	url = https://gitlab.agileserve.org.cn:8001/Gwins7/nexst-rootfs.git
