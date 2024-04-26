@@ -1,0 +1,1 @@
+请手动在`nanhu-g/software/rootfs/apps/busybox/networking/tls_aesgcm.c`内添加：`#define LONG_BIT 64`
