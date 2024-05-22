@@ -210,7 +210,7 @@ proc create_root_design { parentCell } {
     CONFIG.select_quad {GTY_Quad_227} \
     CONFIG.pl_link_cap_max_link_width {X16} \
     CONFIG.pl_link_cap_max_link_speed {8.0_GT/s} \
-    CONFIG.xdma_axi_intf_mm {AXI_Stream} \
+    CONFIG.xdma_axi_intf_mm {AXI_Memory_Mapped} \
     CONFIG.axilite_master_en {true} \
     CONFIG.axilite_master_size {32} \
     CONFIG.axilite_master_scale {Megabytes} \
@@ -468,7 +468,7 @@ proc create_root_design { parentCell } {
         [get_bd_intf_pins axi_ic_ddr_mem/M00_AXI]
 
   # PCIe EP AXI Bridge to DDR4
-  connect_bd_intf_net [get_bd_intf_pins xdma_ep/M_AXI_BYPASS] \
+  connect_bd_intf_net [get_bd_intf_pins xdma_ep/M_AXI] \
         [get_bd_intf_pins axi_ic_ddr_mem/S00_AXI]
 
   # Role to DDR4
@@ -531,44 +531,44 @@ proc create_root_design { parentCell } {
   # Address mapper for QDMA AXI MM
   # out_addr = {28'd0, base_reg[7:0], in_addr[27:0]}
 
-  set const_28b0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 const_28b0 ]
-  set_property -dict [list CONFIG.CONST_WIDTH {28} CONFIG.CONST_VAL {0x0} ] $const_28b0
+  #set const_28b0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 const_28b0 ]
+  #set_property -dict [list CONFIG.CONST_WIDTH {28} CONFIG.CONST_VAL {0x0} ] $const_28b0
 
-  set pair_list [list \
-    {xdma_ep m_axib_araddr axi_ic_ddr_mem S00_AXI_araddr} \
-    {xdma_ep m_axib_awaddr axi_ic_ddr_mem S00_AXI_awaddr} \
+  #set pair_list [list \
+    {xdma_ep m_axi_araddr axi_ic_ddr_mem S00_AXI_araddr} \
+    {xdma_ep m_axi_awaddr axi_ic_ddr_mem S00_AXI_awaddr} \
   ]
 
-  foreach pair ${pair_list} {
-    set src_blk   [lindex ${pair} 0]
-    set src_port  [lindex ${pair} 1]
-    set dst_blk   [lindex ${pair} 2]
-    set dst_port  [lindex ${pair} 3]
+  # foreach pair ${pair_list} {
+  #   set src_blk   [lindex ${pair} 0]
+  #   set src_port  [lindex ${pair} 1]
+  #   set dst_blk   [lindex ${pair} 2]
+  #   set dst_port  [lindex ${pair} 3]
 
-    set slice [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 slice_${src_blk}_${src_port} ]
-    set_property -dict [list CONFIG.DIN_WIDTH {64} CONFIG.DIN_FROM {27} CONFIG.DIN_TO {0}] $slice
+  #   set slice [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 slice_${src_blk}_${src_port} ]
+  #   set_property -dict [list CONFIG.DIN_WIDTH {64} CONFIG.DIN_FROM {27} CONFIG.DIN_TO {0}] $slice
 
-    set concat [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 concat_${dst_blk}_${dst_port} ]
-    set_property -dict [list CONFIG.NUM_PORTS {3}] $concat
+  #   set concat [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 concat_${dst_blk}_${dst_port} ]
+  #   set_property -dict [list CONFIG.NUM_PORTS {3}] $concat
 
-    connect_bd_net [get_bd_pins ${src_blk}/${src_port}] [get_bd_pins ${slice}/Din]
-    connect_bd_net [get_bd_pins ${slice}/Dout] [get_bd_pins ${concat}/In0]
-    connect_bd_net [get_bd_pins axi_mm_base_reg/gpio_io_o] [get_bd_pins ${concat}/In1]
-    connect_bd_net [get_bd_pins const_28b0/dout] [get_bd_pins ${concat}/In2]
-    connect_bd_net [get_bd_pins ${concat}/dout] [get_bd_pins ${dst_blk}/${dst_port}]
-  }
+  #   connect_bd_net [get_bd_pins ${src_blk}/${src_port}] [get_bd_pins ${slice}/Din]
+  #   connect_bd_net [get_bd_pins ${slice}/Dout] [get_bd_pins ${concat}/In0]
+  #   connect_bd_net [get_bd_pins axi_mm_base_reg/gpio_io_o] [get_bd_pins ${concat}/In1]
+  #   connect_bd_net [get_bd_pins const_28b0/dout] [get_bd_pins ${concat}/In2]
+  #   connect_bd_net [get_bd_pins ${concat}/dout] [get_bd_pins ${dst_blk}/${dst_port}]
+  # }
 
 #=============================================
 # AXI stream interface connection
 #=============================================
 
-  connect_bd_intf_net [get_bd_intf_pins u_role/m_axis_trace] \
+#  connect_bd_intf_net [get_bd_intf_pins u_role/m_axis_trace] \
       [get_bd_intf_pins role_decoupler/rp_axis_trace]
 
-  connect_bd_intf_net [get_bd_intf_pins role_decoupler/s_axis_trace] \
+#  connect_bd_intf_net [get_bd_intf_pins role_decoupler/s_axis_trace] \
       [get_bd_intf_pins xdma_ep/S_AXIS_C2H_0]
 
-  connect_bd_net [get_bd_pins const_vcc/dout] \
+#  connect_bd_net [get_bd_pins const_vcc/dout] \
       [get_bd_pins xdma_ep/m_axis_h2c_tready_0]
 
 #==============================================
@@ -669,6 +669,18 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_1_AXI] [get_bd_intf_pins role_decoupler/s_axi_io]
   connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_2_AXI] [get_bd_intf_pins role_decoupler/s_axi_ctrl]
 
+    # Create instance: system_ila, and set properties
+  set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
+  set_property -dict [ list \
+    CONFIG.C_NUM_MONITOR_SLOTS {2} \
+  ] $system_ila_0
+
+  connect_bd_net [get_bd_pins xdma_ep/axi_aclk] [get_bd_pins system_ila_0/clk]
+  connect_bd_net [get_bd_pins xdma_ep/axi_aresetn] [get_bd_pins system_ila_0/resetn]
+
+  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_0_AXI] [get_bd_intf_pins xdma_ep/M_AXI]
+  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_1_AXI] [get_bd_intf_pins xdma_ep/M_AXI_LITE]
+
 #=============================================
 # Address segments
 #=============================================
@@ -679,7 +691,7 @@ proc create_root_design { parentCell } {
   create_bd_addr_seg -range 0x1000 -offset 0x10011000 [get_bd_addr_spaces xdma_ep/M_AXI_LITE] [get_bd_addr_segs host_uart/S_AXI/Reg] PCIE_EP_BAR_HOST_UART
   create_bd_addr_seg -range 0x1000 -offset 0x10012000 [get_bd_addr_spaces xdma_ep/M_AXI_LITE] [get_bd_addr_segs role_decoupler/s_axi_reg/Reg] PCIE_EP_BAR_ROLE_DECOUPLER
   create_bd_addr_seg -range 0x100000 -offset 0x10100000 [get_bd_addr_spaces xdma_ep/M_AXI_LITE] [get_bd_addr_segs u_role/s_axi_ctrl/reg0] PCIE_EP_BAR_ROLE_CTRL
-  create_bd_addr_seg -range 0x100000000 -offset 0x0 [get_bd_addr_spaces xdma_ep/M_AXI_BYPASS] [get_bd_addr_segs ddr4_mig/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] PCIE_EP_BAR_DDR
+  create_bd_addr_seg -range 0x100000000 -offset 0x0 [get_bd_addr_spaces xdma_ep/M_AXI] [get_bd_addr_segs ddr4_mig/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] PCIE_EP_BAR_DDR
 
   ## Role address space
   create_bd_addr_seg -range 0x10000 -offset 0x10000000 [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs bootrom_bram_ctrl/S_AXI/Mem0] ROLE_BOOTROM
