@@ -92,6 +92,39 @@
 			reg = <0x0 0x3a000000 0x0 0x1000>;
 			reg-names = "control";
 		};
+
+		eth_dma0: eth_dma@30100000 {
+			reg = <0x30100000 0x10000>;
+		};
+		eth0: eth0@30200000 {
+			compatible = "xlnx,axi-ethernet-1.00.a";
+			reg = <0x30200000 0x40000>;
+			mac-address = [00 11 22 33 44 55];
+			device_type = "network";
+			axistream-connected = <&eth_dma0>;
+			phy-handle = <&ti_dp83867>;
+			phy-mode = "sgmii";
+
+			mdio: mdio {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				xilinx_phy: phy@0 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <0>;
+				};
+
+				ti_dp83867: phy@3 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <3>;
+					ti,sgmii-ref-clock-output-enable;
+					ti,dp83867-rxctrl-strap-quirk;
+				};
+			};
+		};
+
 		pcie_rc: axi-pcie@60000000 {
 			compatible = "xlnx,xdma-host-3.00";
 			device_type = "pci";
@@ -125,7 +158,6 @@
 					#interrupt-cells = <1>;
 				};
 			};
-
     	};
     };
 };

@@ -1,0 +1,144 @@
+/dts-v1/;
+
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	compatible = "freechips,rocketchip-unknown-dev";
+	model = "freechips,rocketchip-unknown";
+
+	chosen {
+		bootargs = "console=ttyS0,115200 earlyprintk";
+		stdout-path = "serial0:115200n8";
+	};
+
+	aliases {
+		serial0 = &uart0;
+		spi0 = &qspi0;
+		eth0 = &eth0;
+		i2c0 = &i2c0;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+	ram0: memory@80000000 {
+		device_type = "memory";
+		reg = <0x80000000 0x20000000>;
+	};
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "freechips,rocketchip-unknown-soc", "simple-bus";
+		ranges;
+		clint0: clint@2000000 {
+			compatible = "riscv,clint0";
+			reg = <0x2000000 0x10000>;
+			reg-names = "control";
+		};
+		error0: error-device@3000 {
+			compatible = "sifive,error0";
+			reg = <0x3000 0x1000>;
+		};
+		ext_int0: external-interrupts {
+			interrupt-parent = <&plic0>;
+			interrupts = <1 2 3 4 5 6>;
+		};
+		plic0: interrupt-controller@c000000 {
+			#interrupt-cells = <1>;
+			compatible = "riscv,plic0";
+			interrupt-controller;
+			reg = <0xc000000 0x4000000>;
+			reg-names = "control";
+			riscv,max-priority = <7>;
+			riscv,ndev = <6>;
+		};
+		mmio0: mmio-port-axi4@60000000 {
+			#address-cells = <1>;
+			#size-cells = <1>;
+			compatible = "simple-bus";
+			ranges = <0x60000000 0x60000000 0x20000000>;
+		};
+		boot_rom0: rom@10000 {
+			compatible = "sifive,rom0";
+			reg = <0x10000 0x10000>;
+			reg-names = "mem";
+		};
+		pbus0: subsystem_pbus_clock {
+			#clock-cells = <0>;
+			clock-frequency = <100000000>;
+			clock-output-names = "subsystem_pbus_clock";
+			compatible = "fixed-clock";
+		};
+		uart0: serial@60200000 {
+			compatible = "ns16550a";
+			reg = <0x60200000 0x1000>;
+			reg-shift = <2>;
+			reg-offset = <0x1000>;
+			clock-frequency = <100000000>;
+			interrupts-extended = <&plic0 0>;
+		};
+		qspi0: qspi@60100000 {
+			compatible = "xlnx,xps-spi-2.00.a";
+			reg = <0x60100000 0x1000>;
+			fifo-size = <256>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			interrupts-extended = <&plic0 1>;
+
+			flash@0 {
+				compatible = "mt25qu02g", "jedec,spi-nor";
+				reg = <0>;
+			};
+		};
+		eth_dma0: eth_dma@60300000 {
+			reg = <0x60300000 0x10000>;
+		};
+		eth0: eth0@60400000 {
+			compatible = "xlnx,axi-ethernet-1.00.a";
+			reg = <0x60400000 0x10000>;
+			mac-address = [00 11 22 33 44 55];
+			device_type = "network";
+			axistream-connected = <&eth_dma0>;
+			phy-handle = <&ti_dp83867>;
+			phy-mode = "sgmii";
+
+			mdio: mdio {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				reset-gpios = <&tca6416a 6 GPIO_ACTIVE_LOW>;
+				reset-delay-us = <2>;
+
+				xilinx_phy: phy@0 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <0>;
+				};
+
+				ti_dp83867: phy@3 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <3>;
+					ti,sgmii-ref-clock-output-enable;
+					ti,dp83867-rxctrl-strap-quirk;
+				};
+			};
+		};
+		i2c0: i2c@60500000 {
+			compatible = "xlnx,xps-iic-2.00.a";
+			reg = <0x60500000 0x10000>;
+			#size-cells = <0>;
+			#address-cells = <1>;
+			clock-frequency = <1000>;
+
+			tca6416a: gpio@20 {
+				compatible = "ti,tca6416";
+				reg = <0x20>;
+				#gpio-cells = <2>;
+				gpio-controller;
+			};
+		};
+	};
+};
