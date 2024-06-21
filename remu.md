@@ -4,7 +4,7 @@
 
 2. Compile REMU framework
 
-`` make -C tools/remu -j`nprocs` ``
+`` make -C tools/remu ``
 
 # Hardware Generation
 
