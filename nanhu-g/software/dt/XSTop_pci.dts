@@ -92,40 +92,68 @@
 			reg = <0x0 0x3a000000 0x0 0x1000>;
 			reg-names = "control";
 		};
+
+		axi_clk: axi_clk {
+			#clock-cells = <0>;
+			clock-frequency = <250000000>;
+			clock-output-names = "axi_clk";
+			compatible = "fixed-clock";
+		};
 		eth_dma0: eth_dma@30100000 {
 			reg = <0x0 0x30100000 0x0 0x10000>;
-			interrupts = <6>,  /*axi_ethernet_dma mm2s INT*/
-				   		 <7>;  /*axi_ethernet_dma mm2s INT*/
+			interrupts = <7>, <6>;  /*axi_ethernet_dma mm2s/s2mm INT*/
 			interrupt-parent = <&L4>;
+			xlnx,addrwidth = /bits/ 8 <0x20>;
+			xlnx,include-sg;
+			xlnx,include-dre;
+			dma-channel@30100000 {
+				compatible = "xlnx,axi-dma-mm2s-channel";
+				dma-channels = <0x1>;
+				interrupts = <7>;
+				xlnx,datawidth = <0x20>;
+				xlnx,device-id = <0x0>;
+			};
+			dma-channel@30100030 {
+				compatible = "xlnx,axi-dma-s2mm-channel";
+				dma-channels = <0x1>;
+				interrupts = <6>;
+				xlnx,datawidth = <0x20>;
+				xlnx,device-id = <0x0>;
+			};
 		};
-		eth0: eth0@30200000 {
+		eth0: ethernet@30200000 {
 			compatible = "xlnx,axi-ethernet-1.00.a";
 			reg = <0x0 0x30200000 0x0 0x40000>;
+			reg-names = "control";
+			status = "okay";
 			mac-address = [00 11 22 33 44 55];
+			clocks = <&axi_clk>;
 			device_type = "network";
-			clock-frequency = <250000000>;
 			axistream-connected = <&eth_dma0>;
-			axistream-control-connected = <&eth_dma0>;
 			phy-handle = <&ti_dp83867>;
 			phy-mode = "sgmii";
+			xlnx,txcsum = <0x2>;
+			xlnx,rxcsum = <0x2>;
+        	xlnx,rxmem = <0x800>;
 			interrupts = <5>;  /*axi_ethernet INT*/
 			interrupt-parent = <&L4>;
 			mdio: mdio {
 				#address-cells = <1>;
 				#size-cells = <0>;
-
-				xilinx_phy: phy@0 {
+				xilinx_phy: phy@2 {
 					#phy-cells = <1>;
 					device_type = "ethernet-phy";
-					reg = <0>;
+					reg = <2>;
 				};
-
 				ti_dp83867: phy@3 {
 					#phy-cells = <1>;
 					device_type = "ethernet-phy";
 					reg = <3>;
-					ti,sgmii-ref-clock-output-enable;
 					ti,dp83867-rxctrl-strap-quirk;
+					ti,sgmii-ref-clock-output-enable;
+					ti,fifo-depth = <0x1>;
+					ti,rx-internal-delay = <0x8>;
+					ti,tx-internal-delay = <0xa>;
 				};
 			};
 		};

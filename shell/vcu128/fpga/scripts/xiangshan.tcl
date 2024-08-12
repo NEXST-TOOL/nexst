@@ -143,9 +143,9 @@ xilinx.com:ip:util_vector_logic:2.0\
 xilinx.com:ip:axi_uartlite:2.0\
 xilinx.com:ip:c_counter_binary:12.0\
 xilinx.com:ip:xlslice:1.0\
+xilinx.com:ip:system_ila:1.1\
 xilinx.com:ip:util_ds_buf:2.1\
 xilinx.com:ip:xlconcat:2.1\
-xilinx.com:ip:system_ila:1.1\
 xilinx.com:ip:xdma:4.1\
 "
 
@@ -314,7 +314,7 @@ proc create_root_design { parentCell } {
    CONFIG.ETHERNET_BOARD_INTERFACE {sgmii_lvds} \
    CONFIG.InstantiateBitslice0 {true} \
    CONFIG.MDIO_BOARD_INTERFACE {mdio_mdc} \
-   CONFIG.PHYADDR {0} \
+   CONFIG.PHYADDR {2} \
    CONFIG.PHYRST_BOARD_INTERFACE_DUMMY_PORT {dummy_port_in} \
    CONFIG.PHY_TYPE {SGMII} \
    CONFIG.RXCSUM {Full} \
@@ -457,6 +457,15 @@ proc create_root_design { parentCell } {
    CONFIG.DIN_WIDTH {28} \
  ] $led_counter_slice
 
+  # Create instance: net_system_ila, and set properties
+  set net_system_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 net_system_ila ]
+  set_property -dict [ list \
+   CONFIG.C_BRAM_CNT {6} \
+   CONFIG.C_MON_TYPE {MIX} \
+   CONFIG.C_NUM_MONITOR_SLOTS {3} \
+   CONFIG.C_NUM_OF_PROBES {4} \
+ ] $net_system_ila
+
   # Create instance: pcie_ep_ref_clk_buf, and set properties
   set pcie_ep_ref_clk_buf [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.1 pcie_ep_ref_clk_buf ]
   set_property -dict [ list \
@@ -556,10 +565,13 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net S00_AXI_1 [get_bd_intf_pins axi_ic_bootrom/S00_AXI] [get_bd_intf_pins axi_ic_role_io/M01_AXI]
   connect_bd_intf_net -intf_net S00_AXI_2 [get_bd_intf_pins axi_ic_pcie_rp_mmio/S00_AXI] [get_bd_intf_pins axi_ic_role_io/M02_AXI]
   connect_bd_intf_net -intf_net S00_AXI_3 [get_bd_intf_pins axi_dma_0/M_AXI_SG] [get_bd_intf_pins axi_net_interconnect/S00_AXI]
+connect_bd_intf_net -intf_net [get_bd_intf_nets S00_AXI_3] [get_bd_intf_pins axi_dma_0/M_AXI_SG] [get_bd_intf_pins net_system_ila/SLOT_0_AXI]
   connect_bd_intf_net -intf_net S00_AXI_4 [get_bd_intf_pins axi_ic_ddr_mem/S00_AXI] [get_bd_intf_pins xdma_ep/M_AXI]
   connect_bd_intf_net -intf_net S01_AXI_1 [get_bd_intf_pins axi_ic_bootrom/S01_AXI] [get_bd_intf_pins axi_ic_ep_bar_axi_lite/M02_AXI]
   connect_bd_intf_net -intf_net S01_AXI_2 [get_bd_intf_pins axi_dma_0/M_AXI_MM2S] [get_bd_intf_pins axi_net_interconnect/S01_AXI]
+connect_bd_intf_net -intf_net [get_bd_intf_nets S01_AXI_2] [get_bd_intf_pins axi_dma_0/M_AXI_MM2S] [get_bd_intf_pins net_system_ila/SLOT_1_AXI]
   connect_bd_intf_net -intf_net S02_AXI_1 [get_bd_intf_pins axi_dma_0/M_AXI_S2MM] [get_bd_intf_pins axi_net_interconnect/S02_AXI]
+connect_bd_intf_net -intf_net [get_bd_intf_nets S02_AXI_1] [get_bd_intf_pins axi_dma_0/M_AXI_S2MM] [get_bd_intf_pins net_system_ila/SLOT_2_AXI]
   connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_CNTRL [get_bd_intf_pins axi_dma_0/M_AXIS_CNTRL] [get_bd_intf_pins axi_ethernet_0/s_axis_txc]
   connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_MM2S [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S] [get_bd_intf_pins axi_ethernet_0/s_axis_txd]
   connect_bd_intf_net -intf_net axi_dwidth_converter_0_M_AXI [get_bd_intf_pins axi_dwidth_converter_0/M_AXI] [get_bd_intf_pins axi_ic_pcie_rp_dma/S01_AXI]
@@ -599,13 +611,14 @@ connect_bd_intf_net -intf_net [get_bd_intf_nets xdma_rp_M_AXI_B] [get_bd_intf_pi
 
   # Create port connections
   connect_bd_net -net axi_dma_0_mm2s_cntrl_reset_out_n [get_bd_pins axi_dma_0/mm2s_cntrl_reset_out_n] [get_bd_pins axi_ethernet_0/axi_txc_arstn]
-  connect_bd_net -net axi_dma_0_mm2s_introut [get_bd_pins axi_dma_0/mm2s_introut] [get_bd_pins role_intr_concat/In6]
+  connect_bd_net -net axi_dma_0_mm2s_introut [get_bd_pins axi_dma_0/mm2s_introut] [get_bd_pins net_system_ila/probe2] [get_bd_pins role_intr_concat/In6]
   connect_bd_net -net axi_dma_0_mm2s_prmry_reset_out_n [get_bd_pins axi_dma_0/mm2s_prmry_reset_out_n] [get_bd_pins axi_ethernet_0/axi_txd_arstn]
-  connect_bd_net -net axi_dma_0_s2mm_introut [get_bd_pins axi_dma_0/s2mm_introut] [get_bd_pins role_intr_concat/In5]
+  connect_bd_net -net axi_dma_0_s2mm_introut [get_bd_pins axi_dma_0/s2mm_introut] [get_bd_pins net_system_ila/probe3] [get_bd_pins role_intr_concat/In5]
   connect_bd_net -net axi_dma_0_s2mm_prmry_reset_out_n [get_bd_pins axi_dma_0/s2mm_prmry_reset_out_n] [get_bd_pins axi_ethernet_0/axi_rxd_arstn]
   connect_bd_net -net axi_dma_0_s2mm_sts_reset_out_n [get_bd_pins axi_dma_0/s2mm_sts_reset_out_n] [get_bd_pins axi_ethernet_0/axi_rxs_arstn]
-  connect_bd_net -net axi_ethernet_0_interrupt [get_bd_pins axi_ethernet_0/interrupt] [get_bd_pins role_intr_concat/In4]
-  connect_bd_net -net const_gnd_dout [get_bd_pins const_gnd/dout] [get_bd_pins role_intr_concat/In7] [get_bd_pins role_intr_concat/In8] [get_bd_pins role_intr_concat/In9] [get_bd_pins role_intr_concat/In10] [get_bd_pins role_intr_concat/In11] [get_bd_pins role_intr_concat/In12] [get_bd_pins role_intr_concat/In13] [get_bd_pins role_intr_concat/In14] [get_bd_pins role_intr_concat/In15]
+  connect_bd_net -net axi_ethernet_0_interrupt [get_bd_pins axi_ethernet_0/interrupt] [get_bd_pins net_system_ila/probe1] [get_bd_pins role_intr_concat/In4]
+  connect_bd_net -net axi_ethernet_0_mac_irq [get_bd_pins axi_ethernet_0/mac_irq] [get_bd_pins net_system_ila/probe0] [get_bd_pins role_intr_concat/In7]
+  connect_bd_net -net const_gnd_dout [get_bd_pins const_gnd/dout] [get_bd_pins role_intr_concat/In8] [get_bd_pins role_intr_concat/In9] [get_bd_pins role_intr_concat/In10] [get_bd_pins role_intr_concat/In11] [get_bd_pins role_intr_concat/In12] [get_bd_pins role_intr_concat/In13] [get_bd_pins role_intr_concat/In14] [get_bd_pins role_intr_concat/In15]
   connect_bd_net -net const_vcc_dout [get_bd_pins const_vcc/dout] [get_bd_pins ddr4_mig_sync_reset/dcm_locked] [get_bd_pins pcie_rp_role_sync_reset/dcm_locked]
   connect_bd_net -net ddr4_mig_c0_ddr4_ui_clk [get_bd_pins axi_ic_ddr_mem/M00_ACLK] [get_bd_pins ddr4_mig/c0_ddr4_ui_clk] [get_bd_pins ddr4_mig_sync_reset/slowest_sync_clk]
   connect_bd_net -net ddr4_mig_sync_reset_peripheral_aresetn [get_bd_pins axi_ic_ddr_mem/M00_ARESETN] [get_bd_pins ddr4_mig/c0_ddr4_aresetn] [get_bd_pins ddr4_mig_sync_reset/peripheral_aresetn]
@@ -630,8 +643,8 @@ connect_bd_intf_net -intf_net [get_bd_intf_nets xdma_rp_M_AXI_B] [get_bd_intf_pi
   connect_bd_net -net role_intr_concat_dout [get_bd_pins role_intr_concat/dout] [get_bd_pins u_role/s2r_intr]
   connect_bd_net -net role_uart_interrupt [get_bd_pins role_intr_concat/In0] [get_bd_pins role_uart/interrupt]
   connect_bd_net -net role_uart_tx [get_bd_pins host_uart/rx] [get_bd_pins role_uart/tx]
-  connect_bd_net -net xdma_ep_axi_aclk [get_bd_pins axi_dma_0/m_axi_mm2s_aclk] [get_bd_pins axi_dma_0/m_axi_s2mm_aclk] [get_bd_pins axi_dma_0/m_axi_sg_aclk] [get_bd_pins axi_dma_0/s_axi_lite_aclk] [get_bd_pins axi_dwidth_converter_0/s_axi_aclk] [get_bd_pins axi_ethernet_0/axis_clk] [get_bd_pins axi_ethernet_0/s_axi_lite_clk] [get_bd_pins axi_ic_bootrom/ACLK] [get_bd_pins axi_ic_bootrom/M00_ACLK] [get_bd_pins axi_ic_bootrom/S00_ACLK] [get_bd_pins axi_ic_bootrom/S01_ACLK] [get_bd_pins axi_ic_ddr_mem/ACLK] [get_bd_pins axi_ic_ddr_mem/S00_ACLK] [get_bd_pins axi_ic_ddr_mem/S01_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/M00_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/M01_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/M02_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/S00_ACLK] [get_bd_pins axi_ic_pcie_rp_dma/ACLK] [get_bd_pins axi_ic_pcie_rp_dma/M00_ACLK] [get_bd_pins axi_ic_pcie_rp_dma/S01_ACLK] [get_bd_pins axi_ic_pcie_rp_mmio/ACLK] [get_bd_pins axi_ic_pcie_rp_mmio/S00_ACLK] [get_bd_pins axi_ic_role_io/ACLK] [get_bd_pins axi_ic_role_io/M00_ACLK] [get_bd_pins axi_ic_role_io/M01_ACLK] [get_bd_pins axi_ic_role_io/M02_ACLK] [get_bd_pins axi_ic_role_io/M03_ACLK] [get_bd_pins axi_ic_role_io/M04_ACLK] [get_bd_pins axi_ic_role_io/S00_ACLK] [get_bd_pins axi_net_interconnect/ACLK] [get_bd_pins axi_net_interconnect/M00_ACLK] [get_bd_pins axi_net_interconnect/S00_ACLK] [get_bd_pins axi_net_interconnect/S01_ACLK] [get_bd_pins axi_net_interconnect/S02_ACLK] [get_bd_pins bootrom_bram_ctrl/s_axi_aclk] [get_bd_pins host_uart/s_axi_aclk] [get_bd_pins led_counter/CLK] [get_bd_pins pcie_rp_role_sync_reset/slowest_sync_clk] [get_bd_pins role_uart/s_axi_aclk] [get_bd_pins system_ila/clk] [get_bd_pins u_role/aclk] [get_bd_pins xdma_ep/axi_aclk]
-  connect_bd_net -net xdma_ep_axi_aresetn [get_bd_pins axi_dma_0/axi_resetn] [get_bd_pins axi_dwidth_converter_0/s_axi_aresetn] [get_bd_pins axi_ethernet_0/s_axi_lite_resetn] [get_bd_pins axi_ic_bootrom/ARESETN] [get_bd_pins axi_ic_bootrom/M00_ARESETN] [get_bd_pins axi_ic_bootrom/S00_ARESETN] [get_bd_pins axi_ic_bootrom/S01_ARESETN] [get_bd_pins axi_ic_ddr_mem/ARESETN] [get_bd_pins axi_ic_ddr_mem/S00_ARESETN] [get_bd_pins axi_ic_ddr_mem/S01_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/M00_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/M01_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/M02_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/S00_ARESETN] [get_bd_pins axi_ic_pcie_rp_dma/S01_ARESETN] [get_bd_pins axi_ic_role_io/ARESETN] [get_bd_pins axi_ic_role_io/M00_ARESETN] [get_bd_pins axi_ic_role_io/M01_ARESETN] [get_bd_pins axi_ic_role_io/M03_ARESETN] [get_bd_pins axi_ic_role_io/M04_ARESETN] [get_bd_pins axi_ic_role_io/S00_ARESETN] [get_bd_pins axi_net_interconnect/ARESETN] [get_bd_pins axi_net_interconnect/M00_ARESETN] [get_bd_pins axi_net_interconnect/S00_ARESETN] [get_bd_pins axi_net_interconnect/S01_ARESETN] [get_bd_pins axi_net_interconnect/S02_ARESETN] [get_bd_pins bootrom_bram_ctrl/s_axi_aresetn] [get_bd_pins host_uart/s_axi_aresetn] [get_bd_pins role_uart/s_axi_aresetn] [get_bd_pins system_ila/resetn] [get_bd_pins u_role/aresetn] [get_bd_pins xdma_ep/axi_aresetn]
+  connect_bd_net -net xdma_ep_axi_aclk [get_bd_pins axi_dma_0/m_axi_mm2s_aclk] [get_bd_pins axi_dma_0/m_axi_s2mm_aclk] [get_bd_pins axi_dma_0/m_axi_sg_aclk] [get_bd_pins axi_dma_0/s_axi_lite_aclk] [get_bd_pins axi_dwidth_converter_0/s_axi_aclk] [get_bd_pins axi_ethernet_0/axis_clk] [get_bd_pins axi_ethernet_0/s_axi_lite_clk] [get_bd_pins axi_ic_bootrom/ACLK] [get_bd_pins axi_ic_bootrom/M00_ACLK] [get_bd_pins axi_ic_bootrom/S00_ACLK] [get_bd_pins axi_ic_bootrom/S01_ACLK] [get_bd_pins axi_ic_ddr_mem/ACLK] [get_bd_pins axi_ic_ddr_mem/S00_ACLK] [get_bd_pins axi_ic_ddr_mem/S01_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/M00_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/M01_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/M02_ACLK] [get_bd_pins axi_ic_ep_bar_axi_lite/S00_ACLK] [get_bd_pins axi_ic_pcie_rp_dma/ACLK] [get_bd_pins axi_ic_pcie_rp_dma/M00_ACLK] [get_bd_pins axi_ic_pcie_rp_dma/S01_ACLK] [get_bd_pins axi_ic_pcie_rp_mmio/ACLK] [get_bd_pins axi_ic_pcie_rp_mmio/S00_ACLK] [get_bd_pins axi_ic_role_io/ACLK] [get_bd_pins axi_ic_role_io/M00_ACLK] [get_bd_pins axi_ic_role_io/M01_ACLK] [get_bd_pins axi_ic_role_io/M02_ACLK] [get_bd_pins axi_ic_role_io/M03_ACLK] [get_bd_pins axi_ic_role_io/M04_ACLK] [get_bd_pins axi_ic_role_io/S00_ACLK] [get_bd_pins axi_net_interconnect/ACLK] [get_bd_pins axi_net_interconnect/M00_ACLK] [get_bd_pins axi_net_interconnect/S00_ACLK] [get_bd_pins axi_net_interconnect/S01_ACLK] [get_bd_pins axi_net_interconnect/S02_ACLK] [get_bd_pins bootrom_bram_ctrl/s_axi_aclk] [get_bd_pins host_uart/s_axi_aclk] [get_bd_pins led_counter/CLK] [get_bd_pins net_system_ila/clk] [get_bd_pins pcie_rp_role_sync_reset/slowest_sync_clk] [get_bd_pins role_uart/s_axi_aclk] [get_bd_pins system_ila/clk] [get_bd_pins u_role/aclk] [get_bd_pins xdma_ep/axi_aclk]
+  connect_bd_net -net xdma_ep_axi_aresetn [get_bd_pins axi_dma_0/axi_resetn] [get_bd_pins axi_dwidth_converter_0/s_axi_aresetn] [get_bd_pins axi_ethernet_0/s_axi_lite_resetn] [get_bd_pins axi_ic_bootrom/ARESETN] [get_bd_pins axi_ic_bootrom/M00_ARESETN] [get_bd_pins axi_ic_bootrom/S00_ARESETN] [get_bd_pins axi_ic_bootrom/S01_ARESETN] [get_bd_pins axi_ic_ddr_mem/ARESETN] [get_bd_pins axi_ic_ddr_mem/S00_ARESETN] [get_bd_pins axi_ic_ddr_mem/S01_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/M00_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/M01_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/M02_ARESETN] [get_bd_pins axi_ic_ep_bar_axi_lite/S00_ARESETN] [get_bd_pins axi_ic_pcie_rp_dma/S01_ARESETN] [get_bd_pins axi_ic_role_io/ARESETN] [get_bd_pins axi_ic_role_io/M00_ARESETN] [get_bd_pins axi_ic_role_io/M01_ARESETN] [get_bd_pins axi_ic_role_io/M03_ARESETN] [get_bd_pins axi_ic_role_io/M04_ARESETN] [get_bd_pins axi_ic_role_io/S00_ARESETN] [get_bd_pins axi_net_interconnect/ARESETN] [get_bd_pins axi_net_interconnect/M00_ARESETN] [get_bd_pins axi_net_interconnect/S00_ARESETN] [get_bd_pins axi_net_interconnect/S01_ARESETN] [get_bd_pins axi_net_interconnect/S02_ARESETN] [get_bd_pins bootrom_bram_ctrl/s_axi_aresetn] [get_bd_pins host_uart/s_axi_aresetn] [get_bd_pins net_system_ila/resetn] [get_bd_pins role_uart/s_axi_aresetn] [get_bd_pins system_ila/resetn] [get_bd_pins u_role/aresetn] [get_bd_pins xdma_ep/axi_aresetn]
   connect_bd_net -net xdma_ep_pci_exp_txn [get_bd_ports pcie_ep_txn] [get_bd_pins xdma_ep/pci_exp_txn]
   connect_bd_net -net xdma_ep_pci_exp_txp [get_bd_ports pcie_ep_txp] [get_bd_pins xdma_ep/pci_exp_txp]
   connect_bd_net -net xdma_ep_user_lnk_up [get_bd_ports pcie_ep_lnk_up] [get_bd_pins xdma_ep/user_lnk_up]
