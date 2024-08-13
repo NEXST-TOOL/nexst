@@ -154,6 +154,8 @@
 			mdio: mdio {
 				#address-cells = <1>;
 				#size-cells = <0>;
+				reset-gpios = <&tca6416a 6 1>;
+				reset-delay-us = <2>;
 				xilinx_phy: phy@2 {
 					#phy-cells = <1>;
 					device_type = "ethernet-phy";
@@ -169,6 +171,21 @@
 					ti,rx-internal-delay = <0x8>;
 					ti,tx-internal-delay = <0xa>;
 				};
+			};
+		};
+		i2c0: i2c@30300000 {
+			compatible = "xlnx,xps-iic-2.00.a";
+			reg = <0x0 0x30300000 0x0 0x10000>;
+			#size-cells = <0>;
+			#address-cells = <1>;
+			interrupt-parent = <&L4>;
+			interrupts = <8>;
+			clock-frequency = <1000000>;
+			tca6416a: gpio@20 {
+				compatible = "ti,tca6416";
+				reg = <0x20>;
+				#gpio-cells = <2>;
+				gpio-controller;
 			};
 		};
 	};
