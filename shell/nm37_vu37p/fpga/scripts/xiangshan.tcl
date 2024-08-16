@@ -194,50 +194,153 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
     CONFIG.NUM_MI {1} \
     CONFIG.NUM_SI {2} \
-    CONFIG.M00_HAS_REGSLICE {1} \
-    CONFIG.S00_HAS_REGSLICE {1} \
-    CONFIG.S01_HAS_REGSLICE {1} \
   ] $axi_ic_ddr_mem
+
+  set i 1
+  while {$i < 1} {
+        set axi_reg_slice_name axi_ic_ddr_mem_reg_slice_M0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+
+        incr i
+  }
+
+  set i 1
+  while {$i < 2} {
+        set axi_reg_slice_name axi_ic_ddr_mem_reg_slice_S0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+                
+        incr i
+  }
 
   # Create instance: AXI interconnect for PCIe EP AXI-Lite BAR interface
   set axi_ic_ep_bar_axi_lite [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_ep_bar_axi_lite ]
-  set_property -dict [ list CONFIG.NUM_MI {5} \
+  set_property -dict [ list CONFIG.NUM_MI {4} \
                 CONFIG.NUM_SI {1} \
-                CONFIG.S00_HAS_REGSLICE {1} \
   ] $axi_ic_ep_bar_axi_lite
+
+  set i 1
+  while {$i < 2} {
+        set axi_reg_slice_name axi_ic_ep_bar_axi_lite_reg_slice_M0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
+
+  set i 1
+  while {$i < 1} {
+        set axi_reg_slice_name axi_ic_ep_bar_axi_lite_reg_slice_S0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
 
   # Create instance: AXI interconnect for Role MMIO
   set axi_ic_role_io [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_role_io ]
   set_property -dict [ list \
     CONFIG.NUM_MI {3} \
     CONFIG.NUM_SI {1} \
-    CONFIG.S00_HAS_REGSLICE {1} \
   ] $axi_ic_role_io
+
+  set i 3
+  while {$i < 3} {
+        set axi_reg_slice_name axi_ic_role_io_reg_slice_M0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
+
+  set i 0
+  while {$i < 1} {
+        set axi_reg_slice_name axi_ic_role_io_reg_slice_S0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
 
   # Create instance: AXI interconnect for Boot ROM
   set axi_ic_bootrom [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_bootrom ]
   set_property -dict [ list \
     CONFIG.NUM_MI {1} \
     CONFIG.NUM_SI {2} \
-    CONFIG.S00_HAS_REGSLICE {1} \
-    CONFIG.S01_HAS_REGSLICE {1} \
   ] $axi_ic_bootrom
+
+  set i 1
+  while {$i < 1} {
+        set axi_reg_slice_name axi_ic_bootrom_reg_slice_M0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
+
+  set i 2
+  while {$i < 2} {
+        set axi_reg_slice_name axi_ic_bootrom_reg_slice_S0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
 
   # Create instance: AXI interconnect for PCIe RP DMA 
   set axi_ic_pcie_rp_dma [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_pcie_rp_dma ]
   set_property -dict [ list \
     CONFIG.NUM_MI {1} \
     CONFIG.NUM_SI {1} \
-    CONFIG.M00_HAS_REGSLICE {1} \
     CONFIG.SI_DATA_WIDTH {128} \
     CONFIG.MI_DATA_WIDTH {64} \
   ] $axi_ic_pcie_rp_dma
+
+  set i 0
+  while {$i < 1} {
+        set axi_reg_slice_name axi_ic_pcie_rp_dma_reg_slice_M0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
+
+  set i 1
+  while {$i < 1} {
+        set axi_reg_slice_name axi_ic_pcie_rp_dma_reg_slice_S0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
 
   # Create instance: AXI interconnect for PCIe RP MMIO 
   set axi_ic_pcie_rp_mmio [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_pcie_rp_mmio ]
   set_property -dict [ list \
     CONFIG.NUM_MI {2} \
-    CONFIG.NUM_SI {1} ] $axi_ic_pcie_rp_mmio
+    CONFIG.NUM_SI {1} \
+  ] $axi_ic_pcie_rp_mmio
+
+  set i 2
+  while {$i < 2} {
+        set axi_reg_slice_name axi_ic_pcie_rp_mmio_reg_slice_M0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
+
+  set i 1
+  while {$i < 1} {
+        set axi_reg_slice_name axi_ic_pcie_rp_mmio_reg_slice_S0$i
+        set axi_reg_slice_util [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_register_slice:2.1 $axi_reg_slice_name ]
+        set_property -dict [ list CONFIG.USE_AUTOPIPELINING {1} \
+                CONFIG.REG_AW {15} CONFIG.REG_AR {15} CONFIG.REG_W {15} CONFIG.REG_R {15} CONFIG.REG_B {15} ] $axi_reg_slice_util
+        incr i
+  }
 
   # Create instance: AXI UART Lite over PCIe for Host-side
   set host_uart [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_uartlite:2.0 host_uart ]
@@ -389,18 +492,21 @@ proc create_root_design { parentCell } {
       [get_bd_pins axi_ic_ddr_mem/ACLK] \
       [get_bd_pins axi_ic_ddr_mem/S00_ACLK] \
       [get_bd_pins axi_ic_ddr_mem/S01_ACLK] \
+      [get_bd_pins axi_ic_ddr_mem_reg_slice_S01/aclk] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/ACLK] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/S00_ACLK] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M00_ACLK] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M01_ACLK] \
+      [get_bd_pins axi_ic_ep_bar_axi_lite_reg_slice_M01/aclk] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M02_ACLK] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M03_ACLK] \
-      [get_bd_pins axi_ic_ep_bar_axi_lite/M04_ACLK] \
       [get_bd_pins axi_ic_role_io/*ACLK] \
+      [get_bd_pins axi_ic_role_io_reg_slice_S00/aclk] \
       [get_bd_pins axi_ic_pcie_rp_mmio/ACLK] \
       [get_bd_pins axi_ic_pcie_rp_mmio/S00_ACLK] \
       [get_bd_pins axi_ic_pcie_rp_dma/ACLK] \
       [get_bd_pins axi_ic_pcie_rp_dma/M00_ACLK] \
+      [get_bd_pins axi_ic_pcie_rp_dma_reg_slice_M00/aclk] \
       [get_bd_pins axi_ic_bootrom/*ACLK] \
       [get_bd_pins axi_mm_base_reg/s_axi_aclk] \
       [get_bd_pins bootrom_bram_ctrl/s_axi_aclk] \
@@ -408,8 +514,6 @@ proc create_root_design { parentCell } {
       [get_bd_pins pcie_rp_role_sync_reset/slowest_sync_clk] \
       [get_bd_pins role_uart/s_axi_aclk] \
       [get_bd_pins host_uart/s_axi_aclk] \
-      [get_bd_pins axi_ic_pcie_rp_dma/ACLK] \
-      [get_bd_pins axi_ic_pcie_rp_dma/M00_ACLK] \
       [get_bd_pins axi_dwidth_converter_0/s_axi_aclk]
 
   # PCIe RP AXI clock (250MHz)
@@ -440,15 +544,17 @@ proc create_root_design { parentCell } {
       [get_bd_pins axi_ic_ddr_mem/ARESETN] \
       [get_bd_pins axi_ic_ddr_mem/S00_ARESETN] \
       [get_bd_pins axi_ic_ddr_mem/S01_ARESETN] \
+      [get_bd_pins axi_ic_ddr_mem_reg_slice_S*/aresetn] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/ARESETN] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/S00_ARESETN] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M00_ARESETN] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M01_ARESETN] \
+      [get_bd_pins axi_ic_ep_bar_axi_lite_reg_slice_M01/aresetn] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M02_ARESETN] \
       [get_bd_pins axi_ic_ep_bar_axi_lite/M03_ARESETN] \
-      [get_bd_pins axi_ic_ep_bar_axi_lite/M04_ARESETN] \
       [get_bd_pins axi_ic_role_io/ARESETN] \
       [get_bd_pins axi_ic_role_io/S00_ARESETN] \
+      [get_bd_pins axi_ic_role_io_reg_slice_S00/aresetn] \
       [get_bd_pins axi_ic_role_io/M00_ARESETN] \
       [get_bd_pins axi_ic_role_io/M01_ARESETN] \
       [get_bd_pins axi_ic_bootrom/*ARESETN] \
@@ -462,7 +568,8 @@ proc create_root_design { parentCell } {
   connect_bd_net [get_bd_pins pcie_rp_role_sync_reset/peripheral_aresetn] \
       [get_bd_pins axi_ic_role_io/M02_ARESETN] \
       [get_bd_pins axi_ic_pcie_rp_mmio/S00_ARESETN] \
-      [get_bd_pins axi_ic_pcie_rp_dma/M00_ARESETN]
+      [get_bd_pins axi_ic_pcie_rp_dma/M00_ARESETN] \
+      [get_bd_pins axi_ic_pcie_rp_dma_reg_slice_M00/aresetn]
 
   connect_bd_net [get_bd_pins pcie_rp_sync_reset/peripheral_aresetn] \
       [get_bd_ports pcie_rp_perstn]
@@ -475,7 +582,7 @@ proc create_root_design { parentCell } {
   ## AXI interface reset
   connect_bd_net [get_bd_pins xdma_rp/axi_aresetn] \
       [get_bd_pins axi_ic_pcie_rp_dma/S00_ARESETN] \
-      [get_bd_pins axi_ic_pcie_rp_mmio/M00_ARESETN] 
+      [get_bd_pins axi_ic_pcie_rp_mmio/M00_ARESETN]
 
   connect_bd_net [get_bd_pins xdma_rp/axi_ctl_aresetn] \
       [get_bd_pins pcie_rp_sync_reset/dcm_locked] \
@@ -483,7 +590,7 @@ proc create_root_design { parentCell } {
       [get_bd_pins axi_ic_pcie_rp_mmio/M01_ARESETN]
 
   # Reset signals for DDR4 MIG related AXI interfaces in MIG ui clock domain
-  #connect_bd_net -net mig_calib_done [get_bd_pins ddr4_mig/c0_init_calib_complete] \
+  connect_bd_net -net mig_calib_done [get_bd_pins ddr4_mig/c0_init_calib_complete] \
       [get_bd_ports ddr4_mig_sync_reset/dcm_locked]
 
   connect_bd_net [get_bd_pins ddr4_mig_sync_reset/peripheral_aresetn] \
@@ -508,6 +615,8 @@ proc create_root_design { parentCell } {
 
   # Role to DDR4
   connect_bd_intf_net [get_bd_intf_pins u_role/m_axi_mem] \
+        [get_bd_intf_pins axi_ic_ddr_mem_reg_slice_S01/S_AXI]
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_ddr_mem_reg_slice_S01/M_AXI] \
         [get_bd_intf_pins axi_ic_ddr_mem/S01_AXI]
 
   # AXI-IC of PCIe EP AXI Lite
@@ -520,6 +629,8 @@ proc create_root_design { parentCell } {
 
   # PCIe EP to Role ctrl
   connect_bd_intf_net [get_bd_intf_pins axi_ic_ep_bar_axi_lite/M01_AXI] \
+        [get_bd_intf_pins axi_ic_ep_bar_axi_lite_reg_slice_M01/S_AXI]
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_ep_bar_axi_lite_reg_slice_M01/M_AXI] \
         [get_bd_intf_pins u_role/s_axi_ctrl]
 
   # PCIe EP to Boot ROM IC
@@ -528,10 +639,12 @@ proc create_root_design { parentCell } {
 
   # PCIe EP to AXI MM base reg
   connect_bd_intf_net [get_bd_intf_pins axi_mm_base_reg/S_AXI] \
-        [get_bd_intf_pins axi_ic_ep_bar_axi_lite/M04_AXI]
+        [get_bd_intf_pins axi_ic_ep_bar_axi_lite/M03_AXI]
 
   # AXI-IC of Role MMIO
   connect_bd_intf_net [get_bd_intf_pins u_role/m_axi_io] \
+        [get_bd_intf_pins axi_ic_role_io_reg_slice_S00/S_AXI]
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_role_io_reg_slice_S00/M_AXI] \
         [get_bd_intf_pins axi_ic_role_io/S00_AXI]
 
   # Role to UART
@@ -551,6 +664,8 @@ proc create_root_design { parentCell } {
         [get_bd_intf_pins axi_ic_pcie_rp_dma/S00_AXI]
 
   connect_bd_intf_net [get_bd_intf_pins axi_ic_pcie_rp_dma/M00_AXI] \
+        [get_bd_intf_pins axi_ic_pcie_rp_dma_reg_slice_M00/S_AXI]
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_pcie_rp_dma_reg_slice_M00/M_AXI] \
         [get_bd_intf_pins axi_dwidth_converter_0/S_AXI]
 
   connect_bd_intf_net [get_bd_intf_pins u_role/s_axi_dma] \
@@ -678,30 +793,30 @@ proc create_root_design { parentCell } {
 #=============================================
 
   # Create instance: system_ila, and set properties
-  set system_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila ]
-  set_property -dict [ list \
-    CONFIG.C_NUM_MONITOR_SLOTS {4} \
-  ] $system_ila
-
-  connect_bd_net [get_bd_pins xdma_ep/axi_aclk] [get_bd_pins system_ila/clk]
-  connect_bd_net [get_bd_pins xdma_ep/axi_aresetn] [get_bd_pins system_ila/resetn]
-
-  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_0_AXI] [get_bd_intf_pins u_role/m_axi_mem]
-  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_1_AXI] [get_bd_intf_pins u_role/m_axi_io]
-  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_2_AXI] [get_bd_intf_pins u_role/s_axi_ctrl]
-  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_3_AXI] [get_bd_intf_pins u_role/s_axi_dma]
-
-  set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
-  set_property -dict [ list \
-    CONFIG.C_NUM_MONITOR_SLOTS {3} \
-  ] $system_ila_0
-
-  connect_bd_net [get_bd_pins xdma_rp/axi_aclk] [get_bd_pins system_ila_0/clk]
-  connect_bd_net [get_bd_pins xdma_rp/axi_aresetn] [get_bd_pins system_ila_0/resetn]
-
-  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_0_AXI] [get_bd_intf_pins xdma_rp/M_AXI_B]
-  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_1_AXI] [get_bd_intf_pins xdma_rp/S_AXI_B]
-  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_2_AXI] [get_bd_intf_pins xdma_rp/S_AXI_LITE]
+#  set system_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila ]
+#  set_property -dict [ list \
+#    CONFIG.C_NUM_MONITOR_SLOTS {4} \
+#  ] $system_ila
+#
+#  connect_bd_net [get_bd_pins xdma_ep/axi_aclk] [get_bd_pins system_ila/clk]
+#  connect_bd_net [get_bd_pins xdma_ep/axi_aresetn] [get_bd_pins system_ila/resetn]
+#
+#  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_0_AXI] [get_bd_intf_pins u_role/m_axi_mem]
+#  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_1_AXI] [get_bd_intf_pins u_role/m_axi_io]
+#  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_2_AXI] [get_bd_intf_pins u_role/s_axi_ctrl]
+#  connect_bd_intf_net [get_bd_intf_pins system_ila/SLOT_3_AXI] [get_bd_intf_pins u_role/s_axi_dma]
+#
+#  set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
+#  set_property -dict [ list \
+#    CONFIG.C_NUM_MONITOR_SLOTS {3} \
+#  ] $system_ila_0
+#
+#  connect_bd_net [get_bd_pins xdma_rp/axi_aclk] [get_bd_pins system_ila_0/clk]
+#  connect_bd_net [get_bd_pins xdma_rp/axi_aresetn] [get_bd_pins system_ila_0/resetn]
+#
+#  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_0_AXI] [get_bd_intf_pins xdma_rp/M_AXI_B]
+#  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_1_AXI] [get_bd_intf_pins xdma_rp/S_AXI_B]
+#  connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_2_AXI] [get_bd_intf_pins xdma_rp/S_AXI_LITE]
 
 #=============================================
 # Address segments
