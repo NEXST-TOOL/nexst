@@ -4,8 +4,8 @@ place_design
 report_clock_utilization -file ${impl_rpt_dir}/clock_util.rpt
 
 # Physical design optimization
-phys_opt_design
-		
+phys_opt_design -slr_crossing_opt
+
 write_checkpoint -force ${dcp_dir}/place.dcp
 
 report_utilization -file ${impl_rpt_dir}/post_place_util.rpt
