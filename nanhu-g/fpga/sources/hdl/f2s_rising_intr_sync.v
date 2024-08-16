@@ -3,6 +3,7 @@
 // This module is intended for synchronizing rising-edge sensitive interrupts
 // from a fast clock domain to a slow clock domain
 
+(* autopipeline_module="yes" *)
 module f2s_rising_intr_sync #(
     parameter   INTR_WIDTH  = 1,
     parameter   SYNC_STAGE  = 2
@@ -19,7 +20,7 @@ module f2s_rising_intr_sync #(
     for (g_i=0; g_i<INTR_WIDTH; g_i=g_i+1) begin
 
         wire f_intr = fast_intr[g_i];
-        reg f_intr_reg;
+        (* autopipeline_group="fwd", autopipeline_limit=24 *) reg f_intr_reg;
 
         always @(posedge fast_clk) begin
             f_intr_reg <= f_intr;

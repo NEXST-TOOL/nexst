@@ -55,6 +55,7 @@ proc create_design { design_name } {
     # Create instance: emu_clk_gen
     set emu_clk_gen [create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 emu_clk_gen]
     set_property -dict [list \
+        CONFIG.PRIM_SOURCE {No_buffer} \
         CONFIG.RESET_TYPE {ACTIVE_LOW} \
         CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {50} \
     ] $emu_clk_gen
