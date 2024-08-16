@@ -55,11 +55,11 @@
 		#size-cells = <2>;
 		compatible = "freechips,rocketchip-unknown-soc", "simple-bus";
 		ranges;
-		L11: bus-error-unit {
-			compatible = "sifive,buserror0";
-			interrupt-parent = <&L4>;
-			interrupts = <65>;
-		};
+//		L11: bus-error-unit {
+//			compatible = "sifive,buserror0";
+//			interrupt-parent = <&L4>;
+//			interrupts = <65>;
+//		};
 		L12: cache-controller@39000000 {
 			reg = <0x0 0x39000000 0x0 0x10000>;
 			reg-names = "control";
@@ -70,17 +70,17 @@
 			reg = <0x0 0x38000000 0x0 0x10000>;
 			reg-names = "control";
 		};
-		L6: debug-controller@38020000 {
-			compatible = "sifive,debug-013", "riscv,debug-013";
-			debug-attach = "jtag";
-			interrupts-extended = <&L10 65535>;
-			reg = <0x0 0x38020000 0x0 0x1000>;
-			reg-names = "control";
-		};
-		L2: error-device@0 {
-			compatible = "sifive,error0";
-			reg = <0x0 0x0 0x0 0x80000000>;
-		};
+//		L6: debug-controller@38020000 {
+//			compatible = "sifive,debug-013", "riscv,debug-013";
+//			debug-attach = "jtag";
+//			interrupts-extended = <&L10 65535>;
+//			reg = <0x0 0x38020000 0x0 0x1000>;
+//			reg-names = "control";
+//		};
+//		L2: error-device@0 {
+//			compatible = "sifive,error0";
+//			reg = <0x0 0x0 0x0 0x80000000>;
+//		};
 		L4: interrupt-controller@3c000000 {
 			#interrupt-cells = <1>;
 			compatible = "riscv,plic0";
@@ -107,7 +107,86 @@
 		// 	interrupt-parent = <&L4>;
 		// 	interrupts = <1>;
 		// };
+		axi_clk: axi_clk {
+			#clock-cells = <0>;
+			clock-frequency = <250000000>;
+			clock-output-names = "axi_clk";
+			compatible = "fixed-clock";
+		};
+		eth_dma0: eth_dma@30100000 {
+			reg = <0x0 0x30100000 0x0 0x10000>;
+			interrupts = <7>, <6>;  /*axi_ethernet_dma mm2s/s2mm INT*/
+			interrupt-parent = <&L4>;
+			xlnx,addrwidth = /bits/ 8 <0x20>;
+			xlnx,include-sg;
+			xlnx,include-dre;
+			dma-channel@30100000 {
+				compatible = "xlnx,axi-dma-mm2s-channel";
+				dma-channels = <0x1>;
+				interrupts = <7>;
+				xlnx,datawidth = <0x20>;
+				xlnx,device-id = <0x0>;
+			};
+			dma-channel@30100030 {
+				compatible = "xlnx,axi-dma-s2mm-channel";
+				dma-channels = <0x1>;
+				interrupts = <6>;
+				xlnx,datawidth = <0x20>;
+				xlnx,device-id = <0x0>;
+			};
+		};
+		eth0: ethernet@30200000 {
+			compatible = "xlnx,axi-ethernet-1.00.a";
+			reg = <0x0 0x30200000 0x0 0x40000>;
+			reg-names = "control";
+			status = "okay";
+			mac-address = [00 11 22 33 44 55];
+			clocks = <&axi_clk>;
+			device_type = "network";
+			axistream-connected = <&eth_dma0>;
+			phy-handle = <&ti_dp83867>;
+			phy-mode = "sgmii";
+			xlnx,txcsum = <0x2>;
+			xlnx,rxcsum = <0x2>;
+        	xlnx,rxmem = <0x800>;
+			interrupts = <5>;  /*axi_ethernet INT*/
+			interrupt-parent = <&L4>;
+			mdio: mdio {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				reset-gpios = <&tca6416a 6 1>;
+				reset-delay-us = <2>;
+				xilinx_phy: phy@2 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <2>;
+				};
+				ti_dp83867: phy@3 {
+					#phy-cells = <1>;
+					device_type = "ethernet-phy";
+					reg = <3>;
+					ti,dp83867-rxctrl-strap-quirk;
+					ti,sgmii-ref-clock-output-enable;
+					ti,fifo-depth = <0x1>;
+					ti,rx-internal-delay = <0x8>;
+					ti,tx-internal-delay = <0xa>;
+				};
+			};
+		};
+		i2c0: i2c@30300000 {
+			compatible = "xlnx,xps-iic-2.00.a";
+			reg = <0x0 0x30300000 0x0 0x10000>;
+			#size-cells = <0>;
+			#address-cells = <1>;
+			interrupt-parent = <&L4>;
+			interrupts = <8>;
+			clock-frequency = <1000000>;
+			tca6416a: gpio@20 {
+				compatible = "ti,tca6416";
+				reg = <0x20>;
+				#gpio-cells = <2>;
+				gpio-controller;
+			};
+		};
 	};
 };
-
-

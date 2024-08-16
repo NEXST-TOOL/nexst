@@ -333,10 +333,10 @@ proc create_root_design { parentCell } {
   create_bd_port -dir O -from 15 -to 0 pcie_ep_txp
 
   # PCIe RP Slot
-  create_bd_port -dir I -from 0 -to 3 pcie_rp_rxn
-  create_bd_port -dir I -from 0 -to 3 pcie_rp_rxp
-  create_bd_port -dir O -from 0 -to 3 pcie_rp_txn
-  create_bd_port -dir O -from 0 -to 3 pcie_rp_txp
+  create_bd_port -dir I -from 3 -to 0 pcie_rp_rxn
+  create_bd_port -dir I -from 3 -to 0 pcie_rp_rxp
+  create_bd_port -dir O -from 3 -to 0 pcie_rp_txn
+  create_bd_port -dir O -from 3 -to 0 pcie_rp_txp
 
 #=============================================
 # DDR4 pins

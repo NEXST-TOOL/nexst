@@ -1,15 +1,16 @@
 [submodule "work_farm"]
 	path = work_farm
-	url = ../work_farm.git
+	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/work_farm.git
 [submodule "nanhu-g/software/opensbi"]
 	path = nanhu-g/software/opensbi
-	url = ../../ICT-SERVE-FARM/opensbi.git
+	url = https://gitlab.agileserve.org.cn:8001/ICT-SERVE-FARM/opensbi.git
 [submodule "nanhu-g/hardware/xs-gen"]
 	path = nanhu-g/hardware/xs-gen
-	url = ../xiangshan.git
+	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/xiangshan.git
 [submodule "shell/software/xdma_drv"]
 	path = shell/software/xdma_drv
-	url = ../dma_ip_drivers.git
+	url = https://gitlab.agileserve.org.cn:8001/serve_hw_sw_dev/dma_ip_drivers.git
 [submodule "nanhu-g/software/rootfs"]
 	path = nanhu-g/software/rootfs
-	url = ../rootfs.git
+	url = https://gitlab.agileserve.org.cn:8001/dasics/nexst.git
+	branch = vcu128-ssd-network

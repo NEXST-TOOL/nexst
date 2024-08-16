@@ -33,6 +33,17 @@ set_property IOSTANDARD LVCMOS18 [get_ports pcie_ep_phy_ready]
 set_property PACKAGE_PIN BG25 [get_ports pcie_ep_lnk_up]
 set_property IOSTANDARD LVCMOS18 [get_ports pcie_ep_lnk_up]
 
+# PCIe RP GT reference clock
+create_clock -period 10.000 -name pcie_rp_ref_clk -waveform {0.000 5.000} [get_ports pcie_rp_gt_ref_clk_clk_p]
+
+set_property PACKAGE_PIN AV42 [get_ports {pcie_rp_gt_ref_clk_clk_p[0]}]
+
+# VCU128 PCIE_RP PRESETN; A19 FOR IWAVE; E24 FOR HIGHTECH GLOBAL
+# BC49 FOR DP0_N (<- PCIE 7)
+
+#set_property PACKAGE_PIN BC49 [get_ports {pcie_rp_perstn}]
+#set_property IOSTANDARD LVCMOS18 [get_ports {pcie_rp_perstn}]
+
 # DDR
 set_property BOARD_PIN {ddr4_act_n} [get_ports c0_ddr4_act_n]
 set_property BOARD_PIN {ddr4_adr0} [get_ports c0_ddr4_adr[0]]
@@ -169,3 +180,36 @@ set_property BOARD_PIN {ddr4_dqs_t7} [get_ports c0_ddr4_dqs_t[7]]
 # set_property BOARD_PIN {ddr4_dqs_t8} [get_ports c0_ddr4_dqs_t[8]] # ECC
 set_property BOARD_PIN {ddr4_odt} [get_ports c0_ddr4_odt]
 set_property BOARD_PIN {ddr4_reset_n} [get_ports c0_ddr4_reset_n]
+
+create_debug_core u_ila_0 ila
+set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
+set_property ALL_PROBE_SAME_MU_CNT 4 [get_debug_cores u_ila_0]
+set_property C_ADV_TRIGGER true [get_debug_cores u_ila_0]
+set_property C_DATA_DEPTH 4096 [get_debug_cores u_ila_0]
+set_property C_EN_STRG_QUAL true [get_debug_cores u_ila_0]
+set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
+set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
+set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
+set_property port_width 1 [get_debug_ports u_ila_0/clk]
+connect_debug_port u_ila_0/clk [get_nets [list xiangshan_i/xdma_rp/inst/pcie4c_ip_i/inst/xiangshan_xdma_rp_0_pcie4c_ip_gt_top_i/diablo_gt.diablo_gt_phy_wrapper/phy_clk_i/CLK_PCLK2_GT]]
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
+set_property port_width 1 [get_debug_ports u_ila_0/probe0]
+connect_debug_port u_ila_0/probe0 [get_nets [list xiangshan_i/xdma_rp/axi_ctl_aresetn]]
+create_debug_core u_ila_1 ila
+set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_1]
+set_property ALL_PROBE_SAME_MU_CNT 4 [get_debug_cores u_ila_1]
+set_property C_ADV_TRIGGER true [get_debug_cores u_ila_1]
+set_property C_DATA_DEPTH 4096 [get_debug_cores u_ila_1]
+set_property C_EN_STRG_QUAL true [get_debug_cores u_ila_1]
+set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_1]
+set_property C_TRIGIN_EN false [get_debug_cores u_ila_1]
+set_property C_TRIGOUT_EN false [get_debug_cores u_ila_1]
+set_property port_width 1 [get_debug_ports u_ila_1/clk]
+connect_debug_port u_ila_1/clk [get_nets [list xiangshan_i/xdma_rp/inst/pcie4c_ip_i/inst/xiangshan_xdma_rp_0_pcie4c_ip_gt_top_i/diablo_gt.diablo_gt_phy_wrapper/phy_clk_i/CLK_CORECLK]]
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_1/probe0]
+set_property port_width 1 [get_debug_ports u_ila_1/probe0]
+connect_debug_port u_ila_1/probe0 [get_nets [list xiangshan_i/xdma_rp/inst/pcie4c_ip_i/user_lnk_up]]
+set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
+set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
+set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
+connect_debug_port dbg_hub/clk [get_nets clk]
