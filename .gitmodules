@@ -3,7 +3,7 @@
 	url = ../work_farm.git
 [submodule "nanhu-g/software/opensbi"]
 	path = nanhu-g/software/opensbi
-	url = ../../ICT-SERVE-FARM/opensbi.git
+	url = ../opensbi.git
 [submodule "nanhu-g/hardware/xs-gen"]
 	path = nanhu-g/hardware/xs-gen
 	url = ../xiangshan.git
