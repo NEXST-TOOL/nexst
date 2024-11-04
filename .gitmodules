@@ -1,6 +1,7 @@
 [submodule "work_farm"]
 	path = work_farm
 	url = ../work_farm.git
+	branch = master
 [submodule "nanhu-g/software/opensbi"]
 	path = nanhu-g/software/opensbi
 	url = ../opensbi.git
