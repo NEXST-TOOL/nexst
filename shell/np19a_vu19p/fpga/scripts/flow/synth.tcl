@@ -1,6 +1,6 @@
 # synthesizing full design
 # Use strategy optimized of routability
-synth_design -top role_top -part ${device} -mode out_of_context \
+synth_design -top xiangshan_wrapper -part ${device} \
     -directive AlternateRoutability -flatten_hierarchy rebuilt
 
 # setup output logs and reports
