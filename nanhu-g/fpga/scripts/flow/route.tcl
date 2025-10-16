@@ -1,5 +1,5 @@
-# routing
-route_design
+# routing 
+route_design -directive AggressiveExplore
 
 report_utilization -file ${impl_rpt_dir}/post_route_util.rpt
 report_timing_summary -file ${impl_rpt_dir}/post_route_timing.rpt -delay_type max -max_paths 1000
