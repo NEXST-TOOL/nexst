@@ -25,7 +25,7 @@ the AMD/Xilinx Ultrascale+ VU19P FPGA chip
 
 # Prerequisite
 
-1. Please contact administrator (chenfeiyu22s@ict.ac.cn) to obtain login permissions 
+1. Please contact administrator (liushiqi@ict.ac.cn) to obtain login permissions 
 to the x86 server that attaches one mimic_turbo FPGA card. 
 Colleagues conduct hardware/software compilation tasks and FPGA evaluation flow on the server.
 
@@ -118,7 +118,7 @@ to copy the target software binaries into the initramfs'
 As we have only one mimic_turbo FPGA board currently, 
 it is extremely difficult to service multiple tenants simultaneously. 
 
-To overcome potential conflicts, colleagues need to contact administrator (chenfeiyu22s@ict.ac.cn) 
+To overcome potential conflicts, colleagues need to contact administrator (liushiqi@ict.ac.cn) 
 to reserve the time window you expected to conduct FPGA evaluation first. 
 Our administration team would schedule all reservation and feed back to all colleagues 
 the final scheduled time window. 
