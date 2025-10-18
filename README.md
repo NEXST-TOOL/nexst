@@ -6,7 +6,7 @@ for system-level FPGA prototyping and emulation
 of the open-source XiangShan RISC-V processor core.
 
 ## XiangShan Targets with Nanhu Microarchitecture
-- **Nanhu-G**, a compact version of XiangShan Nanhu   
+- **Nanhu-G**, a compact version of XiangShan Nanhu (Link: [https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G])
 
 - **Nanhu-minimal**, a minimal version of XiangShan NanHu
 
