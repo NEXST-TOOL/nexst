@@ -4,7 +4,6 @@ GEN_DIR := $(NANHU_G_LOC)/sources/generated
 PATCH_DIR := $(NANHU_G_LOC)/sources/patch
 
 CONFIG ?= NanHuGFPGAConfig
-NUM_CORES ?= 1
 
 .PHONY: xs_gen
 xs_gen:

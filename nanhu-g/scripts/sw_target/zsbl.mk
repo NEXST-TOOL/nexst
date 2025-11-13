@@ -7,13 +7,11 @@ BOOTROM_BIN := $(INSTALL_LOC)/bootrom.bin
 
 zsbl:
 	@mkdir -p $(ZSBL_LOC) $(INSTALL_LOC)
-	$(EXPORT_CC_PATH) && \
-		$(MAKE) -C $(ZSBL_SRC) $(ZSBL_COMPILE_FLAGS)
+	$(MAKE) -C $(ZSBL_SRC) $(ZSBL_COMPILE_FLAGS)
 	@cp $(ZSBL_LOC)/bootrom.bin $(BOOTROM_BIN)
 
 zsbl_clean:
-	$(EXPORT_CC_PATH) && \
-		$(MAKE) -C $(ZSBL_SRC) $(ZSBL_COMPILE_FLAGS) clean
+	$(MAKE) -C $(ZSBL_SRC) $(ZSBL_COMPILE_FLAGS) clean
 
 zsbl_distclean:
 	@rm -rf $(ZSBL_LOC)

@@ -1,0 +1,54 @@
+/ {
+	soc {
+		pcie@60000000 {
+			compatible = "xlnx,xdma-host-3.00";
+			device_type = "pci";
+			reg = <0x00 0x60000000 0x00 0x00500000>;
+			reg-names = "rp0";
+			#address-cells = <3>;
+			#size-cells = <2>;
+			bus-range = <0 1>;
+			ranges = <0x2000000 0x00 0x50000000 0x00 0x50000000 0x00 0x1000000>;
+			#interrupt-cells = <1>;
+			interrupts = <2>, <3>, <4>;
+			interrupt-names = "misc", "msi0", "msi1";
+			interrupt-parent = <&plic>;
+			interrupt-map-mask = <0 0 0 7>;
+			interrupt-map = <0 0 0 1 &pcie_intc0 1>,
+			<0 0 0 2 &pcie_intc0 2>,
+			<0 0 0 3 &pcie_intc0 3>,
+			<0 0 0 4 &pcie_intc0 4>;
+			
+			pcie_intc0: interrupt-controller {
+				interrupt-controller;
+				#address-cells = <0>;
+				#interrupt-cells = <1>;
+			};
+		};
+		pcie@40000000 {
+			compatible = "xlnx,xdma-host-3.00";
+			device_type = "pci";
+			reg = <0x00 0x40000000 0x00 0x00500000>;
+			reg-names = "rp0";
+			#address-cells = <3>;
+			#size-cells = <2>;
+			bus-range = <0 1>;
+			ranges = <0x2000000 0x00 0x51000000 0x00 0x51000000 0x00 0x1000000>;
+			#interrupt-cells = <1>;
+			interrupts = <5>, <6>, <7>;
+			interrupt-names = "misc", "msi0", "msi1";
+			interrupt-parent = <&plic>;
+			interrupt-map-mask = <0 0 0 7>;
+			interrupt-map = <0 0 0 1 &pcie_intc1 1>,
+			<0 0 0 2 &pcie_intc1 2>,
+			<0 0 0 3 &pcie_intc1 3>,
+			<0 0 0 4 &pcie_intc1 4>;
+			
+			pcie_intc1: interrupt-controller {
+				interrupt-controller;
+				#address-cells = <0>;
+				#interrupt-cells = <1>;
+			};
+		};
+	};
+};

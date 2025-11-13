@@ -53,16 +53,19 @@ KERN_COMPILE_FLAGS += CONFIG_INITRAMFS_SOURCE=$(INITRAMFS_TXT)
 #==================================
 # Linux kernel compilation
 #==================================
-linux: $(KERN_IMAGE_GEN) FORCE
+
+.PHONY: rootfs linux $(KERN_IMAGE_GEN) $(INITRAMFS_TXT)
+
+linux: $(KERN_IMAGE_GEN) rootfs
 	@mkdir -p $(INSTALL_LOC)
 	@cp $(KERN_IMAGE_GEN) $(KERN_IMAGE)
 
 $(KERN_IMAGE_GEN): $(KERN_LOC)/$(OS)/.config FORCE
-	$(EXPORT_CC_PATH) && $(MAKE) -C $(KERN_SRC) \
+	$(MAKE) -C $(KERN_SRC) \
 		$(KERN_COMPILE_FLAGS) $(KERN_TARGET) -j 10
 
 $(KERN_LOC)/%/.config: $(KERN_CONFIG_LOC)/$($(OS)-kern-config) $(INITRAMFS_TXT)
-	$(EXPORT_CC_PATH) && $(MAKE) -C $(KERN_SRC) \
+	$(MAKE) -C $(KERN_SRC) \
 		$(KERN_COMPILE_FLAGS) $($(OS)-kern-config) olddefconfig
 
 linux_clean: $(obj-modules-clean-y)
@@ -75,7 +78,7 @@ linux_distclean: $(obj-modules-clean-y)
 rootfs: $(INITRAMFS_TXT)
 
 $(INITRAMFS_TXT):
-	$(EXPORT_CC_PATH) && $(MAKE) -C $(ROOTFS_SRC) RISCV=$(abspath $(riscv_LINUX_GCC_PATH)/..) CROSS_COMPILE=$(riscv_LINUX_GCC_PREFIX)
+	$(MAKE) -C $(ROOTFS_SRC) RISCV=$(shell $(LINUX_GCC_PREFIX)-gcc --print-sysroot) CROSS_COMPILE=$(LINUX_GCC_PREFIX)
 
 rootfs_clean:
 	$(MAKE) -C $(ROOTFS_SRC) clean

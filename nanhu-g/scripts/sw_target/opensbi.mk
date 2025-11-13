@@ -12,9 +12,9 @@ OPENSBI_DTB := $(abspath $(INSTALL_LOC)/$(DT_TARGET).dtb)
 
 # sub platform-specific OpenSBI compilation flags 
 USER_FLAGS := SERVE_PLAT=h \
-              HART_COUNT=1 \
-	      RV_TARGET=xiangshan \
-	      WITH_SM=n
+              HART_COUNT=$(NUM_CORES) \
+              RV_TARGET=xiangshan \
+              WITH_SM=n
 
 # OpenSBI cross compile flags
 OPENSBI_COMPILE_FLAGS := O=$(OPENSBI_LOC) \
@@ -32,14 +32,12 @@ RV_BOOT_BIN := $(INSTALL_LOC)/RV_BOOT.bin
 #=================================================
 opensbi:
 	@mkdir -p $(OPENSBI_LOC)
-	$(EXPORT_CC_PATH) && \
-		$(MAKE) -C $(OPENSBI_SRC) \
+	$(MAKE) -C $(OPENSBI_SRC) \
 		$(OPENSBI_COMPILE_FLAGS)
 	@cp $(RV_OPENSBI) $(RV_BOOT_BIN)
 
 opensbi_clean:
-	$(EXPORT_CC_PATH) && \
-		$(MAKE) -C $(OPENSBI_SRC) \
+	$(MAKE) -C $(OPENSBI_SRC) \
 		$(OPENSBI_COMPILE_FLAGS) clean
 
 opensbi_distclean:

@@ -1,165 +1,156 @@
-# Introduction
+# NEXST: Next Environment for XiangShan Target
 
-The repository of NEXST (Next Environment for XiangShan Target) 
-contains basic hardware and software components 
-for system-level FPGA prototyping and emulation 
-of the open-source XiangShan RISC-V processor core.
+NEXST provides a complete hardware and software environment for FPGA-based prototyping and emulation of the open-source XiangShan RISC-V processor.
 
-## XiangShan Targets with Nanhu Microarchitecture
-- **Nanhu-G**, a compact version of XiangShan Nanhu (Link: [https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G])
+## Supported XiangShan Targets
 
-- **Nanhu-minimal**, a minimal version of XiangShan NanHu
+- **[Nanhu-G](https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G)**: Modified version of XiangShan Nanhu microarchitecture for education and research
+- **Nanhu-minimal**: Minimal XiangShan Nanhu implementation  
+- **[Kunminghu](https://github.com/OpenXiangShan/XiangShan)**: Current main architecture of XiangShan
 
-Note: Please refer to https://xiangshan-doc.readthedocs.io 
-for more detailed information of Xiangshan Nanhu microarchitecture
+*For detailed microarchitecture information, visit [Xiangshan Documentation](https://xiangshan-doc.readthedocs.io)*
 
-## Fully-fledged and Cost-effective FPGA Environment
-- **AMD/Xilinx VCU128**, a commercial development board with 
-the AMD/Xilinx Ultrascale+ VU37P FPGA chip
-(https://www.xilinx.com/products/boards-and-kits/vcu128.html) 
+## Supported FPGA Platforms
 
-- **NM37**, a custom acceleration card designed by our team, 
-allowing integration of a PCIe-attached NVMe SSD to XiangShan SoC   
+| Platform | FPGA Chip | Key Features |
+|----------|-----------|--------------|
+| **Xilinx [VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P | Commercial development board |
+| **Xilinx [Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | VU37P | Data center accelerator card |
+| **ICT NM37** | VU37P | Custom card with NVMe SSD support |
+| **Corigine [MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P | Commercial Desktop prototyping solution |
+| **ICT NP19A** | VU19P | Custom card with NVMe SSD support and expanded FPGA resources |
 
-# Prerequisite
+## Compatibility Matrix
 
-1. Download all required repository submodules
+| Board | VCU128 | Alveo U280 | NM37 | MimicTurbo GT | NP19A |
+|-------|--------|------------|------|---------------|-------|
+| Board string | vcu128 | au280 | nm37_vu37p | mimic_turbo | np19a_vu19p |
+| **Features** | | | | | |
+| M.2 Interface | × | × | ✓ | × | ✓ |
+| RJ45 Interface | ✓ | × | ✓ | ✓ | ✓ |
+| PCIe Card Format | Non-standard | ✓ | ✓ | ✓ | ✓ |
+| DDR4 | 4.5GB | 32GB | 32GB | 16GB | 32GB |
+| **CPU Support** | | | | | |
+| Single-Core Nanhu-G | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Dual-Core Nanhu-G | × | × | × | ✓ | ✓ |
+| Quad-Core Nanhu-G | × | × | × | ✓ | ✓ |
+| Octa-Core Rocket-H | Testing | Testing | ✓ | ✓ | ✓ |
+| Single-Core Kunminghu | × | × | × | ✓ | ✓ |
 
-`git submodule update --init --recursive`   
+## Quick Start
 
-2. Launch the following commands
+### Prerequisites
 
-`mkdir -p work_farm/target/`    
-`cd work_farm/target && ln -s ../../nanhu-g nanhu-g`   
-`cd ../ && ln -s ../shell shell`   
-`ln -s ../tools/ tools` 
+- Ubuntu 20.04/22.04
+- AMD/Xilinx Vivado 2024.2 Toolchain
 
-3. Install Linux kernel header on the x86 server 
-side where the FPGA board/card is attached   
+### Initial Setup
 
-4. Install `minicom` on the x86 server  
+```bash
+# Clone and initialize submodules
+git submodule update --init --recursive
 
-5. Prepare the Chisel compilation environment on the x86 server  
+# Create workspace structure
+mkdir -p work_farm/target/
+cd work_farm/target && ln -s ../../nanhu-g nanhu-g
+cd ../ && ln -s ../shell shell
+ln -s ../tools/ tools
 
-5. All compilation operations are launched in the directory of `work_farm`
+# Install dependencies
+sudo apt-get install openjdk-11-jdk device-tree-compiler gcc-riscv64-linux-gnu linux-headers-$(uname -r)
 
-# Hardware Generation (including Nanhu-G core and its SoC wrapper)
+# Install Mill build tool
+curl -L https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/1.1.0-RC1/mill-dist-1.1.0-RC1-mill.sh -o mill
+chmod +x mill && sudo mv mill /usr/local/bin
+```
 
-## Nanhu-G compilation
+### Environment Configuration
 
-`make PRJ="target:nanhu-g" FPGA_BD=vcu128 xs_gen`
+```bash
+export VIVADO_TOOL_BASE=/path/to/your/vivado  # e.g., /opt/Vivado_2024.2
+export FPGA_BD=your_board_string  # vcu128, au280, nm37_vu37p, mimic_turbo, np19a_vu19p
+export NUM_CORES=<1|2|4> # Number of Nanhu-G cores in the system
+```
 
-## FPGA design flow
+### Hardware Generation
 
-### FPGA Wrapper generation   
-`make PRJ="shell:vcu128" FPGA_BD=vcu128 FPGA_ACT=prj_gen vivado_prj`    
-`make PRJ="shell:vcu128" FPGA_BD=vcu128 FPGA_ACT=run_syn vivado_prj`   
+#### Generate Nanhu-G Core
 
-### Xiangshan FPGA synthesis  
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=prj_gen vivado_prj`   
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=run_syn vivado_prj`
+```bash
+make PRJ="target:nanhu-g" FPGA_BD=${FPGA_BD} xs_gen
+```
 
-### FPGA Bitstream generation  
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 FPGA_ACT=bit_gen vivado_prj`
+#### FPGA Synthesis & Implementation
 
-    The bitstream file is located in   
-    `nanhu-g/ready_for_download/proto_vcu128/`
-    
-    Log files, timing and utilization reports and 
-    design checkpoint files (.dcp) generated during Xilinx Vivado design flow 
-    are located in   
-    `work_farm/fpga/vivado_out/target_nanhu-g_proto_vcu128/` 
-    
-    Generated Vivado project of the SoC wrapper and target XiangShan 
-    are located in  
-    `work_farm/fpga/vivado_prj/shell_vcu128_vcu128/` and   
-    `work_farm/fpga/vivado_prj/target_nanhu-g_proto_vcu128`, respectively.   
+```bash
+# Generate FPGA shell
+make PRJ="shell:${FPGA_BD}" FPGA_BD=${FPGA_BD} FPGA_ACT=prj_gen vivado_prj
+make PRJ="shell:${FPGA_BD}" FPGA_BD=${FPGA_BD} FPGA_ACT=run_syn vivado_prj
 
-**If you want to deploy prototyping on the NM37 card, please 
-substitute the `vcu128` to `nm37_vu37p` in each command line.** 
+# Synthesize XiangShan role
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} FPGA_ACT=prj_gen vivado_prj
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} FPGA_ACT=run_syn vivado_prj
 
-# RISC-V Side Software Compilation
+# Generate bitstream
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} FPGA_ACT=bit_gen vivado_prj
+```
 
-## Compilation of ZSBL image leveraged in Boot ROM
+*Generated bitstream: `nanhu-g/ready_for_download/proto_${FPGA_BD}/system.bit`*
 
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv zsbl`   
+### Software Compilation
 
-    The bootrom.bin is located in
-    `nanhu-g/ready_for_download/proto_vcu128/`
+#### Boot ROM (ZSBL)
 
-## Linux boot via OpenSBI
+```bash
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} ARCH=riscv zsbl
+```
 
-If you want to deploy prototyping on the NM37 card with NVMe SSD, please 
-substitute the value of `DT_TARGET` from `XSTop` to `XSTop_pci` in the following command line.
+#### Linux Boot Image
 
-### DTB generation
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 DT_TARGET=XSTop target_dt` 
+```bash
+# Generate device tree
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} DT_TARGET=xiangshan target_dt
 
-If you want to generate the device tree blob that specifies the PCIe root port, please substitute the `DT_TARGET` variable by `XSTop_pci`   
+# Compile Linux kernel
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} ARCH=riscv phy_os.os
 
-### Linux kernel (v5.16) compilation
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv phy_os.os`   
+# Build OpenSBI boot image
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} ARCH=riscv DT_TARGET=xiangshan opensbi
+```
 
-### OpenSBI compilation (RV_BOOT.bin generation)
-`make PRJ="target:nanhu-g:proto" FPGA_BD=vcu128 ARCH=riscv DT_TARGET=XSTop opensbi`   
+*Boot images: `nanhu-g/ready_for_download/proto_${FPGA_BD}/`*
 
-    The boot image (i.e., RV_BOOT.bin) is located in
-    `nanhu-g/ready_for_download/proto_vcu128/`
+### FPGA Deployment
 
-# FPGA evaluation flow
+#### Setup Hardware
 
-## Setup of Hardware Environment
+- Install FPGA board in PCIe slot
+- Ensure proper power supply
+- Install AMD/Xilinx Vivado tools
 
-- Attach one of the target FPGA boards listed above 
-  to a PCIe slot of one x86 host machine. 
-  
-  Please carefully check if the power supply of the PCIe-attached FPGA board is properly setup.
+#### Load XDMA Driver
 
-  AMD/Xilinx Vivado toolset must be installed on the x86 host.
+```bash
+make PRJ="shell:${FPGA_BD}" xdma_drv
+cd shell/software/build/xdma_drv && sudo insmod xdma.ko
+```
 
-## Compilation of x86-side PCIe XDMA Linux driver
+#### Run Evaluation
 
-### Clone this repository on the x86 host and update the submodule of shell/software/xdma_drv
+```bash
+# Program FPGA with Vivado
 
-### Driver compilation
+# Then load and run (exit with CTRL+\)
+cd tools/proto
+sudo ./load_and_run.sh xdma<N> bootrom.bin RV_BOOT.bin
 
-`make PRJ="shell:vcu128" xdma_drv`   
+# For serial console only (exit with CTRL+\)
+sudo ./load_and_run.sh xdma<N>
+```
 
-    The kernel module (i.e., xdma.ko) is located in
-    `shell/software/build/xdma_drv/`
+## Output Locations
 
-## Evaluation steps
-
-- Ensure that `bootrom.bin`, `RV_BOOT.bin` mentioned in the above steps   
-  and `tools/proto` directory have been generated or located on the x86 host machine.   
-
-- Use Vivado toolset to program the FPGA with `system.bit` generated in the steps above   
-(in `nanhu-g/ready_for_download/proto_vcu128/`).
-
-- Restart the x86 host machine to probe the FPGA as a PCIe device.
-
-- Load XDMA driver.
-
-    `cd shell/software/build/xdma_drv && sudo insmod xdma.ko`
-
-    If successful, a series of `/dev/xdma<N>*` devices will be created (`<N>` is an assigned number), and detailed log can be viewed in `sudo dmesg`.
-
-- Open minicom to setup a console as the XiangShan terminal.  
-    Please launch `sudo minicom -s /dev/xdma0_ttyUL0` to configure the terminal as 115200n8    
-
-- Load images & run.
-
-    Launch the following commands:
-    ```sh
-    cd tools/proto
-    make # if proto is not compiled
-    sudo ./load_and_run.sh xdma<N> bootrom.bin RV_BOOT.bin # <N> is the assigned xdma device number
-    ```
-
-    This will reset the XiangShan core, load images and start the execution. At the end the serial is connected and the user can interact with the system running on XiangShan. To exit the serial connection, press the escape key CTRL+A+X.
-
-    To resume the serial connection without a system reset, use the following command:
-
-    ```sh
-    sudo ./load_and_run.sh xdma<N>
-    ```
+- **Bitstream & Boot Images**: `nanhu-g/ready_for_download/proto_${FPGA_BD}/`
+- **Vivado Projects**: `work_farm/fpga/vivado_prj/`
+- **Build Reports**: `work_farm/fpga/vivado_out/`
+- **XDMA Driver**: `shell/software/build/xdma_drv/`
