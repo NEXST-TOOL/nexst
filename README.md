@@ -1,48 +1,48 @@
-# NEXST: Next Environment for XiangShan Target
+# NEXST: Next Environment for XiangShan Targets
 
-NEXST provides a complete hardware and software environment for FPGA-based prototyping and emulation of the open-source XiangShan RISC-V processor.
+NEXST provides a hardware and software environment for FPGA-based system-level prototyping and emulation platform with the open-source [XiangShan](https://github.com/OpenXiangShan/XiangShan) RISC-V processor.
 
 ## Supported XiangShan Targets
 
-- **[Nanhu-G](https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G)**: Modified version of XiangShan Nanhu microarchitecture for education and research
-- **Nanhu-minimal**: Minimal XiangShan Nanhu implementation  
-- **[Kunminghu](https://github.com/OpenXiangShan/XiangShan)**: Current main architecture of XiangShan
+- **[Nanhu-G](https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G)**: General version of Nanhu microarchitecture (second-generation XiangShan) for scientific research and education
+- **[Kunminghu](https://github.com/OpenXiangShan/XiangShan)** ([Manual](https://docs.xiangshan.cc/projects/user-guide/zh-cn/latest/)): Kunminghu microarchitecture (third-generation XiangShan)
 
-*For detailed microarchitecture information, visit [Xiangshan Documentation](https://xiangshan-doc.readthedocs.io)*
+*For more information, please visit [XiangShan Documentation](https://xiangshan-doc.readthedocs.io)*
 
-## Supported FPGA Platforms
+## Supported FPGA Boards
 
-| Platform | FPGA Chip | Key Features |
-|----------|-----------|--------------|
-| **Xilinx [VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P | Commercial development board |
-| **Xilinx [Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | VU37P | Data center accelerator card |
-| **ICT NM37** | VU37P | Custom card with NVMe SSD support |
-| **Corigine [MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P | Commercial Desktop prototyping solution |
-| **ICT NP19A** | VU19P | Custom card with NVMe SSD support and expanded FPGA resources |
+| Vendor | Board | FPGA Chip | Key Features |
+|----------|-----------|--|--------------|
+| Xilinx | **[VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P | Commercial development board |
+| Xilinx | **[Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | Similar to VU37P | Data center accelerator card |
+| CAS | **ICT NM37** | VU37P | Custom card with NVMe SSD support |
+| Corigine | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P | FPGA based prototyping at the desktop |
+| CAS | **ICT NP19A** | VU19P | Custom card with NVMe SSD support and expanded FPGA resources |
 
 ## Compatibility Matrix
 
 | Board | VCU128 | Alveo U280 | NM37 | MimicTurbo GT | NP19A |
 |-------|--------|------------|------|---------------|-------|
-| Board string | vcu128 | au280 | nm37_vu37p | mimic_turbo | np19a_vu19p |
-| **Features** | | | | | |
-| M.2 Interface | × | × | ✓ | × | ✓ |
-| RJ45 Interface | ✓ | × | ✓ | ✓ | ✓ |
-| PCIe Card Format | Non-standard | ✓ | ✓ | ✓ | ✓ |
-| DDR4 | 4.5GB | 32GB | 32GB | 16GB | 32GB |
-| **CPU Support** | | | | | |
+| Board string | `vcu128` | `au280` | `nm37_vu37p` | `mimic_turbo` | `np19a_vu19p` |
+| Vivado version | 2024.2 | 2020.2 | 2024.2 | 2024.2 | 2024.2 |
+| **Core Support** | | | | | |
 | Single-Core Nanhu-G | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Dual-Core Nanhu-G | × | × | × | ✓ | ✓ |
 | Quad-Core Nanhu-G | × | × | × | ✓ | ✓ |
 | Octa-Core Rocket-H | Testing | Testing | ✓ | ✓ | ✓ |
 | Single-Core Kunminghu | × | × | × | ✓ | ✓ |
+| **Features** | | | | | |
+| M.2 Interface | × | × | ✓ | × | ✓ |
+| RJ45 Interface | ✓ | × | ✓ | ✓ | ✓ |
+| PCIe Card Format | Non-standard | ✓ | ✓ | ✓ | ✓ |
+| DDR4 | 4.5GB | 32GB | 32GB | 16GB | 32GB |
 
 ## Quick Start
 
 ### Prerequisites
 
 - Ubuntu 20.04/22.04
-- AMD/Xilinx Vivado 2024.2 Toolchain
+- AMD/Xilinx Vivado 2020.2(U280)/2024.2 Toolchain
 
 ### Initial Setup
 
@@ -67,6 +67,7 @@ chmod +x mill && sudo mv mill /usr/local/bin
 ### Environment Configuration
 
 ```bash
+export VIVADO_VERSION=<2020.2|2024.2>
 export VIVADO_TOOL_BASE=/path/to/your/vivado  # e.g., /opt/Vivado_2024.2
 export FPGA_BD=your_board_string  # vcu128, au280, nm37_vu37p, mimic_turbo, np19a_vu19p
 export NUM_CORES=<1|2|4> # Number of Nanhu-G cores in the system
