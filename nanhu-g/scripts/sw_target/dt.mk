@@ -12,8 +12,10 @@ endif
 
 CPP_PARAMS += -DNUM_CORES_H=$(NUM_CORES_H)
 
-ifeq ($(WITH_PCIE), 1)
-	CPP_PARAMS += -DWITH_PCIE=1
+ifeq ($(FPGA_BD), nm37)
+	CPP_PARAMS += -DENABLE_PCIE0
+else ifeq ($(FPGA_BD), np19a)
+	CPP_PARAMS += -DENABLE_PCIE0 -DENABLE_PCIE1
 endif
 
 DT_LOC := $(abspath $(NANHU_G_SW_LOC)/dt)
@@ -23,16 +25,15 @@ dts := $(DT_TARGET).dts
 dtb := $(DT_TARGET).dtb
 
 DTS := $(DT_LOC)/$(dts)
-DTB := $(DT_LOC)/$(dtb)
+DTB := $(INSTALL_LOC)/$(dtb)
 
 #==========================================
 # Device Tree Source and Blob compilation 
 #==========================================
 target_dt: $(DTB)
-	@mkdir -p $(INSTALL_LOC)
-	@cp $(DTB) $(INSTALL_LOC)/
 
 $(DTB): $(DTS)
+	@mkdir -p $(INSTALL_LOC)
 	cpp $(CPP_PARAMS) -I $(DT_LOC) -E -P -x assembler-with-cpp $(DTS) | \
 		dtc -I dts -O dtb -o $@ -
 

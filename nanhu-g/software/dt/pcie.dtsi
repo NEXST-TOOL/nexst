@@ -1,5 +1,6 @@
 / {
 	soc {
+#ifdef ENABLE_PCIE0
 		pcie@60000000 {
 			compatible = "xlnx,xdma-host-3.00";
 			device_type = "pci";
@@ -25,6 +26,8 @@
 				#interrupt-cells = <1>;
 			};
 		};
+#endif
+#ifdef ENABLE_PCIE1
 		pcie@40000000 {
 			compatible = "xlnx,xdma-host-3.00";
 			device_type = "pci";
@@ -50,5 +53,6 @@
 				#interrupt-cells = <1>;
 			};
 		};
+#endif
 	};
 };

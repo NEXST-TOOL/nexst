@@ -118,23 +118,13 @@ proc create_root_design { parentCell } {
   set pcie_ep_gt_ref_clk [ create_bd_intf_port -mode slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 pcie_ep_gt_ref_clk ]
   set_property -dict [ list config.freq_hz {100000000} ] $pcie_ep_gt_ref_clk
 
-  # Create instance: IBUFDS_GTE for PCIe EP reference clock
-  set pcie_ep_ref_clk_buf [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.2 pcie_ep_ref_clk_buf ]
-  set_property CONFIG.C_BUF_TYPE {IBUFDSGTE} $pcie_ep_ref_clk_buf
-
-  # Create instance: slow clock generation from PCIe ui clock
-  ## (located in SLR0)
-  set pcie_slow_clk_gen [create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 pcie_slow_clk_gen]
-  set_property -dict [list \
-    CONFIG.RESET_TYPE {ACTIVE_LOW} \
-    CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {50} \
-    CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {10} \
-    CONFIG.CLKOUT2_USED {true} \
-    ] $pcie_slow_clk_gen
+  # gt differential reference clock for pcie rp
+  set pcie_rp_gt_ref_clk [ create_bd_intf_port -mode slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 pcie_rp_gt_ref_clk ]
+  set_property -dict [ list config.freq_hz {100000000} ] $pcie_rp_gt_ref_clk
 
   # Differential system clock for DDR4 MIG
   set ddr4_mig_sys_clk [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 ddr4_mig_sys_clk ]
-  set_property -dict [ list CONFIG.FREQ_HZ {250000000} ] $ddr4_mig_sys_clk
+  set_property -dict [ list CONFIG.FREQ_HZ {100000000} ] $ddr4_mig_sys_clk
 
   #=============================================
   # Reset ports
@@ -142,6 +132,9 @@ proc create_root_design { parentCell } {
 
   # PCIe EP perst
   create_bd_port -dir I -type rst pcie_ep_perstn
+
+  # PCIe RP perst
+  create_bd_port -dir O -type rst pcie_rp_perstn
 
   # Create instance: inverter of perstn from PCIe EP
   set ep_perst_gen [ create_bd_cell -type ip -vlnv xilinx.com:inline_hdl:ilvector_logic:1.0 ep_perst_gen ]
@@ -165,6 +158,12 @@ proc create_root_design { parentCell } {
   create_bd_port -dir I -from 7 -to 0 pcie_ep_rxp
   create_bd_port -dir O -from 7 -to 0 pcie_ep_txn
   create_bd_port -dir O -from 7 -to 0 pcie_ep_txp
+
+  # PCIe RP Slot
+  create_bd_port -dir I -from 3 -to 0 pcie_rp_rxn
+  create_bd_port -dir I -from 3 -to 0 pcie_rp_rxp
+  create_bd_port -dir O -from 3 -to 0 pcie_rp_txn
+  create_bd_port -dir O -from 3 -to 0 pcie_rp_txp
 
   #=============================================
   # DDR4 pins
@@ -199,19 +198,16 @@ proc create_root_design { parentCell } {
 
   # Create instance: DDR4 MIG
   set ddr4_mig [ create_bd_cell -type ip -vlnv xilinx.com:ip:ddr4:2.2 ddr4_mig ]
-  set_property -dict [ list \
-    CONFIG.C0.BANK_GROUP_WIDTH {1} \
-    CONFIG.C0.CS_WIDTH {1} \
-    CONFIG.C0.DDR4_AxiAddressWidth {33} \
+  set_property -dict [ list CONFIG.C0.DDR4_isCustom {false} \
+    CONFIG.C0.DDR4_InputClockPeriod {10005} \
+    CONFIG.C0.DDR4_TimePeriod {938} \
+    CONFIG.C0.DDR4_MemoryType {SODIMMs} \
+    CONFIG.C0.DDR4_MemoryPart {MTA16ATF2G64HZ-2G3} \
+    CONFIG.C0.DDR4_AxiAddressWidth {34} \
     CONFIG.C0.DDR4_AxiDataWidth {512} \
     CONFIG.C0.DDR4_AxiIDWidth.VALUE_SRC {PROPAGATED} \
-    CONFIG.C0.DDR4_Clamshell {false} \
-    CONFIG.C0.DDR4_DataMask {DM_NO_DBI} \
     CONFIG.C0.DDR4_DataWidth {64} \
-    CONFIG.C0.DDR4_Ecc {false} \
-    CONFIG.C0.DDR4_InputClockPeriod {4000} \
-    CONFIG.C0.DDR4_TimePeriod {833} \
-    CONFIG.C0.DDR4_MemoryPart {MT40A1G16RC-062E} \
+    CONFIG.C0_DDR4_CasLatency {15} \
     CONFIG.System_Clock {Differential} \
     ] $ddr4_mig
 
@@ -220,10 +216,10 @@ proc create_root_design { parentCell } {
   set_property -dict [list \
     CONFIG.functional_mode {DMA} \
     CONFIG.mode_selection {Advanced} \
-    CONFIG.pcie_blk_locn {PCIE4C_X0Y1} \
+    CONFIG.pcie_blk_locn {PCIE4C_X1Y0} \
     CONFIG.en_gt_selection {true} \
-    CONFIG.select_quad {GTY_Quad_222} \
-    CONFIG.pl_link_cap_max_link_width {X8} \
+    CONFIG.select_quad {GTY_Quad_227} \
+    CONFIG.pl_link_cap_max_link_width {X16} \
     CONFIG.pl_link_cap_max_link_speed {8.0_GT/s} \
     CONFIG.xdma_axi_intf_mm {AXI_Memory_Mapped} \
     CONFIG.axilite_master_en {true} \
@@ -237,6 +233,45 @@ proc create_root_design { parentCell } {
     CONFIG.pf0_base_class_menu {Processing_accelerators} \
     CONFIG.pf0_sub_class_interface_menu {Unknown} \
     ] $xdma_ep
+
+  # Create instance: PCIe Root Port
+  set xdma_rp [ create_bd_cell -type ip -vlnv xilinx.com:ip:xdma:4.1 xdma_rp ]
+  set_property -dict [ list \
+    CONFIG.mode_selection {Advanced} \
+    CONFIG.device_port_type {Root_Port_of_PCI_Express_Root_Complex} \
+    CONFIG.functional_mode {AXI Bridge} \
+    CONFIG.dma_reset_source_sel {Phy_Ready} \
+    CONFIG.en_gt_selection {true} \
+    CONFIG.pl_link_cap_max_link_width {X4} \
+    CONFIG.pl_link_cap_max_link_speed {8.0_GT/s} \
+    CONFIG.axi_addr_width {64} \
+    CONFIG.pf0_class_code_sub {04} \
+    CONFIG.pf0_bar0_enabled {false} \
+    CONFIG.axibar2pciebar_0 {0x0000000050000000} \
+    CONFIG.plltype {QPLL1} \
+    CONFIG.msi_rx_pin_en {true} \
+    CONFIG.select_quad {GTY_Quad_127} \
+    CONFIG.pcie_blk_locn {PCIE4C_X0Y1} \
+    CONFIG.BASEADDR {0x00000000} \
+    CONFIG.HIGHADDR {0x007FFFFF}
+  ] $xdma_rp
+
+  # Create instance: IBUFDS_GTE for PCIe EP reference clock
+  set pcie_ep_ref_clk_buf [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.2 pcie_ep_ref_clk_buf ]
+  set_property CONFIG.C_BUF_TYPE {IBUFDSGTE} $pcie_ep_ref_clk_buf
+
+  # Create instance: IBUFDS_GTE for PCIe RP reference clock
+  set pcie_rp_ref_clk_buf [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.2 pcie_rp_ref_clk_buf ]
+  set_property CONFIG.C_BUF_TYPE {IBUFDSGTE} $pcie_rp_ref_clk_buf
+
+  # Create instance: slow clock generation from PCIe ui clock
+  set pcie_slow_clk_gen [create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 pcie_slow_clk_gen]
+  set_property -dict [list \
+    CONFIG.RESET_TYPE {ACTIVE_LOW} \
+    CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {50} \
+    CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {10} \
+    CONFIG.CLKOUT2_USED {true} \
+    ] $pcie_slow_clk_gen
 
   # Create instance: AXI Interconnect for XDMA EP to DDR4
   set axi_ic_ddr_mem_xdma_ep [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_ddr_mem_xdma_ep ]
@@ -253,6 +288,7 @@ proc create_root_design { parentCell } {
     ] $axi_ic_ddr_mem_slr1_slr2
 
   # Create instance: AXI Interconnect for PCIe AXI-Lite BAR interface
+  ## (located in SLR1)
   set axi_ic_ep_bar_axi_lite [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_ep_bar_axi_lite ]
   set_property -dict [ list \
     CONFIG.NUM_MI {4} \
@@ -262,9 +298,23 @@ proc create_root_design { parentCell } {
   # Create instance: AXI Interconnect for Role MMIO
   set axi_ic_role_io [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_role_io ]
   set_property -dict [ list \
-    CONFIG.NUM_MI {2} \
+    CONFIG.NUM_MI {3} \
     CONFIG.NUM_SI {1} \
     ] $axi_ic_role_io
+
+  # Create instance: AXI Interconnect for PCIe RP DMA
+  set axi_ic_pcie_rp_dma [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_pcie_rp_dma ]
+  set_property -dict [ list \
+    CONFIG.NUM_MI {1} \
+    CONFIG.NUM_SI {1} \
+    ] $axi_ic_pcie_rp_dma
+
+  # Create instance: AXI Interconnect for PCIe RP J6 MMIO
+  set axi_ic_pcie_rp_mmio [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_pcie_rp_mmio ]
+  set_property -dict [ list \
+    CONFIG.NUM_MI {2} \
+    CONFIG.NUM_SI {1} \
+    ] $axi_ic_pcie_rp_mmio
 
   # Create instance: AXI Interconnect for Boot ROM
   set axi_ic_bootrom [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_ic_bootrom ]
@@ -394,6 +444,21 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net [get_bd_intf_pins axi_ic_bootrom/S00_AXI] \
     [get_bd_intf_pins axi_ic_role_io/M01_AXI]
 
+  # PCIe RP DMA port to ROLE DMA interface
+  connect_bd_intf_net [get_bd_intf_pins xdma_rp/M_AXI_B] \
+    [get_bd_intf_pins axi_ic_pcie_rp_dma/S00_AXI]
+
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_pcie_rp_dma/M00_AXI] \
+    [get_bd_intf_pins u_role/s_axi_dma]
+
+  # Role to XDMA RP MMIO IC
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_pcie_rp_mmio/S00_AXI] \
+    [get_bd_intf_pins axi_ic_role_io/M02_AXI]
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_pcie_rp_mmio/M00_AXI] \
+    [get_bd_intf_pins xdma_rp/S_AXI_B]
+  connect_bd_intf_net [get_bd_intf_pins axi_ic_pcie_rp_mmio/M01_AXI] \
+    [get_bd_intf_pins xdma_rp/S_AXI_LITE]
+
   # AXI-IC of Boot ROM
   connect_bd_intf_net [get_bd_intf_pins bootrom_bram_ctrl/S_AXI] \
     [get_bd_intf_pins axi_ic_bootrom/M00_AXI]
@@ -417,6 +482,12 @@ proc create_root_design { parentCell } {
   connect_bd_net [get_bd_ports pcie_ep_rxp] [get_bd_pins xdma_ep/pci_exp_rxp]
   connect_bd_net [get_bd_ports pcie_ep_txn] [get_bd_pins xdma_ep/pci_exp_txn]
   connect_bd_net [get_bd_ports pcie_ep_txp] [get_bd_pins xdma_ep/pci_exp_txp]
+
+  # PCIe RP slot
+  connect_bd_net [get_bd_ports pcie_rp_rxn] [get_bd_pins xdma_rp/pci_exp_rxn]
+  connect_bd_net [get_bd_ports pcie_rp_rxp] [get_bd_pins xdma_rp/pci_exp_rxp]
+  connect_bd_net [get_bd_ports pcie_rp_txn] [get_bd_pins xdma_rp/pci_exp_txn]
+  connect_bd_net [get_bd_ports pcie_rp_txp] [get_bd_pins xdma_rp/pci_exp_txp]
 
   #==============================================
   # DDR4 memory connection
@@ -444,13 +515,31 @@ proc create_root_design { parentCell } {
   # Interrupt signal connection
   #=============================================
 
+  # Create intr_sync
+  set intr_sync_xdma_rp [create_bd_cell -type module -reference f2s_rising_intr_sync intr_sync_xdma_rp]
+  set_property -dict [list \
+    CONFIG.INTR_WIDTH {3} \
+    CONFIG.SYNC_STAGE {2} \
+    ] $intr_sync_xdma_rp
+
   ## Role interrupts
+  set xdma_rp_intr_concat [ create_bd_cell -type ip -vlnv xilinx.com:inline_hdl:ilconcat:1.0 xdma_rp_intr_concat ]
+  set_property -dict [list CONFIG.NUM_PORTS {3}] $xdma_rp_intr_concat
+
+  connect_bd_net -net xdma_rp_interrupt_out [get_bd_pins xdma_rp/interrupt_out] [get_bd_pins xdma_rp_intr_concat/In0]
+  connect_bd_net -net xdma_rp_interrupt_out_msi_vec0to31 [get_bd_pins xdma_rp/interrupt_out_msi_vec0to31] [get_bd_pins xdma_rp_intr_concat/In1]
+  connect_bd_net -net xdma_rp_interrupt_out_msi_vec32to63 [get_bd_pins xdma_rp/interrupt_out_msi_vec32to63] [get_bd_pins xdma_rp_intr_concat/In2]
+
+  connect_bd_net [get_bd_pins xdma_rp_intr_concat/dout] [get_bd_pins intr_sync_xdma_rp/fast_intr]
+
   set role_intr_concat [ create_bd_cell -type ip -vlnv xilinx.com:inline_hdl:ilconcat:1.0 role_intr_concat ]
   set_property -dict [list \
-    CONFIG.NUM_PORTS {1} \
+    CONFIG.NUM_PORTS {2} \
+    CONFIG.IN1_WIDTH {3} \
     ] $role_intr_concat
 
   connect_bd_net [get_bd_pins role_uart/interrupt] [get_bd_pins role_intr_concat/In0]
+  connect_bd_net [get_bd_pins intr_sync_xdma_rp/slow_intr] [get_bd_pins role_intr_concat/In1]
 
   connect_bd_net [get_bd_pins role_intr_concat/dout] [get_bd_pins u_role/s2r_intr]
 
@@ -470,6 +559,19 @@ proc create_root_design { parentCell } {
   connect_bd_net -net pcie_ep_sys_clk_gt \
     [get_bd_pins pcie_ep_ref_clk_buf/IBUF_OUT] \
     [get_bd_pins xdma_ep/sys_clk_gt]
+
+  # PCIe RP reference clock (100MHz)
+  connect_bd_intf_net -intf_net pcie_rp_gt_ref_clk \
+    [get_bd_intf_pins pcie_rp_gt_ref_clk] \
+    [get_bd_intf_pins pcie_rp_ref_clk_buf/CLK_IN_D]
+
+  connect_bd_net -net pcie_rp_ref_clk \
+    [get_bd_pins pcie_rp_ref_clk_buf/IBUF_DS_ODIV2] \
+    [get_bd_pins xdma_rp/sys_clk]
+
+  connect_bd_net -net pcie_rp_sys_clk \
+    [get_bd_pins pcie_rp_ref_clk_buf/IBUF_OUT] \
+    [get_bd_pins xdma_rp/sys_clk_gt]
 
   # DDR4 memory controller reference clock (100MHz)
   connect_bd_intf_net -intf_net ddr4_mig_sys_clk_in \
@@ -500,6 +602,7 @@ proc create_root_design { parentCell } {
     [get_bd_pins host_uart/s_axi_aclk] \
     [get_bd_pins role_uart/s_axi_aclk] \
     [get_bd_pins bootrom_bram_ctrl/s_axi_aclk] \
+    [get_bd_pins intr_sync_xdma_rp/slow_clk] \
     [get_bd_pins axi_ic_bootrom/aclk] \
     [get_bd_pins axi_ic_bootrom/s00_aclk] \
     [get_bd_pins axi_ic_bootrom/s01_aclk] \
@@ -511,9 +614,12 @@ proc create_root_design { parentCell } {
     [get_bd_pins axi_ic_role_io/s00_aclk] \
     [get_bd_pins axi_ic_role_io/m00_aclk] \
     [get_bd_pins axi_ic_role_io/m01_aclk] \
+    [get_bd_pins axi_ic_role_io/m02_aclk] \
     [get_bd_pins axi_ic_ep_bar_axi_lite/m00_aclk] \
     [get_bd_pins axi_ic_ep_bar_axi_lite/m01_aclk] \
-    [get_bd_pins axi_ic_ep_bar_axi_lite/m02_aclk]
+    [get_bd_pins axi_ic_ep_bar_axi_lite/m02_aclk] \
+    [get_bd_pins axi_ic_pcie_rp_dma/m00_aclk] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/s00_aclk]
 
   connect_bd_net -net pcie_slow_clk2 [get_bd_pins pcie_slow_clk_gen/clk_out2] \
     [get_bd_pins u_role/rtc_clock]
@@ -525,6 +631,15 @@ proc create_root_design { parentCell } {
   connect_bd_net [get_bd_pins pcie_slow_clk_gen/locked] \
     [get_bd_pins dut_rst_gen/dcm_locked]
 
+  # PCIe RP AXI clock (250MHz)
+  connect_bd_net [get_bd_pins xdma_rp/axi_aclk] \
+    [get_bd_pins axi_ic_pcie_rp_dma/aclk] \
+    [get_bd_pins axi_ic_pcie_rp_dma/s00_aclk] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/aclk] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/m00_aclk] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/m01_aclk] \
+    [get_bd_pins intr_sync_xdma_rp/fast_clk]
+
   #=============================================
   # System reset connection
   #=============================================
@@ -532,6 +647,7 @@ proc create_root_design { parentCell } {
   # perstn for AXI PCIe EP
   connect_bd_net [get_bd_ports pcie_ep_perstn] \
     [get_bd_pins xdma_ep/sys_rst_n] \
+    [get_bd_pins xdma_rp/sys_rst_n] \
     [get_bd_pins pcie_slow_clk_gen/resetn] \
     [get_bd_pins ddr4_mig_rst_gen/ext_reset_in] \
     [get_bd_pins dut_rst_gen/ext_reset_in] \
@@ -545,6 +661,14 @@ proc create_root_design { parentCell } {
     [get_bd_pins axi_ic_ddr_mem_xdma_ep/aresetn] \
     [get_bd_pins axi_ic_ddr_mem_xdma_ep/s00_aresetn] \
     [get_bd_pins axi_ic_ddr_mem_xdma_ep/s01_aresetn]
+
+  # Reset for AXI interface of PCIe RP
+  connect_bd_net [get_bd_pins xdma_rp/axi_aresetn] \
+    [get_bd_pins axi_ic_pcie_rp_dma/aresetn] \
+    [get_bd_pins axi_ic_pcie_rp_dma/s00_aresetn] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/aresetn] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/m00_aresetn] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/m01_aresetn]
 
   # System reset for PL DDR4 MIG (opposite polarity of PCIe EP perstn, active high)
   connect_bd_net [get_bd_pins ep_perst_gen/Res] \
@@ -569,10 +693,13 @@ proc create_root_design { parentCell } {
     [get_bd_pins axi_ic_role_io/s00_aresetn] \
     [get_bd_pins axi_ic_role_io/m00_aresetn] \
     [get_bd_pins axi_ic_role_io/m01_aresetn] \
+    [get_bd_pins axi_ic_role_io/m02_aresetn] \
     [get_bd_pins axi_ic_bootrom/aresetn] \
     [get_bd_pins axi_ic_bootrom/s00_aresetn] \
     [get_bd_pins axi_ic_bootrom/s01_aresetn] \
     [get_bd_pins axi_ic_bootrom/m00_aresetn] \
+    [get_bd_pins axi_ic_pcie_rp_mmio/s00_aresetn] \
+    [get_bd_pins axi_ic_pcie_rp_dma/m00_aresetn] \
     [get_bd_pins axi_ic_ddr_mem_slr1_slr2/s00_aresetn] \
     [get_bd_pins axi_ic_ddr_mem_slr1_slr2/s01_aresetn] \
     [get_bd_pins axi_ic_ep_bar_axi_lite/m00_aresetn] \
@@ -610,6 +737,9 @@ proc create_root_design { parentCell } {
 
   ## Role address space
   create_bd_addr_seg -range 0x10000 -offset 0x10000000 [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs bootrom_bram_ctrl/S_AXI/Mem0] ROLE_BOOTROM
+  create_bd_addr_seg -range 0x01000000 -offset 0x50000000 [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs xdma_rp/S_AXI_B/BAR0] PCIE_RP_S_BAR
+  create_bd_addr_seg -range 0x10000000 -offset 0x60000000 [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs xdma_rp/S_AXI_LITE/CTL0] PCIE_RP_S_LITE
+  create_bd_addr_seg -range 0x200000000 -offset 0x0 [get_bd_addr_spaces xdma_rp/M_AXI_B] [get_bd_addr_segs u_role/s_axi_dma/reg0] PCIE_RP_DMA
   create_bd_addr_seg -range 0x10000 -offset 0x30000000 [get_bd_addr_spaces u_role/m_axi_io] [get_bd_addr_segs role_uart/S_AXI/Reg] ROLE_UART
   create_bd_addr_seg -range 0x200000000 -offset 0x0 [get_bd_addr_spaces u_role/m_axi_mem] [get_bd_addr_segs ddr4_mig/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] ROLE_DDR
 

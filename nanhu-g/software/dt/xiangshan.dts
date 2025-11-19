@@ -14,7 +14,7 @@
 	
 	mem: memory@80000000 {
 		device_type = "memory";
-		reg = <0x0 0x80000000 0x1 0x00000000>;
+		reg = <0x0 0x80000000 0x0 0x80000000>;
 	};
 	
 	soc {
@@ -58,6 +58,4 @@
 	};
 };
 
-#if WITH_PCIE == 1
 #include "pcie.dtsi"
-#endif
