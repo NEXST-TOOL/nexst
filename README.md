@@ -2,6 +2,21 @@
 
 NEXST provides a hardware and software environment for FPGA-based system-level prototyping and emulation platform with the open-source [XiangShan](https://github.com/OpenXiangShan/XiangShan) RISC-V processor.
 
+```
+┌──────────────────────┐
+│    SERVE platform    │
+│┌────────────────────┐│
+││  NEXST environment ││
+││┌──────────────────┐││
+│││     REMU Tool    │││
+│││┌────────────────┐│││
+││││ XiangShan Core ││││
+│││└────────────────┘│││
+││└──────────────────┘││
+│└────────────────────┘│
+└──────────────────────┘
+```
+
 ## Supported XiangShan Targets
 
 - **[Nanhu-G](https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G)**: General version of Nanhu microarchitecture (second-generation XiangShan) for scientific research and education
@@ -15,13 +30,15 @@ NEXST provides a hardware and software environment for FPGA-based system-level p
 |----------|-----------|--|
 | AMD/Xilinx | **[VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P |
 | AMD/Xilinx | **[Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | Similar to VU37P |
-| ICT | **NM37** | VU37P |
+| ICT | **[NM37](./README.md#contact-us)** | VU37P |
 | Corigine | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P |
-| ICT | **NP19A** | VU19P |
+| ICT | **[NP19A](./README.md#contact-us)** | VU19P |
+
+### FPGA Boards Selection Guide
 
 ## Compatibility Matrix
 
-| Board | VCU128 | Alveo U280 | NM37 | MimicTurbo GT | NP19A |
+<!-- | Board | VCU128 | Alveo U280 | NM37 | MimicTurbo GT | NP19A |
 |-------|--------|------------|------|---------------|-------|
 | [FPGA_BD](./README.md#environment-configuration) string | `vcu128` | `u280` | `nm37` | `mimic_turbo` | `np19a` |
 | Vivado version | 2024.2 | 2020.2 | 2024.2 | 2024.2 | 2024.2 |
@@ -35,7 +52,112 @@ NEXST provides a hardware and software environment for FPGA-based system-level p
 | M.2 Interface | × | × | ✓ | × | ✓ |
 | RJ45 Interface | ✓ | × | ✓ | ✓ | ✓ |
 | PCIe Card Format | Non-standard | ✓ | ✓ | ✓ | ✓ |
-| DDR4 | 4.5GB | 32GB | 32GB | 16GB | 32GB |
+| DDR4 | 4.5GB | 32GB | 32GB | 16GB | 32GB | -->
+
+<table tabindex="0">
+  <thead>
+    <tr>
+      <th colspan="2">Board</th>
+      <th>VCU128</th>
+      <th>Alveo U280</th>
+      <th>NM37</th>
+      <th>MimicTurbo GT</th>
+      <th>NP19A</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center" colspan="2"><a href="./README.md#environment-configuration">FPGA_BD</a> string</td>
+      <td><code>vcu128</code></td>
+      <td><code>u280</code></td>
+      <td><code>nm37</code></td>
+      <td><code>mimic_turbo</code></td>
+      <td><code>np19a</code></td>
+    </tr>
+    <tr>
+      <td align="center" colspan="2">Vivado version</td>
+      <td>2024.2</td>
+      <td>2020.2</td>
+      <td>2024.2</td>
+      <td>2024.2</td>
+      <td>2024.2</td>
+    </tr>
+    <tr>
+      <td rowspan="5"><strong>Core</br>Targets</strong></td>
+      <td>Single-Core Nanhu-G</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Dual-Core Nanhu-G</td>
+      <td>×</td>
+      <td>×</td>
+      <td>×</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Quad-Core Nanhu-G</td>
+      <td>×</td>
+      <td>×</td>
+      <td>×</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Octa-Core Rocket</td>
+      <td>TBD</td>
+      <td>TBD</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Single-Core Kunminghu</td>
+      <td>×</td>
+      <td>×</td>
+      <td>×</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td rowspan="4"><strong>Board</br>Features</strong></td>
+      <td>M.2 Interface</td>
+      <td>×</td>
+      <td>×</td>
+      <td>✓</td>
+      <td>×</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>RJ45 Interface</td>
+      <td>✓</td>
+      <td>×</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>PCIe Card Format</td>
+      <td>Non-standard</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>DDR4</td>
+      <td>4.5GB</td>
+      <td>32GB</td>
+      <td>32GB</td>
+      <td>16GB</td>
+      <td>32GB</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Prerequisites
 
@@ -226,3 +348,17 @@ sudo ./load_and_run.sh xdma<N>
 ## Contact us
 
 E-mail: <serve@ict.ac.cn>
+
+## Cite us
+
+```bibtex
+@inproceedings{hetroproto,
+ address = {Shanghai, China},
+ title = {HeteroProto: Automated RTL-to-Bitstream Framework for Heterogeneous Multi-FPGA SoC Prototyping},
+ shorttitle = {HeteroProto},
+ booktitle = {2025 International Conference on Field Programmable Technology (ICFPT)},
+ author = {Zhang, Congwu and Wang, Panyu and Wang, Yazhou and Chen, Mingyu and Bao, Yungang and Chang, Yisong and Zhang, Ke},
+ month = dec,
+ year = {2025},
+}
+```
