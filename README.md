@@ -3,18 +3,18 @@
 NEXST provides a hardware and software environment for FPGA-based system-level prototyping and emulation platform with the open-source [XiangShan](https://github.com/OpenXiangShan/XiangShan) RISC-V processor.
 
 ```
-┌──────────────────────┐
-│    SERVE platform    │
-│┌────────────────────┐│
-││  NEXST environment ││
-││┌──────────────────┐││
-│││     REMU Tool    │││
-│││┌────────────────┐│││
-││││ XiangShan Core ││││
-│││└────────────────┘│││
-││└──────────────────┘││
-│└────────────────────┘│
-└──────────────────────┘
+┌─────────────────────────┐
+│     SERVE Platform      │
+│┌───────────────────────┐│
+││   NEXST Environment   ││
+││┌─────────────────────┐││
+│││      REMU Tool      │││
+│││┌───────────────────┐│││
+││││ XiangShan Core(s) ││││
+│││└───────────────────┘│││
+││└─────────────────────┘││
+│└───────────────────────┘│
+└─────────────────────────┘
 ```
 
 ## Supported XiangShan Targets
@@ -178,7 +178,8 @@ The structure of precompiled binaries are shown below:
 │   │   ├── debug_nets.ltx # debug probes for mem and io axi bus
 │   │   ├── bootrom.bin    # bootrom
 │   │   └── RV_BOOT.bin    # boot image
-│   ├── u280               # for U280 board (same content as VCU128)
+│   ├── u280               # for U280 board
+│   │   └── ...            # same content as VCU128
 │   ├── nm37               # for NM37 board
 │   ├── mimic_turbo        # for MimicTurbo GT board
 │   └── np19a              # for NP19A board
@@ -350,6 +351,8 @@ sudo ./load_and_run.sh xdma<N>
 E-mail: <serve@ict.ac.cn>
 
 ## Cite us
+
+
 
 ```bibtex
 @inproceedings{hetroproto,
