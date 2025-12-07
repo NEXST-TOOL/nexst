@@ -28,6 +28,7 @@ NEXST provides a hardware and software environment for FPGA-based system-level p
 
 | Vendor | Board | FPGA Chip |
 |----------|-----------|--|
+| AMD/Xilinx | **[VCU1525](https://www.amd.com/zh-cn/products/adaptive-socs-and-fpgas/evaluation-boards/vcu1525-p.html)** | VU9P |
 | AMD/Xilinx | **[VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P |
 | AMD/Xilinx | **[Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | Similar to VU37P |
 | ICT | **[NM37](./README.md#contact-us)** | VU37P |
