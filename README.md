@@ -32,7 +32,7 @@ NEXST provides a hardware and software environment for FPGA-based system-level p
 | AMD/Xilinx | **[VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P |
 | AMD/Xilinx | **[Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | Similar to VU37P |
 | ICT | **[NM37](./README.md#contact-us)** | VU37P |
-| Corigine | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P |
+| Corepilot | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P |
 | ICT | **[NP19A](./README.md#contact-us)** | VU19P |
 
 ### FPGA Boards Selection Guide
