@@ -352,7 +352,9 @@ E-mail: <serve@ict.ac.cn>
 
 ## Cite us
 
-
+Congwu Zhang, Panyu Wang, Yazhou Wang, Mingyu Chen, Yungang Bao, Yisong Chang and Ke Zhang. HeteroProto:
+Automated RTL-to-Bitstream Framework for Heterogeneous Multi-FPGA SoC Prototyping, 2025 International
+Conference on Field Programmable Technology (FPT), Shanghai, China, 2025.
 
 ```bibtex
 @inproceedings{hetroproto,
