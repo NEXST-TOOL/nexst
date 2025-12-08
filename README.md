@@ -176,7 +176,11 @@ NEXST项目基于FPGA，为开源[香山](https://github.com/OpenXiangShan/Xiang
 
 We have prepared some [precompiled binaries](https://github.com/NEXST-TOOL/ready_for_download) for a quick demo.
 
+我们准备了一些[预编译二进制](https://github.com/NEXST-TOOL/ready_for_download)可用于快速DEMO测试。
+
 The structure of precompiled binaries are shown below:
+
+预编译二进制以下述文件结构组织：
 
 ```
 .
@@ -198,6 +202,8 @@ The structure of precompiled binaries are shown below:
 ```
 
 After downloading precompiled binaries, please follow the instructions in [FPGA Deployment](./README.md#fpga-deployment) section.
+
+在下载预编译二进制后，请遵循[FPGA Deployment](./README.md#fpga-deployment)节的指引完成香山的部署与启动流程。
 
 ## Build from Scratch
 
