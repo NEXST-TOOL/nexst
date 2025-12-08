@@ -35,12 +35,12 @@ NEXST项目基于FPGA，为开源[香山](https://github.com/OpenXiangShan/Xiang
 
 | Vendor | Board | FPGA Chip |
 |----------|-----------|--|
-| AMD/Xilinx | **[VCU1525](https://www.amd.com/zh-cn/products/adaptive-socs-and-fpgas/evaluation-boards/vcu1525-p.html)** | VU9P |
-| AMD/Xilinx | **[VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P |
-| AMD/Xilinx | **[Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | Similar to VU37P |
-| ICT | **[NM37](./README.md#contact-us)** | VU37P |
-| Corepilot | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P |
 | ICT | **[NP19A](./README.md#contact-us)** | VU19P |
+| Corepilot | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P |
+| ICT | **[NM37](./README.md#contact-us)** | VU37P |
+| AMD/Xilinx | **[Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | Similar to VU37P |
+| AMD/Xilinx | **[VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P |
+| AMD/Xilinx | **[VCU1525](https://www.amd.com/zh-cn/products/adaptive-socs-and-fpgas/evaluation-boards/vcu1525-p.html)** | VU9P |
 
 ### FPGA Boards Selection Guide
 
@@ -193,12 +193,19 @@ The structure of precompiled binaries are shown below:
 │   ├── u280               # for U280 board
 │   │   └── ...            # same content as VCU128
 │   ├── nm37               # for NM37 board
+│   │   └── ...
 │   ├── mimic_turbo        # for MimicTurbo GT board
+│   │   └── ...
 │   └── np19a              # for NP19A board
+│   │   └── ...
 ├── nanhu-g-dual           # for dual-core XiangShan Nanhu-G
+│   └── ....
 ├── nanhu-g-quad           # for quad-core XiangShan Nanhu-G
+│   └── ....
 ├── kunminghu              # for XiangShan Kunminghu
+│   └── ....
 └── rocket                 # for Rocket Chip
+    └── ....
 ```
 
 After downloading precompiled binaries, please follow the instructions in [FPGA Deployment](./README.md#fpga-deployment) section.
