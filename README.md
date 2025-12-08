@@ -2,6 +2,8 @@
 
 NEXST provides a hardware and software environment for FPGA-based system-level prototyping and emulation platform with the open-source [XiangShan](https://github.com/OpenXiangShan/XiangShan) RISC-V processor.
 
+NEXST项目基于FPGA，为开源[香山](https://github.com/OpenXiangShan/XiangShan)RISC-V处理器提供了系统级原型验证与仿真加速平台的软硬件环境。
+
 ```
 ┌─────────────────────────┐
 │     SERVE Platform      │
@@ -23,6 +25,11 @@ NEXST provides a hardware and software environment for FPGA-based system-level p
 - **[Kunminghu](https://github.com/OpenXiangShan/XiangShan)** ([Manual](https://docs.xiangshan.cc/projects/user-guide/zh-cn/latest/)): Kunminghu microarchitecture (third-generation XiangShan)
 
 *For more information, please visit [XiangShan Documentation](https://xiangshan-doc.readthedocs.io)*
+
+- **[Nanhu-G](https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G)**: 面向科研与教育的通用南湖微架构（第二代香山处理器）。
+- **[Kunminghu](https://github.com/OpenXiangShan/XiangShan)** ([手册](https://docs.xiangshan.cc/projects/user-guide/zh-cn/latest/)): 昆明湖微架构（第三代香山处理器）。
+
+*更多信息请参见[香山文档](https://xiangshan-doc.readthedocs.io)*
 
 ## Supported FPGA Boards
 
