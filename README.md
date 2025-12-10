@@ -1,8 +1,10 @@
 # NEXST: Next Environment for XiangShan Targets
 
-NEXST provides a hardware and software environment for FPGA-based system-level prototyping and emulation platform with the open-source [XiangShan](https://github.com/OpenXiangShan/XiangShan) RISC-V processor.
+## Introduction
 
-NEXST项目基于FPGA，为开源[香山](https://github.com/OpenXiangShan/XiangShan)RISC-V处理器提供了系统级原型验证与仿真加速平台的软硬件环境。
+NEXST (Next Environment for XiangShan Targets) is a comprehensive FPGA-based hardware and software environment designed for system-level prototyping, verification, and emulation of the open-source [XiangShan](https://github.com/OpenXiangShan/XiangShan) RISC-V processor. The platform enables researchers, developers, and educators to rapidly prototype and validate XiangShan processor designs on real FPGA hardware, bridging the gap between RTL simulation and ASIC implementation. NEXST supports multiple XiangShan microarchitectures (including Nanhu-G and Kunminghu) and various FPGA boards (VCU128, Alveo U280, NM37, MimicTurbo GT, NP19A), providing a flexible and scalable environment for processor research, performance evaluation, and system integration testing. By offering automated RTL-to-bitstream generation workflows, pre-built software stacks (bootrom, OpenSBI, Linux), and comprehensive tooling support, NEXST significantly accelerates the development cycle and lowers the barrier for FPGA-based processor prototyping.
+
+NEXST（香山处理器环境）是一个全面的基于FPGA的软硬件环境，专为开源[香山](https://github.com/OpenXiangShan/XiangShan) RISC-V处理器的系统级原型设计、验证和仿真而设计。该平台使研究人员、开发者和教育工作者能够在真实的FPGA硬件上快速原型化和验证香山处理器设计，填补RTL仿真与ASIC实现之间的空白。NEXST支持多种香山微架构（包括南湖-G和昆明湖）和各种FPGA开发板（VCU128、Alveo U280、NM37、MimicTurbo GT、NP19A），为处理器研究、性能评估和系统集成测试提供了灵活且可扩展的环境。通过提供自动化的RTL到比特流生成工作流程、预构建的软件栈（bootrom、OpenSBI、Linux）以及全面的工具支持，NEXST显著加速了开发周期，降低了基于FPGA的处理器原型设计的门槛。
 
 ```
 ┌─────────────────────────┐
