@@ -372,6 +372,8 @@ sudo ./load_and_run.sh xdma<N>
 - **Vivado Projects**: `work_farm/fpga/vivado_prj/`
 - **Build Reports**: `work_farm/fpga/vivado_out/`
 
+&nbsp;
+
 - **FPGA比特流**: `work_farm/hw_plat/target_nanhu-g_proto_${FPGA_BD}/system.bit`
 - **Bootroms**: `nanhu-g/sw_plat/proto_${FPGA_BD}/bootrom.bin`
 - **启动镜像**: `nanhu-g/sw_plat/proto_${FPGA_BD}/RV_BOOT.bin`

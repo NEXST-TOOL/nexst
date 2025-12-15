@@ -50,6 +50,8 @@ INITRAMFS_TXT := $(abspath $(ROOTFS_SRC)/initramfs.txt)
 
 KERN_COMPILE_FLAGS += CONFIG_INITRAMFS_SOURCE=$(INITRAMFS_TXT)
 
+RISCV ?= /usr/riscv64-linux-gnu
+
 #==================================
 # Linux kernel compilation
 #==================================
@@ -78,7 +80,7 @@ linux_distclean: $(obj-modules-clean-y)
 rootfs: $(INITRAMFS_TXT)
 
 $(INITRAMFS_TXT):
-	$(MAKE) -C $(ROOTFS_SRC) RISCV=$(shell $(LINUX_GCC_PREFIX)-gcc --print-sysroot) CROSS_COMPILE=$(LINUX_GCC_PREFIX)
+	$(MAKE) -C $(ROOTFS_SRC) CROSS_COMPILE=$(LINUX_GCC_PREFIX)
 
 rootfs_clean:
 	$(MAKE) -C $(ROOTFS_SRC) clean
