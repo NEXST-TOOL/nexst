@@ -35,9 +35,9 @@ NEXST为开源RISC-V处理器[香山](https://github.com/OpenXiangShan/XiangShan
 
 | Vendor | Board | FPGA Chip |
 |----------|-----------|--|
-| ICT | **[NP19A](./README.md#contact-us)** | VU19P |
+| ICT | **[NP19A](./README.md#contact-us-联系我们)** | VU19P |
 | Corepilot | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P |
-| ICT | **[NM37](./README.md#contact-us)** | VU37P |
+| ICT | **[NM37](./README.md#contact-us-联系我们)** | VU37P |
 | AMD/Xilinx | **[Alveo U280](https://www.amd.com/zh-cn/support/downloads/alveo-downloads.html/accelerators/alveo/u280.html)** | Similar to VU37P |
 | AMD/Xilinx | **[VCU128](https://www.xilinx.com/products/boards-and-kits/vcu128.html)** | VU37P |
 | AMD/Xilinx | **[VCU1525](https://www.amd.com/zh-cn/products/adaptive-socs-and-fpgas/evaluation-boards/vcu1525-p.html)** | VU9P |
@@ -59,7 +59,7 @@ NEXST为开源RISC-V处理器[香山](https://github.com/OpenXiangShan/XiangShan
   </thead>
   <tbody>
     <tr>
-      <td align="center" colspan="2"><a href="./README.md#environment-configuration">FPGA_BD</a> string</td>
+      <td align="center" colspan="2"><a href="./README.md#environment-configuration-环境配置">FPGA_BD</a> string</td>
       <td><code>vcu128</code></td>
       <td><code>u280</code></td>
       <td><code>nm37</code></td>
@@ -197,9 +197,9 @@ The structure of precompiled binaries are shown below:
     └── ....
 ```
 
-After downloading precompiled binaries, please follow the instructions in [FPGA Deployment](./README.md#fpga-deployment) section.
+After downloading precompiled binaries, please follow the instructions in [FPGA Deployment](./README.md#fpga-deployment-fpga部署) section.
 
-在下载预编译二进制后，请遵循[FPGA Deployment](./README.md#fpga-deployment)节的指引完成香山的部署与启动流程。
+在下载预编译二进制后，请遵循[FPGA Deployment](./README.md#fpga-deployment-fpga部署)节的指引完成香山的部署与启动流程。
 
 ## Build from Scratch 从头构建
 
