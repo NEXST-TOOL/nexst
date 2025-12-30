@@ -26,7 +26,7 @@ NEXST为开源RISC-V处理器[香山](https://github.com/OpenXiangShan/XiangShan
 
 *For more information, please visit [XiangShan Documentation](https://xiangshan-doc.readthedocs.io)*
 
-- **[Nanhu-G](https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G)**: 面向科研与教育的通用南湖微架构（第二代香山处理器）。
+- **[Nanhu-G](https://github.com/OpenXiangShan/XiangShan/tree/nanhu-G)**: 面向科研与教学的通用南湖微架构（第二代香山处理器）。
 - **[Kunminghu](https://github.com/OpenXiangShan/XiangShan)** ([手册](https://docs.xiangshan.cc/projects/user-guide/zh-cn/latest/)): 昆明湖微架构（第三代香山处理器）。
 
 *更多信息请参见[香山文档](https://xiangshan-doc.readthedocs.io)*
@@ -165,7 +165,7 @@ NEXST为开源RISC-V处理器[香山](https://github.com/OpenXiangShan/XiangShan
 
 We have prepared some [precompiled binaries](https://github.com/NEXST-TOOL/ready_for_download) for a quick demo.
 
-我们准备了一些[预编译二进制](https://github.com/NEXST-TOOL/ready_for_download)可用于快速DEMO测试。
+我们准备了若干[预编译二进制](https://github.com/NEXST-TOOL/ready_for_download)可用于快速演示与评估。
 
 The structure of precompiled binaries are shown below:
 
@@ -201,7 +201,7 @@ After downloading precompiled binaries, please follow the instructions in [FPGA 
 
 在下载预编译二进制后，请遵循[FPGA Deployment](./README.md#fpga-deployment-fpga部署)节的指引完成香山的部署与启动流程。
 
-## Build from Scratch 从头构建
+## Build from Scratch 从零构建
 
 ### Install tools 安装工具
 
@@ -384,7 +384,7 @@ sudo ./load_and_run.sh xdma<N>
 
 E-mail: <serve@ict.ac.cn>
 
-## Cite us 引用我们
+## Cite us 相关论文
 
 Congwu Zhang, Panyu Wang, Yazhou Wang, Mingyu Chen, Yungang Bao, Yisong Chang and Ke Zhang. HeteroProto: Automated RTL-to-Bitstream Framework for Heterogeneous Multi-FPGA SoC Prototyping, 2025 International Conference on Field Programmable Technology (FPT), Shanghai, China, 2025.
 
