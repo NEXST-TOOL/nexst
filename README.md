@@ -6,16 +6,16 @@ NEXST为开源RISC-V处理器[香山](https://github.com/OpenXiangShan/XiangShan
 
 ```raw
 ┌─────────────────────────┐
-│     SERVE Platform      │
 │┌───────────────────────┐│
-││   NEXST Environment   ││
 ││┌─────────────────────┐││
-│││      REMU Tool      │││
 │││┌───────────────────┐│││
 ││││ XiangShan Core(s) ││││
 │││└───────────────────┘│││
+│││      REMU Tool      │││
 ││└─────────────────────┘││
+││   NEXST Environment   ││
 │└───────────────────────┘│
+│     SERVE Platform      │
 └─────────────────────────┘
 ```
 
