@@ -7,8 +7,48 @@
 
 &nbsp;
 
-- Ubuntu 20.04/22.04/24.04
-- AMD/Xilinx Vivado 2024.2
+- Ubuntu 20.04/22.04
+- AMD/Xilinx Vivado 2020.2 (U280使用) / 2024.2 (其他板卡)
+
+## Precompiled Binaries for Quick Demo
+
+We have prepared some [precompiled binaries](https://github.com/NEXST-TOOL/ready_for_download) for a quick demo.
+
+我们准备了若干[预编译二进制](https://github.com/NEXST-TOOL/ready_for_download)可用于快速演示与评估。
+
+The structure of precompiled binaries are shown below:
+
+预编译二进制以下述文件结构组织：
+
+```
+.
+├── nanhu-g-single         # for single-core XiangShan Nanhu-G    单核Nanhu-G处理器核心
+│   ├── vcu128             # for VCU128 board                     VCU128开发板
+│   │   ├── system.bit     # bitstream                            比特流
+│   │   ├── debug_nets.ltx # debug probes for mem and io axi bus  mem和io axi接口的调试文件
+│   │   ├── bootrom.bin    # bootrom
+│   │   └── RV_BOOT.bin    # boot image                           启动镜像
+│   ├── u280               # for U280 board                       U280加速卡
+│   │   └── ...            # same content as VCU128               与VCU128的内容相同
+│   ├── nm37               # for NM37 board                       NM37开发板
+│   │   └── ...
+│   ├── mimic_turbo        # for MimicTurbo GT board              MimicTurbo GT开发板
+│   │   └── ...
+│   └── np19a              # for NP19A board                      NP19A开发板
+│       └── ...
+├── nanhu-g-dual           # for dual-core XiangShan Nanhu-G      双核香山Nanhu-G处理器核心
+│   └── ....
+├── nanhu-g-quad           # for quad-core XiangShan Nanhu-G      四核香山Nanhu-G处理器核心
+│   └── ....
+├── kunminghu              # for single-core XiangShan Kunminghu  单核核香山Nanhu-G处理器核心
+│   └── ....
+└── rocket                 # for Rocket Chip                      Rocket处理器核心
+    └── ....
+```
+
+After downloading precompiled binaries, please follow the instructions in [FPGA Deployment](./README.md#fpga-deployment-fpga部署) section.
+
+在下载预编译二进制后，请遵循[FPGA Deployment](./README.md#fpga-deployment-fpga部署)节的指引完成香山的部署与启动流程。
 
 ## Build from Scratch 从零构建
 
@@ -28,9 +68,9 @@ chmod +x mill && sudo mv mill /usr/local/bin
 git clone https://github.com/NEXST-TOOL/nexst -b kunminghu
 ```
 
-For Kunminghu profile, change to `kunminghu` branch and replace `nanhu-g` in the following command to `kmh`
+The `master` branch is designed for Nanhu-G core. For Kunminghu core, change to `kunminghu` branch and replace `nanhu-g` in the following command to `kmh`
 
-若要使用昆明湖，请切换至昆明湖分支并将下述指令中的`nanhu-g`改为`kmh`
+`master`分支包含了Nanhu-G核的配置。若要使用Kunminghu核，请切换至昆明湖分支并将下述指令中的`nanhu-g`改为`kmh`
 
 ### Initial Setup 初始化配置
 
