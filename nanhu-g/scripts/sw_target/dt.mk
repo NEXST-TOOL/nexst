@@ -18,6 +18,8 @@ else ifeq ($(FPGA_BD), np19a)
 	CPP_PARAMS += -DENABLE_PCIE0 -DENABLE_PCIE1
 endif
 
+CPP_PARAMS += -DFPGA_$(shell echo $(FPGA_BD) | tr a-z A-Z)
+
 DT_LOC := $(abspath $(NANHU_G_SW_LOC)/dt)
 
 DT_TARGET ?= XSTop

@@ -1,6 +1,6 @@
 / {
 	soc {
-#ifdef ENABLE_PCIE0
+#if defined(FPGA_NM37) || defined(FPGA_VP19A)
 		pcie@60000000 {
 			compatible = "xlnx,xdma-host-3.00";
 			device_type = "pci";
@@ -27,7 +27,7 @@
 			};
 		};
 #endif
-#ifdef ENABLE_PCIE1
+#if defined(FPGA_NP19A)
 		pcie@40000000 {
 			compatible = "xlnx,xdma-host-3.00";
 			device_type = "pci";

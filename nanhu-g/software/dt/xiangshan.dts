@@ -2,6 +2,10 @@
 
 #include NUM_CORES_H
 
+#include "memory.dtsi"
+
+#include "pcie.dtsi"
+
 / {
 	#address-cells = <2>;
 	#size-cells = <2>;
@@ -9,12 +13,7 @@
 	model = "freechips,rocketchip-unknown";
 	
 	chosen {
-		bootargs = "earlycon=sbi console=ttyUL0";
-	};
-	
-	mem: memory@80000000 {
-		device_type = "memory";
-		reg = <0x0 0x80000000 0x0 0x80000000>;
+		bootargs = "earlycon=sbi console=ttyUL0 kgdboc=ttyUL0,115200";
 	};
 	
 	soc {
@@ -57,5 +56,3 @@
 		};
 	};
 };
-
-#include "pcie.dtsi"
