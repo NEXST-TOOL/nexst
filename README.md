@@ -219,9 +219,9 @@ chmod +x mill && sudo mv mill /usr/local/bin
 git clone https://github.com/NEXST-TOOL/nexst
 ```
 
-The `master` branch is designed for Nanhu-G core. For Kunminghu core, change to `kunminghu` branch and replace `nanhu-g` in the following command to `kmh`
+The `master` branch is designed for Nanhu-G core. For Kunminghu core, change to `kunminghu` branch and replace `nanhu-g` with `kmh` in the following commands.
 
-`master`分支包含了Nanhu-G核的配置。若要使用Kunminghu核，请切换至昆明湖分支并将下述指令中的`nanhu-g`改为`kmh`
+`master`分支包含了Nanhu-G核的配置。若要使用Kunminghu核，请切换至`kunminghu`分支并将下述指令中的`nanhu-g`改为`kmh`。
 
 ### Initial Setup 初始化配置
 
