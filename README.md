@@ -186,7 +186,7 @@ The structure of precompiled binaries are shown below:
 │   ├── mimic_turbo        # for MimicTurbo GT board              MimicTurbo GT开发板
 │   │   └── ...
 │   └── np19a              # for NP19A board                      NP19A开发板
-│   │   └── ...
+│       └── ...
 ├── nanhu-g-dual           # for dual-core XiangShan Nanhu-G      双核香山Nanhu-G处理器核心
 │   └── ....
 ├── nanhu-g-quad           # for quad-core XiangShan Nanhu-G      四核香山Nanhu-G处理器核心
@@ -219,9 +219,9 @@ chmod +x mill && sudo mv mill /usr/local/bin
 git clone https://github.com/NEXST-TOOL/nexst
 ```
 
-For Kunminghu profile, change to `kunminghu` branch and replace `nanhu-g` in the following command to `kmh`
+The `master` branch is designed for Nanhu-G core. For Kunminghu core, change to `kunminghu` branch and replace `nanhu-g` in the following command to `kmh`
 
-若要使用昆明湖，请切换至昆明湖分支并将下述指令中的`nanhu-g`改为`kmh`
+`master`分支包含了Nanhu-G核的配置。若要使用Kunminghu核，请切换至昆明湖分支并将下述指令中的`nanhu-g`改为`kmh`
 
 ### Initial Setup 初始化配置
 
