@@ -1,0 +1,116 @@
+/dts-v1/;
+
+#include "pcie.dtsi"
+
+/ {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	compatible = "freechips,rocketchip-unknown-dev";
+	model = "xiangshan,Kunminghu-dev-28bf0330-DIRTY (liushiqi@ubuntu-2288H-V5) # Feb 07 05:45:46 2025";
+	
+	chosen {
+		bootargs = "earlycon=sbi console=ttyUL0";
+	};
+	
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		timebase-frequency = <10000000>;// clk freq / 100
+		cpu0: cpu@0 {
+			clock-frequency = <0>;
+			compatible = "ICT,xiangshan", "riscv";
+			d-cache-block-size = <64>;
+			d-cache-sets = <256>;
+			d-cache-size = <65536>;
+			d-tlb-sets = <1>;
+			d-tlb-size = <48>;
+			device_type = "cpu";
+			i-cache-block-size = <64>;
+			i-cache-sets = <256>;
+			i-cache-size = <65536>;
+			i-tlb-sets = <1>;
+			i-tlb-size = <48>;
+			mmu-type = "riscv,sv50";
+			next-level-cache = <&mem>;
+			reg = <0x0>;
+			riscv,isa = "rv64imafdcvh";
+			riscv,isa-base = "rv64i";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "h", "sdtrig", "sha", "shcounterenw", "shgatpa", "shlcofideleg", "shtvala", "shvsatpa", "shvstvala", "shvstvecd", "smaia", "smcsrind", "smdbltrp", "smmpm", "smnpm", "smrnmi", "smstateen", "ss1p13", "ssaia", "ssccptr", "sscofpmf", "sscounterenw", "sscsrind", "ssdbltrp", "ssnpm", "sspm", "ssstateen", "ssstrict", "sstc", "sstvala", "sstvecd", "ssu64xl", "supm", "sv39", "sv48", "svade", "svbare", "svinval", "svnapot", "za64rs", "zacas", "zba", "zbb", "zbc", "zbkb", "zbkc", "zbkx", "zbs", "zcb", "zcmop", "zfa", "zfh", "zfhmin", "zic64b", "ziccif", "zicclsm", "ziccrse", "zicntr", "zicond", "zicsr", "zifencei", "zihintpause", "zihpm", "zimop", "zkn", "zknd", "zkne", "zknh", "zksed", "zksh", "zkt", "zvbb", "zvfh", "zvfhmin", "zvkt", "zvl128b", "zvl32b", "zvl64b";
+			status = "okay";
+			tlb-split;
+			cpu0_intc: interrupt-controller {
+				#interrupt-cells = <1>;
+				compatible = "riscv,cpu-intc";
+				interrupt-controller;
+			};
+		};
+	};
+	
+	mem: memory@80000000 {
+		device_type = "memory";
+		reg = <0x0 0x80000000 0x3 0x80000000>;
+	};
+	
+	soc {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		compatible = "freechips,rocketchip-unknown-soc", "simple-bus";
+		ranges;
+		bus-error-unit {
+			compatible = "sifive,buserror0";
+			interrupt-parent = <&plic>;
+			interrupts = <65>;
+		};
+		cache-controller@39000000 {
+			reg = <0x0 0x39000000 0x0 0x10000>;
+			reg-names = "control";
+		};
+		clint@38000000 {
+			compatible = "riscv,clint0";
+			interrupts-extended = <&cpu0_intc 3 &cpu0_intc 7>;
+			reg = <0x0 0x38000000 0x0 0x10000>;
+			reg-names = "control";
+		};
+		debug-controller@38020000 {
+			compatible = "sifive,debug-013", "riscv,debug-013";
+			debug-attach = "jtag";
+			interrupts-extended = <&cpu0_intc 65535>;
+			reg = <0x0 0x38020000 0x0 0x1000>;
+			reg-names = "control";
+		};
+		error-device@0 {
+			compatible = "sifive,error0";
+			reg = <0x0 0x0 0x0 0x80000000>;
+		};
+		plic: interrupt-controller@3c000000 {
+			#interrupt-cells = <1>;
+			compatible = "riscv,plic0";
+			interrupt-controller;
+			interrupts-extended = <&cpu0_intc 11 &cpu0_intc 9>;
+			reg = <0x0 0x3c000000 0x0 0x4000000>;
+			reg-names = "control";
+			riscv,max-priority = <7>;
+			riscv,ndev = <65>;
+		};
+		mmpma@38021000 {
+			reg = <0x0 0x38021000 0x0 0x1000>;
+			reg-names = "control";
+		};
+		pll_ctrl@3a000000 {
+			reg = <0x0 0x3a000000 0x0 0x1000>;
+			reg-names = "control";
+		};
+		serial@30000000 {
+			device_type = "serial";
+			compatible = "xlnx,opb-uartlite-1.00.b";
+			reg = <0x0 0x30000000 0x0 0x10000>;
+			current-speed = <115200>;
+			clock-frequency = <50000000>;
+			interrupt-parent = <&plic>;
+			interrupts = <1>;
+			xlnx,data-bits = <8>;
+			xlnx,odd-parity = <0>;
+			xlnx,use-parity = <0>;
+		};
+	};
+};

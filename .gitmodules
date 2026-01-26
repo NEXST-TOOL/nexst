@@ -3,14 +3,14 @@
 	url = ../work_farm.git
   branch = d91dd38c
 [submodule "nanhu-g/software/opensbi"]
-	path = nanhu-g/software/opensbi
+	path = kmh/software/opensbi
 	url = ../opensbi.git
 [submodule "nanhu-g/hardware/xs-gen"]
-	path = nanhu-g/hardware/xs-gen
+	path = kmh/hardware/xs-gen
 	url = https://github.com/OpenXiangShan/XiangShan.git
 [submodule "shell/software/xdma_drv"]
 	path = tools/driver/xdma_drv
 	url = ../dma_ip_drivers.git
 [submodule "nanhu-g/software/rootfs"]
-	path = nanhu-g/software/rootfs
+	path = kmh/software/rootfs
 	url = ../rootfs.git
