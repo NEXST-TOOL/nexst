@@ -2,13 +2,13 @@
 
 ## Prerequisites 环境要求
 
-- Ubuntu 20.04/22.04
-- AMD/Xilinx Vivado 2020.2 (for U280) / 2024.2 (for others)
+- Ubuntu 20.04/22.04/24.04
+- AMD/Xilinx Vivado 2024.2
 
 &nbsp;
 
-- Ubuntu 20.04/22.04
-- AMD/Xilinx Vivado 2020.2 (U280使用) / 2024.2 (其他板卡)
+- Ubuntu 20.04/22.04/24.04
+- AMD/Xilinx Vivado 2024.2
 
 ## Build from Scratch 从零构建
 
