@@ -1,4 +1,4 @@
-# Kunminghu profile for NEXST
+# NEXST with Kunminghu core
 
 ## Prerequisites 环境要求
 
