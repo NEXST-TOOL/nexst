@@ -219,6 +219,10 @@ chmod +x mill && sudo mv mill /usr/local/bin
 git clone https://github.com/NEXST-TOOL/nexst
 ```
 
+For Kunminghu profile, change to `kunminghu` branch and replace `nanhu-g` in the following command to `kmh`
+
+若要使用昆明湖，请切换至昆明湖分支并将下述指令中的`nanhu-g`改为`kmh`
+
 ### Initial Setup 初始化配置
 
 ```bash
