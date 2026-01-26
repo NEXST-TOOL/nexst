@@ -1,5 +1,8 @@
 # Introduction
 
+This branch contains the REMU framework for FPGA-accelerated emulation with the Nanhu-G core.
+If you want to use this branch, please contact us.
+
 The repository of NEXST (Next Environment for XiangShan Target) 
 contains basic hardware and software components 
 for system-level FPGA prototyping and emulation 
@@ -153,3 +156,4 @@ Available configurations:
     ```sh
     sudo ./load_and_run.sh xdma<N>
     ```
+
