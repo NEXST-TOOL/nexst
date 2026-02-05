@@ -134,24 +134,24 @@ proc create_design { design_name } {
     #=============================================
     # Add ilas
     #=============================================
-    create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0
-    set_property -dict [list \
-        CONFIG.C_MON_TYPE {NATIVE} \
-        CONFIG.C_NUM_OF_PROBES {11} \
-        ] [get_bd_cells system_ila_0]
+    # create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0
+    # set_property -dict [list \
+    #     CONFIG.C_MON_TYPE {NATIVE} \
+    #     CONFIG.C_NUM_OF_PROBES {11} \
+    #     ] [get_bd_cells system_ila_0]
 
-    connect_bd_net [get_bd_ports aclk] [get_bd_pins system_ila_0/clk]
-    connect_bd_net [get_bd_pins system_ila_0/probe0] [get_bd_pins xs_top/riscv_halt]
-    connect_bd_net [get_bd_pins system_ila_0/probe1] [get_bd_pins xs_top/riscv_critical_error]
-    connect_bd_net [get_bd_pins system_ila_0/probe2] [get_bd_pins xs_top/trace_cause]
-    connect_bd_net [get_bd_pins system_ila_0/probe3] [get_bd_pins xs_top/trace_tval]
-    connect_bd_net [get_bd_pins system_ila_0/probe4] [get_bd_pins xs_top/trace_priv]
-    connect_bd_net [get_bd_pins system_ila_0/probe5] [get_bd_pins xs_top/trace_iaddr0]
-    connect_bd_net [get_bd_pins system_ila_0/probe6] [get_bd_pins xs_top/trace_iaddr1]
-    connect_bd_net [get_bd_pins system_ila_0/probe7] [get_bd_pins xs_top/trace_iaddr2]
-    connect_bd_net [get_bd_pins system_ila_0/probe8] [get_bd_pins xs_top/trace_itype]
-    connect_bd_net [get_bd_pins system_ila_0/probe9] [get_bd_pins xs_top/trace_iretire]
-    connect_bd_net [get_bd_pins system_ila_0/probe10] [get_bd_pins xs_top/trace_ilastsize]
+    # connect_bd_net [get_bd_ports aclk] [get_bd_pins system_ila_0/clk]
+    # connect_bd_net [get_bd_pins system_ila_0/probe0] [get_bd_pins xs_top/riscv_halt]
+    # connect_bd_net [get_bd_pins system_ila_0/probe1] [get_bd_pins xs_top/riscv_critical_error]
+    # connect_bd_net [get_bd_pins system_ila_0/probe2] [get_bd_pins xs_top/trace_cause]
+    # connect_bd_net [get_bd_pins system_ila_0/probe3] [get_bd_pins xs_top/trace_tval]
+    # connect_bd_net [get_bd_pins system_ila_0/probe4] [get_bd_pins xs_top/trace_priv]
+    # connect_bd_net [get_bd_pins system_ila_0/probe5] [get_bd_pins xs_top/trace_iaddr0]
+    # connect_bd_net [get_bd_pins system_ila_0/probe6] [get_bd_pins xs_top/trace_iaddr1]
+    # connect_bd_net [get_bd_pins system_ila_0/probe7] [get_bd_pins xs_top/trace_iaddr2]
+    # connect_bd_net [get_bd_pins system_ila_0/probe8] [get_bd_pins xs_top/trace_itype]
+    # connect_bd_net [get_bd_pins system_ila_0/probe9] [get_bd_pins xs_top/trace_iretire]
+    # connect_bd_net [get_bd_pins system_ila_0/probe10] [get_bd_pins xs_top/trace_ilastsize]
 
     #=============================================
     # Finish BD creation
