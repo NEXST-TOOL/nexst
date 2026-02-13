@@ -1,8 +1,8 @@
 # open checkpoint of the opt_design phase
 # open_checkpoint ${dcp_dir}/opt_pass_3.dcp
 
-# Placement with SSI logic spreading strategy for congestion avoidance
-place_design -directive SSI_SpreadLogic_high
+# Placement
+place_design
 
 report_utilization -file ${impl_rpt_dir}/post_place_util.rpt
 report_timing_summary -file ${impl_rpt_dir}/post_place_timing_setup.rpt -delay_type max -max_paths 1000
