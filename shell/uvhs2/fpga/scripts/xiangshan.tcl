@@ -588,7 +588,7 @@ proc create_root_design { parentCell } {
   # Create instance: system_ila, and set properties
   set dut_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_ila:1.3 dut_ila ]
   set_property -dict [ list \
-    CONFIG.C_MON_TYPE {Interface_Monitor} \
+    CONFIG.C_MON_TYPE {Mixed} \
     CONFIG.C_NUM_MONITOR_SLOTS {2} \
     ] $dut_ila
 
@@ -597,6 +597,8 @@ proc create_root_design { parentCell } {
 
   connect_bd_intf_net [get_bd_intf_pins dut_ila/SLOT_0_AXI] [get_bd_intf_pins u_role/m_axi_mem]
   connect_bd_intf_net [get_bd_intf_pins dut_ila/SLOT_1_AXI] [get_bd_intf_pins u_role/m_axi_io]
+
+  connect_bd_net [get_bd_pins dut_clk_gen/locked] [get_bd_pins dut_ila/probe0]
 
   set ddr_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_ila:1.3 ddr_ila ]
   set_property -dict [list \
@@ -615,8 +617,9 @@ proc create_root_design { parentCell } {
 
   set pcie_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_ila:1.3 pcie_ila ]
   set_property -dict [list \
-    CONFIG.C_MON_TYPE {Interface_Monitor} \
+    CONFIG.C_MON_TYPE {Mixed} \
     CONFIG.C_NUM_MONITOR_SLOTS {3} \
+    CONFIG.C_NUM_OF_PROBES {2} \
     ] [get_bd_cells pcie_ila]
 
   connect_bd_net [get_bd_pins qdma_ep/axi_aclk] [get_bd_pins pcie_ila/clk]
@@ -626,15 +629,8 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net [get_bd_intf_pins pcie_ila/SLOT_1_AXI] [get_bd_intf_pins qdma_ep/M_AXI_LITE]
   connect_bd_intf_net [get_bd_intf_pins pcie_ila/SLOT_2_AXI] [get_bd_intf_pins qdma_ep/M_AXI_BRIDGE]
 
-  set top_ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_ila:1.3 top_ila ]
-  set_property -dict [list \
-    CONFIG.C_NUM_OF_PROBES {4} \
-    ] [get_bd_cells top_ila]
-  connect_bd_net [get_bd_pins top_ila/clk] [get_bd_pins gclk_bufg/BUFG_O]
-  connect_bd_net [get_bd_pins ddr4_mig/init_calib_complete] [get_bd_pins top_ila/probe0]
-  connect_bd_net [get_bd_pins qdma_ep_support/phy_rdy_out] [get_bd_pins top_ila/probe1]
-  connect_bd_net [get_bd_pins qdma_ep_support/user_lnk_up] [get_bd_pins top_ila/probe2]
-  connect_bd_net [get_bd_pins dut_clk_gen/locked] [get_bd_pins top_ila/probe3]
+  connect_bd_net [get_bd_pins qdma_ep_support/phy_rdy_out] [get_bd_pins pcie_ila/probe0]
+  connect_bd_net [get_bd_pins qdma_ep_support/user_lnk_up] [get_bd_pins pcie_ila/probe1]
 
   #=============================================
   # Address segments
