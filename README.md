@@ -35,6 +35,7 @@ NEXST为开源RISC-V处理器[香山](https://github.com/OpenXiangShan/XiangShan
 
 | Vendor | Board | FPGA Chip |
 |----------|-----------|--|
+| UniVista | **[PD-AS](https://www.univista-isg.com/site/product_detail/359)** | VP1902 |
 | ICT | **[NP19A](./README.md#contact-us-联系我们)** | VU19P |
 | Corepilot | **[MimicTurbo GT](https://www.corigine.com/products-MimicTurboGT.html)** | VU19P |
 | ICT | **[NM37](./README.md#contact-us-联系我们)** | VU37P |
