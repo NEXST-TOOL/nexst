@@ -302,7 +302,7 @@ make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} DT_TARGET=xiangshan target_dt
 
 # Clean Linux kernel 清理Linux内核
 make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} ARCH=riscv rootfs_clean
-make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} ARCH=riscv phy_os.os.distclean
+make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} ARCH=riscv phy_os.os.dist
 
 # Clean OpenSBI 清理OpenSBI
 make PRJ="target:nanhu-g:proto" FPGA_BD=${FPGA_BD} ARCH=riscv DT_TARGET=xiangshan opensbi_distclean
