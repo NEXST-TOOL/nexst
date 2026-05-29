@@ -1,0 +1,287 @@
+Script started on 2026-05-29 11:19:29+08:00 [TERM="xterm-256color" TTY="/dev/pts/6" COLUMNS="282" LINES="69"]
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m  typescript
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ cd scripts/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts[00m$ ls
+[?2004l[0m[01;34mflow[0m  placeholder_role.tcl  xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts[00m$ cd flow/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts/flow[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts/flow[00m$ ls
+[?2004lsynth.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts/flow[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts/flow[00m$ gvim synth.tcl 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts/flow[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts/flow[00m$ cd ,[K/..[K[K[K..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts[00m$ ls
+[?2004l[0m[01;34mflow[0m  placeholder_role.tcl  xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts[00m$ gvim xiangshan.tcl 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts[00m$ gvim xiangshan.tcl 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts[00m$ ls
+[?2004l[0m[01;34mflow[0m  placeholder_role.tcl  xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga/scripts[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m  typescript
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ cd cd ../[K[K[K[K[K[K../../
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst[00m$ ls
+[?2004l[0m[01;34mnanhu-g[0m  README.md  [01;34mshell[0m  [01;34mtools[0m  [01;34mwork_farm[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst[00m$ grep -rl [7mFPGA_BD[27mFPGA_BD
+[?2004l[35m[KREADME.md[m[K
+[35m[Knanhu-g/scripts/sw_target/dt.mk[m[K
+[?2004h]0;user03@ip103: /data/common/github/nexst[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst[00m$ gvun [K[K[K[Kvim [7mnanhu-g/scripts/sw_target/dt.mk[27mnanhu-g/scripts/sw_target/dt.mk
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst[00m$ cd shell/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cp [7mnp19a[27mnp19a [7mlogic_giant19a[27mlogic_giant19a -rf
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd logic_giant19a/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mnp19a[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd np[K[K[K[K[Kcd ,,
+[?2004lbash: cd: ,,: No such file or directory
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ks
+[?2004lks: command not found
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd [K[K[Kcd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd vcu1
+[?2004lbash: cd: vcu1: No such file or directory
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd vcu128/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/vcu128[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/vcu128[00m$ ls
+[?2004l[0m[01;34mfpga[0m  [01;34mscripts[0m  vcu128.mk
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/vcu128[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/vcu128[00m$ cd scripts/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/vcu128/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/vcu128/scripts[00m$ ls
+[?2004ldcp_gen.tcl  flow_setup.tcl  prj_setup.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/vcu128/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/vcu128/scripts[00m$ cd ../../
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd [7mmimic_turbo[27mmimic_turbo
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo[00m$ ls
+[?2004l[0m[01;34mfpga[0m  mimic_turbo.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo[00m$ cd fpga/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo/fpga[00m$ cd sr[Kcripts/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo/fpga/scripts[00m$ ls
+[?2004l[0m[01;34mflow[0m  placeholder_role.tcl  xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo/fpga/scripts[00m$ cd ../../
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo[00m$ ls
+[?2004l[0m[01;34mfpga[0m  mimic_turbo.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/mimic_turbo[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/mimic_turbo[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd logic_giant19a/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mnp19a[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd [K[K[Krm -rf ./*
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ r[Kls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ rm -r [7mlogic_giant19a[27mlogic_giant19a
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cp [7mnp19a[27mnp19a [7mlogic_giant19a[27mlogic_giant19a -rf
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd logic_giant19a/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  np19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd [K[K[Kcd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ vimdiff cp[K[Knp19a/np19a.mk mimic_turbo/
+fpga/           mimic_turbo.mk  scripts/        
+]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ vimdiff np19a/np19a.mk mimic_turbo/mimic_turbo.mk 
+[?2004l2 files to edit
+[?1049h[22;0;0t[>4;2m[?1h=[?2004h[?1004h[1;69r[?12h[?12l[22;2t[22;1t[27m[23m[29m[m[H[2J[?25l[69;1H"np19a/np19a.mk" 0L, 0B"mimic_turbo/mimic_turbo.mk" 0L, 0B[2;1H▽[6n[2;1H  [3;1HPzz\[0%m[6n[3;1H           [1;1H[>c]10;?]11;?[1;1H[34m[48;5;248m- [m[139C[7m|[2;142H|[3;142H|[4;142H|[5;142H|[6;142H|[7;142H|[8;142H|[9;142H|[10;142H|[11;142H|[12;142H|[13;142H|[14;142H|[15;142H|[16;142H|[17;142H|[18;142H|[19;142H|[20;142H|[21;142H|[22;142H|[23;142H|[24;142H|[25;142H|[26;142H|[27;142H|[28;142H|[29;142H|[30;142H|[31;142H|[32;142H|[33;142H|[34;142H|[35;142H|[36;142H|[37;142H|[38;142H|[39;142H|[40;142H|[41;142H|[42;142H|[43;142H|[44;142H|[45;142H|[46;142H|[47;142H|[48;142H|[49;142H|[50;142H|[51;142H|[52;142H|[53;142H|[54;142H|[55;142H|[56;142H|[57;142H|[58;142H|[59;142H|[60;142H|[61;142H|[62;142H|[63;142H|[64;142H|[65;142H|[66;142H|[67;142H|[m[2;1H[94m~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            
+~                                                                                                                                            [m
+[1m[7mnp19a/np19a.mk                                                                                                             0,0-1          All [m[1;143H[34m[48;5;248m- [m[2;143H[94m~                                                                                                                                           [3;143H~                                                                                                                                           [4;143H~                                                                                                                                           [5;143H~                                                                                                                                           [6;143H~                                                                                                                                           [7;143H~                                                                                                                                           [8;143H~                                                                                                                                           [9;143H~                                                                                                                                           [10;143H~                                                                                                                                           [11;143H~                                                                                                                                           [12;143H~                                                                                                                                           [13;143H~                                                                                                                                           [14;143H~                                                                                                                                           [15;143H~                                                                                                                                           [16;143H~                                                                                                                                           [17;143H~                                                                                                                                           [18;143H~                                                                                                                                           [19;143H~                                                                                                                                           [20;143H~                                                                                                                                           [21;143H~                                                                                                                                           [22;143H~                                                                                                                                           [23;143H~                                                                                                                                           [24;143H~                                                                                                                                           [25;143H~                                                                                                                                           [26;143H~                                                                                                                                           [27;143H~                                                                                                                                           [28;143H~                                                                                                                                           [29;143H~                                                                                                                                           [30;143H~                                                                                                                                           [31;143H~                                                                                                                                           [32;143H~                                                                                                                                           [33;143H~                                                                                                                                           [34;143H~                                                                                                                                           [35;143H~                                                                                                                                           [36;143H~                                                                                                                                           [37;143H~                                                                                                                                           [38;143H~                                                                                                                                           [39;143H~                                                                                                                                           [40;143H~                                                                                                                                           [41;143H~                                                                                                                                           [42;143H~                                                                                                                                           [43;143H~                                                                                                                                           [44;143H~                                                                                                                                           [45;143H~                                                                                                                                           [46;143H~                                                                                                                                           [47;143H~                                                                                                                                           [48;143H~                                                                                                                                           [49;143H~                                                                                                                                           [50;143H~                                                                                                                                           [51;143H~                                                                                                                                           [52;143H~                                                                                                                                           [53;143H~                                                                                                                                           [54;143H~                                                                                                                                           [55;143H~                                                                                                                                           [56;143H~                                                                                                                                           [57;143H~                                                                                                                                           [58;143H~                                                                                                                                           [59;143H~                                                                                                                                           [60;143H~                                                                                                                                           [61;143H~                                                                                                                                           [62;143H~                                                                                                                                           [63;143H~                                                                                                                                           [64;143H~                                                                                                                                           [65;143H~                                                                                                                                           [66;143H~                                                                                                                                           [67;143H~                                                                                                                                           [m[68;143H[7mmimic_turbo/mimic_turbo.mk                                                                                                0,0-1          All[1;3H[?25hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\P$q q\[?12$p[?25l[m[69;272H:[1;3H[69;1H[K[69;1H:[?25hqa[?25l[?2004l[>4;m[23;2t[23;1t[69;1H[K[69;1H[?1004l[?2004l[?1l>[?25h[>4;m[?1049l[23;0;0t[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd logic_giant19a/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  np19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ mv [7mnp19a.mk[27mnp19a.mk [7mnp19a.mk[27mnp19a.mk[C[1P.mk[1P.mk[1P.mk[1P.mk[1P.mkl.mko.mkf.mki.mkc.mk_.mk[1P.mk[1P.mk[1P.mk[1P.mkg.mkc.mk[1P.mki.mkc.mk_.mkg.mki.mka.mkn.mkt.mk1.mk9.mka.mk
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  logic_giant19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ gvim logic_giant19a.mk 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd scripts/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/scripts[00m$ 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/scripts[00m$ ls
+[?2004ldcp_gen.tcl  flow_setup.tcl  prj_setup.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/scripts[00m$ cd ../../
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ diff -rq mimic_turbo/ n[[Kp19a/
+[?2004lFiles mimic_turbo/fpga/constraints/top.xdc and np19a/fpga/constraints/top.xdc differ
+Files mimic_turbo/fpga/scripts/flow/synth.tcl and np19a/fpga/scripts/flow/synth.tcl differ
+Files mimic_turbo/fpga/scripts/xiangshan.tcl and np19a/fpga/scripts/xiangshan.tcl differ
+Files mimic_turbo/fpga/sources/hdl/axis_whitehole.v and np19a/fpga/sources/hdl/axis_whitehole.v differ
+Files mimic_turbo/fpga/sources/hdl/placeholder_role_wrapper.v and np19a/fpga/sources/hdl/placeholder_role_wrapper.v differ
+Files mimic_turbo/fpga/sources/hdl/role_top_bb.v and np19a/fpga/sources/hdl/role_top_bb.v differ
+Only in np19a/fpga: typescript
+Only in mimic_turbo/: mimic_turbo.mk
+Only in np19a/: np19a.mk
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ gvim [Kdoif[K[K[Kif [Kf [7mnp19a/fpga/sources/hdl/role_top_bb.v[27mnp19a/fpga/sources/hdl/role_top_bb.v [7mmimic_turbo/fpga/sources/hdl/role_top_bb.v[27mmimic_turbo/fpga/sources/hdl/role_top_bb.v
+[?2004l2 files to edit
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ gvimdiff [7mnp19a/fpga/scripts/flow/synth.tcl[27mnp19a/fpga/scripts/flow/synth.tcl [7mmimic_turbo/fpga/scripts/flow/synth.tcl[27mmimic_turbo/fpga/scripts/flow/synth.tcl
+[?2004l2 files to edit
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ gvimdiff [7mnp19a/fpga/sources/hdl/axis_whitehole.v[27mnp19a/fpga/sources/hdl/axis_whitehole.v [7mmimic_turbo/fpga/sources/hdl/axis_whitehole.v[27mmimic_turbo/fpga/sources/hdl/axis_whitehole.v
+[?2004l2 files to edit
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ gvim [Kdif f[K[Kf [7mmimic_turbo/fpga/sources/hdl/placeholder_role_wrapper.v[27mmimic_turbo/fpga/sources/hdl/placeholder_role_wrapper.v [7mnp19a/fpga/sources/hdl/placeholder_role_wrapper.v[27mnp19a/fpga/sources/hdl/placeholder_role_wrapper.v
+[?2004l2 files to edit
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd [K[K[Kcd f[K[K[K[Kcd np19a/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a[00m$ ks[K[Kls
+[?2004l[0m[01;34mfpga[0m  np19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a[00m$ cd fpga/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m  typescript
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ gvim typescript 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ gvim typescript 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a/fpga[00m$ cd ../
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/np19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/np19a[00m$ cd ../
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ ff[K[Kfind- [K[K 0n[K[K-an[K[Kname typescript
+[?2004l./logic_giant19a/fpga/typescript
+./np19a/fpga/typescript
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ gvim [7m./logic_giant19a/fpga/typescript[27m./logic_giant19a/fpga/typescript
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ rm [7m./logic_giant19a/fpga/typescript[27m./logic_giant19a/fpga/typescript
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd logic_giant19a/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  logic_giant19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd fpga/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ cd constraints/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ ls
+[?2004lfloorplan.xdc  top.xdc
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ rm [K[K[Krm top.xdc 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ cp /data/common/github/
+nexst/         xiangshan.tcl  
+]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ cp /data/common/github/[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgi[Kvim top.xdc
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ cd ../../
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  logic_giant19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst[00m$ f[Kfind -name xiangshan_wrapper.v
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst[00m$ cd [K[K[Kcd se[Kge[K[Kge[K[Khell/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ s[Ks
+[?2004ls: command not found
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ k[Kls
+[?2004l[0m[01;34mlogic_giant19a[0m  [01;34mmimic_turbo[0m  [01;34mnm37[0m  [01;34mnp19a[0m  [01;34mu280[0m  [01;34muvhs2[0m  [01;34mvcu128[0m  [01;34mvcu1525[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell[00m$ cd logic_giant19a/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  logic_giant19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd fpga/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ cd constraints/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ ls
+[?2004lfloorplan.xdc  top.xdc
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ gvim top.xdc 
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/constraints[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/constraints[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ cd scripts/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/scripts[00m$ ls
+[?2004l[0m[01;34mflow[0m  placeholder_role.tcl  xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/scripts[00m$ cp /data/common/github/xiangshan.tcl .
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/scripts[00m$ s[Kls
+[?2004l[0m[01;34mflow[0m  placeholder_role.tcl  xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/scripts[00m$ ll
+[?2004ltotal 72
+drwxr-xr-x 3 user03 user03  4096  5月 29 11:24 [0m[01;34m.[0m/
+drwxr-xr-x 5 user03 user03  4096  5月 29 11:31 [01;34m..[0m/
+drwxr-xr-x 2 user03 user03  4096  5月 29 11:24 [01;34mflow[0m/
+-rw-r--r-- 1 user03 user03 10015  5月 29 11:24 placeholder_role.tcl
+-rw-r--r-- 1 user03 user03 46033  5月 29 13:54 xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/scripts[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ ls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ cd sources/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/sources[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/sources[00m$ ls
+[?2004l[0m[01;34mhdl[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/sources[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/sources[00m$ cd hdl/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/sources/hdl[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/sources/hdl[00m$ ls
+[?2004laxis_whitehole.v  f2s_rising_intr_sync.v  placeholder_role_wrapper.v  role_top_bb.v
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/sources/hdl[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/sources/hdl[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/sources[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/sources[00m$ ;s
+[?2004lbash: syntax error near unexpected token `;'
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/sources[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/sources[00m$ ls
+[?2004l[0m[01;34mhdl[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/sources[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/sources[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ s[Kls
+[?2004l[0m[01;34mconstraints[0m  [01;34mscripts[0m  [01;34msources[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ c d..[K[K[K[Kd scripts/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/scripts[00m$ ls
+[?2004l[0m[01;34mflow[0m  placeholder_role.tcl  xiangshan.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga/scripts[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/fpga[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/fpga[00m$ c d..[K[K[K[Kd ,[K..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  logic_giant19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ c ds[K[K[Kd scripts/
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/scripts[00m$ ls
+[?2004ldcp_gen.tcl  flow_setup.tcl  prj_setup.tcl
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a/scripts[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a/scripts[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ ls
+[?2004l[0m[01;34mfpga[0m  logic_giant19a.mk  [01;34mscripts[0m
+[?2004h]0;user03@ip103: /data/common/github/nexst/shell/logic_giant19a[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shell/logic_giant19a[00m$ cd ..
+[?2004l[?2004h]0;user03@ip103: /data/common/github/nexst/shell[01;32muser03@ip103[00m:[01;34m/data/common/github/nexst/shel
