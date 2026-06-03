@@ -3,14 +3,17 @@ XS_SRC := $(NANHU_G_LOC)/xs-gen
 GEN_DIR := $(NANHU_G_LOC)/sources/generated
 PATCH_DIR := $(NANHU_G_LOC)/sources/patch
 
-CONFIG ?= FpgaDefaultConfig
+CONFIG ?= FpgaMinimalMatrixConfig
 L2_CACHE_SIZE ?= 256
 L3_CACHE_SIZE ?= 768
 NUM_CORES ?= 1
 
 .PHONY: xs_gen
 xs_gen:
+	cd $(XS_SRC)
+	patch -p1 < $(PATCH_DIR)/config.patch
 	make -C $(XS_SRC) \
+		NOOP_HOME=$(XS_SRC) \
 		CONFIG=$(CONFIG) \
 		L2_CACHE_SIZE=$(L2_CACHE_SIZE) \
 		L3_CACHE_SIZE=$(L3_CACHE_SIZE) \

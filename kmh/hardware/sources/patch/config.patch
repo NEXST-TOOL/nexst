@@ -1,0 +1,69 @@
+diff --git a/src/main/scala/top/Configs.scala b/src/main/scala/top/Configs.scala
+index e52e6f172..bf4c36e69 100644
+--- a/src/main/scala/top/Configs.scala
++++ b/src/main/scala/top/Configs.scala
+@@ -706,3 +706,64 @@ class FpgaDiffMinimalConfig(n: Int = 1) extends Config(
+     )
+   })
+ )
++
++class FpgaMinimalMatrixConfig(n: Int = 1) extends Config({
++  val matrixExtension = MatrixIsaParams(
++    enableInt8Int32 = true,
++    enableFp8Fp32 = true,
++    enableFp8Fp16 = true,
++    enableFp8Bf16 = true,
++    enableFp16Fp16 = true,
++    enableBf16Fp32 = true,
++  )
++  new MinimalConfig(n).alter((site, here, up) => {
++    case DebugOptionsKey => up(DebugOptionsKey).copy(
++      AlwaysBasicDiff = false,
++      AlwaysBasicDB = false
++    )
++    case SoCParamsKey => up(SoCParamsKey).copy(
++      L3CacheParamsOpt = Some(up(SoCParamsKey).L3CacheParamsOpt.get.copy(
++        sramClkDivBy2 = false,
++      )),
++    )
++    case XSTileKey => up(XSTileKey).map { p =>
++      p.copy(
++        MatrixExtension = matrixExtension,
++        l2tlbParameters = p.l2tlbParameters.copy(
++          dfilterSize = 48
++        ),
++        L2CacheParamsOpt = p.L2CacheParamsOpt.map(_.copy(
++          sets = 512,
++          enableMCP2 = false
++        )),
++      )
++    }
++    case MatAccKey => MatAcc.CUTE
++    case CuteParamsKey =>
++      val baseTile = up(XSTileKey).head
++      CuteParams.CUTE_8Tops_128SCP.copy(
++        Debug = CuteDebugParams.NoDebug,
++        EnableDifftest = site(DebugOptionsKey).EnableDifftest,
++        v3config = Cutev3extParams(
++          TaskCtrl_AutoClear = true,
++        ),
++        MatrixExtension = matrixExtension,
++        L2NBanks = baseTile.L2NBanks,
++      )
++  })
++})
++
++class FpgaMinimalConfig(n: Int = 1) extends Config(
++  (new MinimalConfig(n)).alter((site, here, up) => {
++    case DebugOptionsKey => up(DebugOptionsKey).copy(
++      AlwaysBasicDiff = false,
++      AlwaysBasicDB = false
++    )
++    case SoCParamsKey => up(SoCParamsKey).copy(
++      UseXSTileDiffTop = false,
++      L3CacheParamsOpt = Some(up(SoCParamsKey).L3CacheParamsOpt.get.copy(
++        sramClkDivBy2 = false,
++      )),
++    )
++  })
++)
