@@ -63,7 +63,7 @@ proc create_design { design_name } {
         ] [get_bd_pins xs_top/io_clock]
 
     # Create GPIO register to generate reset signal
-    set gpio_reset [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 gpio_reset]
+    set gpio_reset [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio gpio_reset]
     set_property -dict [list \
         CONFIG.C_GPIO_WIDTH {1} \
         CONFIG.C_DOUT_DEFAULT {0x00000001} \
@@ -134,24 +134,48 @@ proc create_design { design_name } {
     #=============================================
     # Add ilas
     #=============================================
-    # create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0
-    # set_property -dict [list \
-    #     CONFIG.C_MON_TYPE {NATIVE} \
-    #     CONFIG.C_NUM_OF_PROBES {11} \
-    #     ] [get_bd_cells system_ila_0]
+    if {${::board} == "uvhs2"} {
+        set ila [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_ila ila ]
+        set_property -dict [list \
+            CONFIG.C_MON_TYPE {Mixed} \
+            CONFIG.C_NUM_MONITOR_SLOTS {2} \
+            CONFIG.C_NUM_OF_PROBES {11} \
+            CONFIG.C_PROBE10_WIDTH {3} \
+            CONFIG.C_PROBE2_WIDTH {64} \
+            CONFIG.C_PROBE3_WIDTH {50} \
+            CONFIG.C_PROBE4_WIDTH {3} \
+            CONFIG.C_PROBE5_WIDTH {64} \
+            CONFIG.C_PROBE6_WIDTH {3} \
+            CONFIG.C_PROBE7_WIDTH {150} \
+            CONFIG.C_PROBE8_WIDTH {12} \
+            CONFIG.C_PROBE9_WIDTH {21} \
+            ] [get_bd_cells ila]
+    } else {
+        create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila ila
+        set_property -dict [list \
+            CONFIG.C_MON_TYPE {Mixed} \
+            CONFIG.C_NUM_MONITOR_SLOTS {2} \
+            CONFIG.C_NUM_OF_PROBES {11} \
+            ] [get_bd_cells ila]
+    }
 
-    # connect_bd_net [get_bd_ports aclk] [get_bd_pins system_ila_0/clk]
-    # connect_bd_net [get_bd_pins system_ila_0/probe0] [get_bd_pins xs_top/riscv_halt]
-    # connect_bd_net [get_bd_pins system_ila_0/probe1] [get_bd_pins xs_top/riscv_critical_error]
-    # connect_bd_net [get_bd_pins system_ila_0/probe2] [get_bd_pins xs_top/trace_cause]
-    # connect_bd_net [get_bd_pins system_ila_0/probe3] [get_bd_pins xs_top/trace_tval]
-    # connect_bd_net [get_bd_pins system_ila_0/probe4] [get_bd_pins xs_top/trace_priv]
-    # connect_bd_net [get_bd_pins system_ila_0/probe5] [get_bd_pins xs_top/trace_iaddr0]
-    # connect_bd_net [get_bd_pins system_ila_0/probe6] [get_bd_pins xs_top/trace_iaddr1]
-    # connect_bd_net [get_bd_pins system_ila_0/probe7] [get_bd_pins xs_top/trace_iaddr2]
-    # connect_bd_net [get_bd_pins system_ila_0/probe8] [get_bd_pins xs_top/trace_itype]
-    # connect_bd_net [get_bd_pins system_ila_0/probe9] [get_bd_pins xs_top/trace_iretire]
-    # connect_bd_net [get_bd_pins system_ila_0/probe10] [get_bd_pins xs_top/trace_ilastsize]
+    connect_bd_net [get_bd_ports aclk] [get_bd_pins ila/clk]
+    connect_bd_net [get_bd_ports aresetn] [get_bd_pins ila/resetn]
+
+    connect_bd_intf_net [get_bd_intf_pins ila/SLOT_0_AXI] [get_bd_intf_pins xs_top/memory]
+    connect_bd_intf_net [get_bd_intf_pins ila/SLOT_1_AXI] [get_bd_intf_pins xs_top/peripheral]
+
+    connect_bd_net [get_bd_pins xs_top/io_riscv_halt_0] [get_bd_pins ila/probe0]
+    connect_bd_net [get_bd_pins xs_top/io_riscv_critical_error_0] [get_bd_pins ila/probe1]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_cause] [get_bd_pins ila/probe2]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_tval] [get_bd_pins ila/probe3]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_priv] [get_bd_pins ila/probe4]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_mstatus] [get_bd_pins ila/probe5]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_valid] [get_bd_pins ila/probe6]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_iaddr] [get_bd_pins ila/probe7]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_itype] [get_bd_pins ila/probe8]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_iretire] [get_bd_pins ila/probe9]
+    connect_bd_net [get_bd_pins xs_top/io_traceCoreInterface_0_toEncoder_ilastsize] [get_bd_pins ila/probe10]
 
     #=============================================
     # Finish BD creation

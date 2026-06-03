@@ -3,12 +3,12 @@
 ## Prerequisites 环境要求
 
 - Ubuntu 20.04/22.04/24.04
-- AMD/Xilinx Vivado 2024.2
+- AMD/Xilinx Vivado 2024.2 (other boards) / Vivado 2025.1 (VP1902)
 
 &nbsp;
 
-- Ubuntu 20.04/22.04
-- AMD/Xilinx Vivado 2020.2 (U280使用) / 2024.2 (其他板卡)
+- Ubuntu 20.04/22.04/24.04
+- AMD/Xilinx Vivado 2024.2 (其他板卡) / Vivado 2025.1 (VP1902)
 
 ## Precompiled Binaries for Quick Demo
 
