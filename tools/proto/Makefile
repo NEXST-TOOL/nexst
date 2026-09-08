@@ -2,6 +2,7 @@ O ?= $(shell pwd)
 TARGET := pcie-util
 CXX := g++
 
+objs-y := devdma.o
 objs-y += devmem.o
 objs-y += sighandler.o
 objs-y += uart.o

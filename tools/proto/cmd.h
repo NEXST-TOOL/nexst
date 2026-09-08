@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-typedef int (CMD_FUNC) (const std::string &dev_name, const std::vector<std::string> &args);
+typedef int (CMD_FUNC) (const std::string &dev_name, const std::string &type, const std::vector<std::string> &args);
 
 CMD_FUNC cmd_read;
 CMD_FUNC cmd_write;

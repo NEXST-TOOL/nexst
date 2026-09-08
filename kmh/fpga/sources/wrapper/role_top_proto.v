@@ -90,11 +90,11 @@ module role_top (
   output [31:0]  m_axi_mem_wstrb,
   output        m_axi_mem_wvalid,
 
-  input  [19:0] s_axi_ctrl_araddr,
+  input  [23:0] s_axi_ctrl_araddr,
   input  [2:0]  s_axi_ctrl_arprot,
   output        s_axi_ctrl_arready,
   input         s_axi_ctrl_arvalid,
-  input  [19:0] s_axi_ctrl_awaddr,
+  input  [23:0] s_axi_ctrl_awaddr,
   input  [2:0]  s_axi_ctrl_awprot,
   output        s_axi_ctrl_awready,
   input         s_axi_ctrl_awvalid,
@@ -157,6 +157,24 @@ module role_top (
   input   [63:0]  s2r_intr
 );
 
+  // The local MMIO SmartConnect serializes the single XiangShan master and
+  // therefore exposes an ID-less AXI interface. Keep the shell ABI at ID 0.
+  assign m_axi_io_arid = 4'b0;
+  assign m_axi_io_awid = 4'b0;
+  // The shell reserves s_axi_dma, while the generated role BD leaves it
+  // unused. Keep the shell boundary quiescent instead of forwarding it.
+  assign s_axi_dma_arready = 1'b0;
+  assign s_axi_dma_awready = 1'b0;
+  assign s_axi_dma_bresp = 2'b0;
+  assign s_axi_dma_bvalid = 1'b0;
+  assign s_axi_dma_bid = 12'b0;
+  assign s_axi_dma_rdata = 256'b0;
+  assign s_axi_dma_rlast = 1'b0;
+  assign s_axi_dma_rresp = 2'b0;
+  assign s_axi_dma_rvalid = 1'b0;
+  assign s_axi_dma_rid = 12'b0;
+  assign s_axi_dma_wready = 1'b0;
+
   role role_i (
     .aclk(aclk),
     .aresetn(aresetn),
@@ -164,7 +182,6 @@ module role_top (
     .m_axi_io_araddr(m_axi_io_araddr),
     .m_axi_io_arburst(m_axi_io_arburst),
     .m_axi_io_arcache(m_axi_io_arcache),
-    .m_axi_io_arid(m_axi_io_arid),
     .m_axi_io_arlen(m_axi_io_arlen),
     .m_axi_io_arlock(m_axi_io_arlock),
     .m_axi_io_arprot(m_axi_io_arprot),
@@ -175,7 +192,6 @@ module role_top (
     .m_axi_io_awaddr(m_axi_io_awaddr),
     .m_axi_io_awburst(m_axi_io_awburst),
     .m_axi_io_awcache(m_axi_io_awcache),
-    .m_axi_io_awid(m_axi_io_awid),
     .m_axi_io_awlen(m_axi_io_awlen),
     .m_axi_io_awlock(m_axi_io_awlock),
     .m_axi_io_awprot(m_axi_io_awprot),
@@ -183,12 +199,10 @@ module role_top (
     .m_axi_io_awready(m_axi_io_awready),
     .m_axi_io_awsize(m_axi_io_awsize),
     .m_axi_io_awvalid(m_axi_io_awvalid),
-    .m_axi_io_bid(m_axi_io_bid),
     .m_axi_io_bready(m_axi_io_bready),
     .m_axi_io_bresp(m_axi_io_bresp),
     .m_axi_io_bvalid(m_axi_io_bvalid),
     .m_axi_io_rdata(m_axi_io_rdata),
-    .m_axi_io_rid(m_axi_io_rid),
     .m_axi_io_rlast(m_axi_io_rlast),
     .m_axi_io_rready(m_axi_io_rready),
     .m_axi_io_rresp(m_axi_io_rresp),
@@ -252,43 +266,6 @@ module role_top (
     .s_axi_ctrl_wready(s_axi_ctrl_wready),
     .s_axi_ctrl_wstrb(s_axi_ctrl_wstrb),
     .s_axi_ctrl_wvalid(s_axi_ctrl_wvalid),
-    .s_axi_dma_araddr(s_axi_dma_araddr),
-    .s_axi_dma_arburst(s_axi_dma_arburst),
-    .s_axi_dma_arcache(s_axi_dma_arcache),
-    .s_axi_dma_arlen(s_axi_dma_arlen),
-    .s_axi_dma_arlock(s_axi_dma_arlock),
-    .s_axi_dma_arprot(s_axi_dma_arprot),
-    .s_axi_dma_arqos(s_axi_dma_arqos),
-    .s_axi_dma_arready(s_axi_dma_arready),
-    .s_axi_dma_arsize(s_axi_dma_arsize),
-    .s_axi_dma_arvalid(s_axi_dma_arvalid),
-    .s_axi_dma_arid(s_axi_dma_arid),
-    .s_axi_dma_awaddr(s_axi_dma_awaddr),
-    .s_axi_dma_awburst(s_axi_dma_awburst),
-    .s_axi_dma_awcache(s_axi_dma_awcache),
-    .s_axi_dma_awlen(s_axi_dma_awlen),
-    .s_axi_dma_awlock(s_axi_dma_awlock),
-    .s_axi_dma_awprot(s_axi_dma_awprot),
-    .s_axi_dma_awqos(s_axi_dma_awqos),
-    .s_axi_dma_awready(s_axi_dma_awready),
-    .s_axi_dma_awsize(s_axi_dma_awsize),
-    .s_axi_dma_awid(s_axi_dma_awid),
-    .s_axi_dma_awvalid(s_axi_dma_awvalid),
-    .s_axi_dma_bready(s_axi_dma_bready),
-    .s_axi_dma_bresp(s_axi_dma_bresp),
-    .s_axi_dma_bid(s_axi_dma_bid),
-    .s_axi_dma_bvalid(s_axi_dma_bvalid),
-    .s_axi_dma_rdata(s_axi_dma_rdata),
-    .s_axi_dma_rlast(s_axi_dma_rlast),
-    .s_axi_dma_rready(s_axi_dma_rready),
-    .s_axi_dma_rresp(s_axi_dma_rresp),
-    .s_axi_dma_rid(s_axi_dma_rid),
-    .s_axi_dma_rvalid(s_axi_dma_rvalid),
-    .s_axi_dma_wdata(s_axi_dma_wdata),
-    .s_axi_dma_wlast(s_axi_dma_wlast),
-    .s_axi_dma_wready(s_axi_dma_wready),
-    .s_axi_dma_wstrb(s_axi_dma_wstrb),
-    .s_axi_dma_wvalid(s_axi_dma_wvalid),
     .s2r_intr(s2r_intr));
  
 endmodule
