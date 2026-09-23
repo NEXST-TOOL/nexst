@@ -3,7 +3,8 @@ XS_SRC := $(NANHU_G_LOC)/xs-gen
 GEN_DIR := $(NANHU_G_LOC)/sources/generated
 PATCH_DIR := $(NANHU_G_LOC)/sources/patch
 
-CONFIG ?= FpgaDiffMinimalMatrixConfig
+CONFIG ?= MinimalMatrixConfig
+#CONFIG ?= DefaultMatrixConfig
 L2_CACHE_SIZE ?= 256
 L3_CACHE_SIZE ?= 768
 NUM_CORES ?= 1
@@ -14,7 +15,7 @@ xs_gen:
 	make -C $(XS_SRC) \
 		NOOP_HOME=$(XS_SRC) \
 		CONFIG=$(CONFIG) \
-		LLC=ZhuJiang RELEASE=1 FPGA=1 MFC=1 WITH_CHISELDB=0 WITH_CONSTANTIN=0 \
+		LLC=OpenLLC WITH_CHISELDB=0 WITH_CONSTANTIN=0 FPGA=1 RELEASE=1 MFC=1 \
 		NUM_CORES=$(NUM_CORES) verilog
 	mkdir -p $(GEN_DIR)
 	cp $(XS_SRC)/build/rtl/*.v $(GEN_DIR)

@@ -2,7 +2,7 @@
 # open_checkpoint ${dcp_dir}/opt_pass_3.dcp
 
 # Placement
-place_design -directive AggressiveExplore
+place_design
 
 report_utilization -file ${impl_rpt_dir}/post_place_util.rpt
 report_timing_summary -file ${impl_rpt_dir}/post_place_timing_setup.rpt -delay_type max -max_paths 1000

@@ -98,21 +98,36 @@ proc create_design { design_name } {
         CONFIG.SINGLE_PORT_BRAM {1} \
         ] $dut_bootrom_ctrl
 
-    # Create interrupt vector glue for the role UART
-    set uart_intr_zero [create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconstant:1.0 uart_intr_zero]
+    # Create interrupt vector glue:
+    #   bits [31:0]  - role-internal interrupts
+    #   bits [63:32] - shell interrupts [31:0]
+    set uart_intr_zero_low [create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconstant:1.0 uart_intr_zero_low]
     set_property -dict [list \
         CONFIG.CONST_VAL {0x0} \
-        CONFIG.CONST_WIDTH {63} \
-        ] $uart_intr_zero
+        CONFIG.CONST_WIDTH {3} \
+        ] $uart_intr_zero_low
 
-    set uart_intr_pad [create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconcat:1.0 uart_intr_pad]
-    set_property CONFIG.NUM_PORTS {2} $uart_intr_pad
-
-    set uart_intr_or [create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilvector_logic:1.0 uart_intr_or]
+    set uart_intr_zero_high [create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconstant:1.0 uart_intr_zero_high]
     set_property -dict [list \
-        CONFIG.C_OPERATION {or} \
-        CONFIG.C_SIZE {64} \
-        ] $uart_intr_or
+        CONFIG.CONST_VAL {0x0} \
+        CONFIG.CONST_WIDTH {28} \
+        ] $uart_intr_zero_high
+
+    set shell_intr_slice [create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilslice:1.0 shell_intr_slice]
+    set_property -dict [list \
+        CONFIG.DIN_WIDTH {64} \
+        CONFIG.DIN_FROM {31} \
+        CONFIG.DIN_TO {0} \
+        ] $shell_intr_slice
+
+    set intr_concat [create_bd_cell -type inline_hdl -vlnv xilinx.com:inline_hdl:ilconcat:1.0 intr_concat]
+    set_property -dict [list \
+        CONFIG.NUM_PORTS {4} \
+        CONFIG.IN0_WIDTH {3} \
+        CONFIG.IN1_WIDTH {1} \
+        CONFIG.IN2_WIDTH {28} \
+        CONFIG.IN3_WIDTH {32} \
+        ] $intr_concat
 
     # Create the role/peripheral-side Boot ROM controller
     set user_bootrom_ctrl [create_bd_cell -type ip -vlnv xilinx.com:ip:axi_bram_ctrl:4.1 user_bootrom_ctrl]
@@ -212,12 +227,15 @@ proc create_design { design_name } {
 
     connect_bd_net [get_bd_pins role_uart/tx] [get_bd_pins host_uart/rx]
     connect_bd_net [get_bd_pins host_uart/tx] [get_bd_pins role_uart/rx]
+    # ilconcat maps In0 to the least-significant bits:
+    #   intr_concat/dout = {s2r_intr[31:0], 28'b0, role_uart/interrupt, 3'b0}
 
-    connect_bd_net [get_bd_pins role_uart/interrupt] [get_bd_pins uart_intr_pad/In0]
-    connect_bd_net [get_bd_pins uart_intr_zero/dout] [get_bd_pins uart_intr_pad/In1]
-    connect_bd_net [get_bd_ports s2r_intr] [get_bd_pins uart_intr_or/Op1]
-    connect_bd_net [get_bd_pins uart_intr_pad/dout] [get_bd_pins uart_intr_or/Op2]
-    connect_bd_net [get_bd_pins uart_intr_or/Res] [get_bd_pins xs_top/ext_intrs]
+    connect_bd_net [get_bd_pins uart_intr_zero_low/dout] [get_bd_pins intr_concat/In0]
+    connect_bd_net [get_bd_pins role_uart/interrupt] [get_bd_pins intr_concat/In1]
+    connect_bd_net [get_bd_pins uart_intr_zero_high/dout] [get_bd_pins intr_concat/In2]
+    connect_bd_net [get_bd_ports s2r_intr] [get_bd_pins shell_intr_slice/Din]
+    connect_bd_net [get_bd_pins shell_intr_slice/Dout] [get_bd_pins intr_concat/In3]
+    connect_bd_net [get_bd_pins intr_concat/dout] [get_bd_pins xs_top/ext_intrs]
 
     connect_bd_net [get_bd_pins xs_top/rst_vec] [get_bd_pins gpio_reset/gpio2_io_o]
 
@@ -304,8 +322,9 @@ proc create_design { design_name } {
         set_property -dict [list \
             CONFIG.C_MON_TYPE {Mixed} \
             CONFIG.C_NUM_MONITOR_SLOTS {2} \
-            CONFIG.C_NUM_OF_PROBES {11} \
+            CONFIG.C_NUM_OF_PROBES {12} \
             CONFIG.C_PROBE10_WIDTH {3} \
+            CONFIG.C_PROBE11_WIDTH {64} \
             CONFIG.C_PROBE2_WIDTH {64} \
             CONFIG.C_PROBE3_WIDTH {50} \
             CONFIG.C_PROBE4_WIDTH {3} \
@@ -320,7 +339,7 @@ proc create_design { design_name } {
         set_property -dict [list \
             CONFIG.C_MON_TYPE {Mixed} \
             CONFIG.C_NUM_MONITOR_SLOTS {2} \
-            CONFIG.C_NUM_OF_PROBES {11} \
+            CONFIG.C_NUM_OF_PROBES {12} \
             ] [get_bd_cells ila]
     }
 
@@ -341,6 +360,7 @@ proc create_design { design_name } {
     connect_bd_net [get_bd_pins xs_top/trace_itype] [get_bd_pins ila/probe8]
     connect_bd_net [get_bd_pins xs_top/trace_iretire] [get_bd_pins ila/probe9]
     connect_bd_net [get_bd_pins xs_top/trace_ilastsize] [get_bd_pins ila/probe10]
+    connect_bd_net [get_bd_pins intr_concat/dout] [get_bd_pins ila/probe11]
 
     #=============================================
     # Finish BD creation

@@ -497,6 +497,13 @@ proc create_root_design { parentCell } {
   assign_bd_address -offset 0x0 -range 0x01000000 \
     -target_address_space [get_bd_addr_spaces qdma_ep/M_AXI_LITE] \
     [get_bd_addr_segs u_role/s_axi_ctrl/reg0] -force
+  
+  #=============================================
+  # NoC Constraints
+  #=============================================
+
+  set_property -dict [list CONFIG.PHYSICAL_LOC {NOC_NSU512_S1X2Y6}] [get_bd_intf_pins /axi_noc_1/M00_AXI]
+  set_property -dict [list CONFIG.PHYSICAL_LOC {NOC_NMU512_S1X2Y6}] [get_bd_intf_pins /axi_noc_1/S03_AXI]
 
   #=============================================
   # Finish BD creation

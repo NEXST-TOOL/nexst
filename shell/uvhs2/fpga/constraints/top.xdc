@@ -8,8 +8,8 @@
 # Global clock
 create_clock -period 5.000 -name gclk [get_ports gclk_clk_p]
 
-set_property PACKAGE_PIN CN67 [get_ports gclk_clk_p]
-set_property PACKAGE_PIN CN66 [get_ports gclk_clk_n]
+set_property PACKAGE_PIN L58 [get_ports gclk_clk_p]
+set_property PACKAGE_PIN K58 [get_ports gclk_clk_n]
 
 set_property IOSTANDARD LVDS15 [get_ports gclk_clk_p]
 set_property IOSTANDARD LVDS15 [get_ports gclk_clk_n]
@@ -20,8 +20,6 @@ create_clock -period 10.000 -name pcie_ep_ref_clk -waveform {0.000 5.000} [get_p
 set_property PACKAGE_PIN BR71 [get_ports {pcie_ep_gt_ref_clk_clk_p[0]}]
 
 # PL DDR reference clock SLR2
-create_clock -period 5.000 -name ddr4_mig_sys_clk -waveform {0.000 2.500} [get_ports ddr4_mig_sys_clk_clk_p]
-
 set_property IOSTANDARD LVDS15 [get_ports ddr4_mig_sys_clk_clk_n]
 set_property IOSTANDARD LVDS15 [get_ports ddr4_mig_sys_clk_clk_p]
 
